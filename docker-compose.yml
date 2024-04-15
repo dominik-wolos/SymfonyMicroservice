@@ -1,0 +1,57 @@
+services:
+  php:
+    container_name: symfony_php
+    build:
+      context: .
+      target: app_php_dev
+    environment:
+      - APP_ENV=dev
+      - APP_DEBUG=1
+      - APP_SECRET=EDITME
+      - DATABASE_URL=mysql://symfony:${MYSQL_PASSWORD:-nopassword}@mysql/symfony_db
+      - PHP_DATE_TIMEZONE=${PHP_DATE_TIMEZONE:-UTC}
+    volumes:
+      - .:/srv/app:rw,cached
+      # if you develop on Linux, you may use a bind-mounted host directory instead
+      - ./var:/srv/app/var:rw
+      #      - ./public:/srv/open_marketplace/public:rw,delegated
+      # if you develop on Linux, you may use a bind-mounted host directory instead
+      # - ./public/media:/srv/open_marketplace/public/media:rw
+      - public-media:/srv/app/public/media:rw
+
+  mysql:
+    container_name: symfony_mysql
+    image: mysql:5.7 # Sylius is fully working on mysql 8.0 version
+    platform: linux/amd64
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-nopassword}
+      - MYSQL_DATABASE=symfony
+      - MYSQL_USER=symfony
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD:-nopassword}
+    volumes:
+      - mysql-data:/var/lib/mysql:rw
+      # you may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
+      # - ./docker/mysql/data:/var/lib/mysql:rw,delegated
+    ports:
+      - "3307:3306"
+    cap_add:
+      - SYS_NICE # prevent "mbind: Operation not permitted" errors
+
+  nginx:
+    container_name: symfony_nginx
+    build:
+      context: .
+      target: app_nginx
+    depends_on:
+      - php
+    volumes:
+      - ./public:/srv/app/public:ro
+      # if you develop on Linux, you may use a bind-mounted host directory instead
+      # - ./public/media:/srv/open_marketplace/public/media:ro
+      - public-media:/srv/app/public/media:ro,nocopy
+    ports:
+      - "${HTTP_PORT:-80}:80"
+
+volumes:
+  mysql-data:
+  public-media:
