@@ -32,7 +32,7 @@ services:
       - mysql-data:/var/lib/mysql:rw
       # you may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
       # - ./docker/mysql/data:/var/lib/mysql:rw,delegated
-#    ports:
+    ports:
       - "3307:3306"
     cap_add:
       - SYS_NICE # prevent "mbind: Operation not permitted" errors
