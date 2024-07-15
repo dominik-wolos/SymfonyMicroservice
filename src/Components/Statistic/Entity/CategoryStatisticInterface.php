@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Component\Statistic\Entity;
 
-use App\Component\Task\Entity\Category;
+use App\Component\Category\Entity\Category;
 
 interface CategoryStatisticInterface
 {

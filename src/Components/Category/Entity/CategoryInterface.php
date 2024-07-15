@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Component\Task\Entity;
+namespace App\Component\Category\Entity;
 
 use App\Component\Statistic\Entity\CategoryStatistic;
 use Doctrine\Common\Collections\Collection;
