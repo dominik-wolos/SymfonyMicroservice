@@ -13,9 +13,7 @@ class PlayerStatistics implements PlayerStatisticsInterface
 
     private Player $player;
 
-    /**
-     * @var Collection|StatisticValue[]
-     */
+    /** @var Collection|StatisticValue[] */
     private Collection $statisticValues;
 
     public function getId(): int

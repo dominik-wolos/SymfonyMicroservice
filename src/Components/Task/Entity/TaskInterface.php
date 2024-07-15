@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Component\Task\Entity;
 
+use App\Component\Category\Entity\Category;
 use App\Component\Player\Entity\Player;
 use App\Component\Task\Enum\TaskDifficultyEnum;
 use App\Component\Task\Enum\TaskStatusEnum;

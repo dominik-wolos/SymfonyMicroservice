@@ -15,9 +15,7 @@ class Player implements PlayerInterface
 
     private string $name;
 
-    /**
-     * @var Collection|Player[]
-     */
+    /** @var Collection|Player[] */
     private Collection $friends;
 
     public function getId(): int
@@ -60,7 +58,7 @@ class Player implements PlayerInterface
         $this->friends = $friends;
     }
 
-    public function addFriend(Player $friend): void
+    public function addFriend(self $friend): void
     {
         if ($this->hasFriend($friend)) {
             return;
@@ -69,7 +67,7 @@ class Player implements PlayerInterface
         $this->friends->add($friend);
     }
 
-    public function removeFriend(Player $friend): void
+    public function removeFriend(self $friend): void
     {
         if (!$this->hasFriend($friend)) {
             return;
@@ -78,7 +76,7 @@ class Player implements PlayerInterface
         $this->friends->removeElement($friend);
     }
 
-    public function hasFriend(Player $friend): bool
+    public function hasFriend(self $friend): bool
     {
         return $this->friends->contains($friend);
     }

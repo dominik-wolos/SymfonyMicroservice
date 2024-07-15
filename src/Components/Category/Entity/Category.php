@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Component\Task\Entity;
+namespace App\Component\Category\Entity;
 
 use App\Component\Statistic\Entity\CategoryStatistic;
 use Doctrine\Common\Collections\Collection;
@@ -13,9 +13,7 @@ class Category implements CategoryInterface
 
     private string $name;
 
-    /**
-     * @var Collection|CategoryStatistic[]
-     */
+    /** @var Collection|CategoryStatistic[] */
     private Collection $categoryStatistics;
 
     public function getId(): int
