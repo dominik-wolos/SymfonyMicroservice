@@ -13,9 +13,7 @@ class Category implements CategoryInterface
 
     private string $name;
 
-    /**
-     * @var Collection|CategoryStatistic[]
-     */
+    /** @var Collection|CategoryStatistic[] */
     private Collection $categoryStatistics;
 
     public function getId(): int
