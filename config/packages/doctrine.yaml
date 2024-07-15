@@ -37,7 +37,7 @@ doctrine:
             Category:
                 type: attribute
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/Components/Task/Category'
+                dir: '%kernel.project_dir%/src/Components/Category/Entity'
                 prefix: 'App\Category\Entity'
                 alias: App/Category
 when@test:
