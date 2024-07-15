@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Component\Player\Entity;
 
+use App\Component\Statistic\Entity\StatisticValue;
 use Doctrine\Common\Collections\Collection;
 
-class PlayerStatistics
+class PlayerStatistics implements PlayerStatisticsInterface
 {
     private int $id;
 

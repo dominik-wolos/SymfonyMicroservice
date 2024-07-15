@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Component\User\Entity;
 
-class User
+use App\Component\Player\Entity\PlayerSettings;
+
+class User implements UserInterface
 {
     private int $id;
 
@@ -66,5 +68,15 @@ class User
     public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;
+    }
+
+    public function getPlayerSettings(): PlayerSettings
+    {
+        return $this->playerSettings;
+    }
+
+    public function setPlayerSettings(PlayerSettings $playerSettings): void
+    {
+        $this->playerSettings = $playerSettings;
     }
 }

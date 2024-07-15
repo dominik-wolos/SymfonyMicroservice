@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Component\Player\Entity;
 
+use App\Component\User\Entity\User;
 use Doctrine\Common\Collections\Collection;
 
-class Player
+class Player implements PlayerInterface
 {
     private int $id;
 

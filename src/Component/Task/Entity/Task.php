@@ -2,9 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Component\Task\Entity;
 
-class Task
+use App\Component\Player\Entity\Player;
+use App\Component\Task\Enum\TaskDifficultyEnum;
+use App\Component\Task\Enum\TaskStatusEnum;
+
+class Task implements TaskInterface
 {
     private int $id;
 

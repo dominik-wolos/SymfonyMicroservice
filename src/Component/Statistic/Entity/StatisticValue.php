@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Component\Statistic\Entity;
 
-class StatisticValue
+use App\Component\Player\Entity\PlayerStatistics;
+
+class StatisticValue implements StatisticValueInterface
 {
     private int $id;
 

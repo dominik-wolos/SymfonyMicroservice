@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Component\Statistic\Entity;
 
-class Statistic
+class Statistic implements StatisticInterface
 {
     private int $id;
 

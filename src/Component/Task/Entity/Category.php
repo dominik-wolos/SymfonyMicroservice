@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Component\Task\Entity;
 
+use App\Component\Statistic\Entity\CategoryStatistic;
 use Doctrine\Common\Collections\Collection;
 
-class Category
+class Category implements CategoryInterface
 {
     private int $id;
 

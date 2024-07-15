@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Component\Player\Entity;
 
-class PlayerSettings
+use App\Component\Task\Enum\PlayerNotificationSettingsEnum;
+use App\Component\User\Entity\User;
+
+class PlayerSettings implements PlayerSettingsInterface
 {
     private int $id;
 

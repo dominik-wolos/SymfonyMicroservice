@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Component\Task\Enum;
 
 enum TaskDifficultyEnum: string
 {

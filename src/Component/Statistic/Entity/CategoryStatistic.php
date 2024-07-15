@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Component\Statistic\Entity;
 
-class CategoryStatistic
+use App\Component\Task\Entity\Category;
+
+class CategoryStatistic implements CategoryStatisticInterface
 {
     private ?int $id = null;
 
