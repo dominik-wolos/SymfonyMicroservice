@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace App\Component\Task\Entity;
+namespace App\Components\Task\Entity;
 
-use App\Component\Category\Entity\Category;
-use App\Component\Player\Entity\Player;
-use App\Component\Task\Enum\TaskDifficultyEnum;
-use App\Component\Task\Enum\TaskStatusEnum;
+use App\Components\Category\Entity\Category;
+use App\Components\Player\Entity\Player;
+use App\Components\Task\Enum\TaskDifficultyEnum;
+use App\Components\Task\Enum\TaskStatusEnum;
 
 interface TaskInterface
 {
-    public function getId(): int;
+    public function getUuid(): string;
 
-    public function setId(int $id): void;
+    public function setUuid(string $uuid): void;
 
     public function getName(): string;
 
@@ -22,10 +22,6 @@ interface TaskInterface
     public function getDescription(): string;
 
     public function setDescription(string $description): void;
-
-    public function getCode(): string;
-
-    public function setCode(string $code): void;
 
     public function getPlayer(): Player;
 

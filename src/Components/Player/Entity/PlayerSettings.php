@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Component\Player\Entity;
+namespace App\Components\Player\Entity;
 
-use App\Component\Task\Enum\PlayerNotificationSettingsEnum;
-use App\Component\User\Entity\User;
+use App\Components\Task\Enum\PlayerNotificationSettingsEnum;
+use App\Components\User\Entity\User;
 
 class PlayerSettings implements PlayerSettingsInterface
 {
@@ -21,14 +21,14 @@ class PlayerSettings implements PlayerSettingsInterface
 
     private bool $darkMode;
 
-    public function getId(): int
+    public function getUuid(): string
     {
-        return $this->id;
+        return $this->uuid;
     }
 
-    public function setId(int $id): void
+    public function setUuid(string $uuid): void
     {
-        $this->id = $id;
+        $this->uuid = $uuid;
     }
 
     public function getUser(): User

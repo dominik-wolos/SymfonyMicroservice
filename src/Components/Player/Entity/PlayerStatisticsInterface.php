@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Component\Player\Entity;
+namespace App\Components\Player\Entity;
 
-use App\Component\Statistic\Entity\StatisticValue;
+use App\Components\Statistic\Entity\StatisticValue;
 use Doctrine\Common\Collections\Collection;
 
 interface PlayerStatisticsInterface
 {
-    public function getId(): int;
+    public function getUuid(): string;
 
-    public function setId(int $id): void;
+    public function setUuid(string $uuid): void;
 
     public function getPlayer(): Player;
 

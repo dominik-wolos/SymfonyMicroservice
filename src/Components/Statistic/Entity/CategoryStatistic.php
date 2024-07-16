@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Component\Statistic\Entity;
+namespace App\Components\Statistic\Entity;
 
-use App\Component\Category\Entity\Category;
+use App\Components\Category\Entity\Category;
 
 class CategoryStatistic implements CategoryStatisticInterface
 {
-    private ?int $id = null;
+    private string $uuid;
 
     private ?Category $category = null;
 
@@ -16,9 +16,14 @@ class CategoryStatistic implements CategoryStatisticInterface
 
     private ?int $multiplier = null;
 
-    public function getId(): ?int
+    public function getUuid(): string
     {
-        return $this->id;
+        return $this->uuid;
+    }
+
+    public function setUuid(string $uuid): void
+    {
+        $this->uuid = $uuid;
     }
 
     public function getCategory(): ?Category

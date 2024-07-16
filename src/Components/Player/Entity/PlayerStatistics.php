@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Component\Player\Entity;
+namespace App\Components\Player\Entity;
 
-use App\Component\Statistic\Entity\StatisticValue;
+use App\Components\Statistic\Entity\StatisticValue;
 use Doctrine\Common\Collections\Collection;
 
 class PlayerStatistics implements PlayerStatisticsInterface
@@ -16,14 +16,14 @@ class PlayerStatistics implements PlayerStatisticsInterface
     /** @var Collection|StatisticValue[] */
     private Collection $statisticValues;
 
-    public function getId(): int
+    public function getUuid(): string
     {
-        return $this->id;
+        return $this->uuid;
     }
 
-    public function setId(int $id): void
+    public function setUuid(string $uuid): void
     {
-        $this->id = $id;
+        $this->uuid = $uuid;
     }
 
     public function getPlayer(): Player

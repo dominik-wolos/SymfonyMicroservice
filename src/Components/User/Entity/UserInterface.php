@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Component\User\Entity;
+namespace App\Components\User\Entity;
 
-use App\Component\Player\Entity\PlayerSettings;
+use App\Components\Player\Entity\PlayerSettings;
 
 interface UserInterface
 {
-    public function getId(): int;
+    public function getUuid(): string;
 
-    public function setId(int $id): void;
+    public function setUuid(string $uuid): void;
 
     public function getEmail(): string;
 

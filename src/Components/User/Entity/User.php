@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Component\User\Entity;
+namespace App\Components\User\Entity;
 
-use App\Component\Player\Entity\PlayerSettings;
+use App\Components\Player\Entity\PlayerSettings;
 
 class User implements UserInterface
 {
@@ -20,14 +20,14 @@ class User implements UserInterface
 
     private PlayerSettings $playerSettings;
 
-    public function getId(): int
+    public function getUuid(): string
     {
-        return $this->id;
+        return $this->uuid;
     }
 
-    public function setId(int $id): void
+    public function setUuid(string $uuid): void
     {
-        $this->id = $id;
+        $this->uuid = $uuid;
     }
 
     public function getEmail(): string
