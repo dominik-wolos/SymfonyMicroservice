@@ -11,9 +11,9 @@ use App\Components\Task\Enum\TaskStatusEnum;
 
 interface TaskInterface
 {
-    public function getId(): int;
+    public function getUuid(): string;
 
-    public function setId(int $id): void;
+    public function setUuid(string $uuid): void;
 
     public function getName(): string;
 
@@ -22,10 +22,6 @@ interface TaskInterface
     public function getDescription(): string;
 
     public function setDescription(string $description): void;
-
-    public function getCode(): string;
-
-    public function setCode(string $code): void;
 
     public function getPlayer(): Player;
 

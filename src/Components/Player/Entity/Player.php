@@ -18,14 +18,14 @@ class Player implements PlayerInterface
     /** @var Collection|Player[] */
     private Collection $friends;
 
-    public function getId(): int
+    public function getUuid(): string
     {
-        return $this->id;
+        return $this->uuid;
     }
 
-    public function setId(int $id): void
+    public function setUuid(string $uuid): void
     {
-        $this->id = $id;
+        $this->uuid = $uuid;
     }
 
     public function getUser(): User

@@ -8,9 +8,9 @@ use App\Components\Player\Entity\PlayerSettings;
 
 interface UserInterface
 {
-    public function getId(): int;
+    public function getUuid(): string;
 
-    public function setId(int $id): void;
+    public function setUuid(string $uuid): void;
 
     public function getEmail(): string;
 

@@ -16,14 +16,14 @@ class PlayerStatistics implements PlayerStatisticsInterface
     /** @var Collection|StatisticValue[] */
     private Collection $statisticValues;
 
-    public function getId(): int
+    public function getUuid(): string
     {
-        return $this->id;
+        return $this->uuid;
     }
 
-    public function setId(int $id): void
+    public function setUuid(string $uuid): void
     {
-        $this->id = $id;
+        $this->uuid = $uuid;
     }
 
     public function getPlayer(): Player

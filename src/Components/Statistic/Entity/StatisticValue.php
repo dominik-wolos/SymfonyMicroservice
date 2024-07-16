@@ -8,7 +8,7 @@ use App\Components\Player\Entity\PlayerStatistics;
 
 class StatisticValue implements StatisticValueInterface
 {
-    private int $id;
+    private string $uuid;
 
     private Statistic $statistic;
 
@@ -16,14 +16,14 @@ class StatisticValue implements StatisticValueInterface
 
     private int $value;
 
-    public function setId(int $id): void
+    public function setUuid(string $uuid): void
     {
-        $this->id = $id;
+        $this->uuid = $uuid;
     }
 
-    public function getId(): int
+    public function getUuid(): string
     {
-        return $this->id;
+        return $this->uuid;
     }
 
     public function getStatistic(): Statistic

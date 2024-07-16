@@ -8,12 +8,14 @@ use App\Components\Category\Entity\Category;
 use App\Components\Player\Entity\Player;
 use App\Components\Task\Enum\TaskDifficultyEnum;
 use App\Components\Task\Enum\TaskStatusEnum;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Table;
 
+#[Entity]
+#[Table(name: 'task')]
 class Task implements TaskInterface
 {
-    private int $id;
-
-    private string $code;
+    private string $uuid;
 
     private string $name;
 
@@ -31,14 +33,14 @@ class Task implements TaskInterface
 
     private \DateTime $completedAt;
 
-    public function getId(): int
+    public function getUuid(): string
     {
-        return $this->id;
+        return $this->uuid;
     }
 
-    public function setId(int $id): void
+    public function setUuid(string $uuid): void
     {
-        $this->id = $id;
+        $this->uuid = $uuid;
     }
 
     public function getName(): string
@@ -59,16 +61,6 @@ class Task implements TaskInterface
     public function setDescription(string $description): void
     {
         $this->description = $description;
-    }
-
-    public function getCode(): string
-    {
-        return $this->code;
-    }
-
-    public function setCode(string $code): void
-    {
-        $this->code = $code;
     }
 
     public function getPlayer(): Player

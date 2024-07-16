@@ -16,14 +16,14 @@ class Category implements CategoryInterface
     /** @var Collection|CategoryStatistic[] */
     private Collection $categoryStatistics;
 
-    public function getId(): int
+    public function getUuid(): string
     {
-        return $this->id;
+        return $this->uuid;
     }
 
-    public function setId(int $id): void
+    public function setUuid(string $uuid): void
     {
-        $this->id = $id;
+        $this->uuid = $uuid;
     }
 
     public function getName(): string

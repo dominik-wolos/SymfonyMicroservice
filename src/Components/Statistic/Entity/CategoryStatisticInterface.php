@@ -8,7 +8,9 @@ use App\Components\Category\Entity\Category;
 
 interface CategoryStatisticInterface
 {
-    public function getId(): ?int;
+    public function getUuid(): string;
+
+    public function setUuid(string $uuid): void;
 
     public function getCategory(): ?Category;
 
