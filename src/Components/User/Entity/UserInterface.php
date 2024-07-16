@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Component\User\Entity;
+namespace App\Components\User\Entity;
 
-use App\Component\Player\Entity\PlayerSettings;
+use App\Components\Player\Entity\PlayerSettings;
 
 interface UserInterface
 {

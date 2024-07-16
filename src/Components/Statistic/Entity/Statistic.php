@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Component\Statistic\Entity;
+namespace App\Components\Statistic\Entity;
 
 class Statistic implements StatisticInterface
 {

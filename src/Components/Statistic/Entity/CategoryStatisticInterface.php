@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Component\Statistic\Entity;
+namespace App\Components\Statistic\Entity;
 
-use App\Component\Category\Entity\Category;
+use App\Components\Category\Entity\Category;
 
 interface CategoryStatisticInterface
 {

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Component\Category\Entity;
+namespace App\Components\Category\Entity;
 
-use App\Component\Statistic\Entity\CategoryStatistic;
+use App\Components\Statistic\Entity\CategoryStatistic;
 use Doctrine\Common\Collections\Collection;
 
 interface CategoryInterface

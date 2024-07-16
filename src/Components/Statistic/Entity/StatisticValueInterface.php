@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Component\Statistic\Entity;
+namespace App\Components\Statistic\Entity;
 
-use App\Component\Player\Entity\PlayerStatistics;
+use App\Components\Player\Entity\PlayerStatistics;
 
 interface StatisticValueInterface
 {

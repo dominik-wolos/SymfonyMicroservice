@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Component\Player\Entity;
+namespace App\Components\Player\Entity;
 
-use App\Component\User\Entity\User;
+use App\Components\User\Entity\User;
 use Doctrine\Common\Collections\Collection;
 
 class Player implements PlayerInterface

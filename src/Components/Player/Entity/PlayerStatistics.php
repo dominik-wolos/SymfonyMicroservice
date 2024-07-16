@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Component\Player\Entity;
+namespace App\Components\Player\Entity;
 
-use App\Component\Statistic\Entity\StatisticValue;
+use App\Components\Statistic\Entity\StatisticValue;
 use Doctrine\Common\Collections\Collection;
 
 class PlayerStatistics implements PlayerStatisticsInterface
