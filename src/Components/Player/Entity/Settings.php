@@ -4,31 +4,43 @@ declare(strict_types=1);
 
 namespace App\Components\Player\Entity;
 
-use App\Components\Task\Enum\PlayerNotificationSettingsEnum;
+use ApiPlatform\Metadata\ApiResource;
 use App\Components\User\Entity\User;
+use Doctrine\ORM\Mapping as ORM;
 
-class PlayerSettings implements PlayerSettingsInterface
+#[ApiResource]
+#[ORM\Entity]
+#[ORM\Table(name: 'player_settings')]
+class Settings implements SettingsInterface
 {
-    private int $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    private ?int $id = null;
 
+    #[ORM\OneToOne(targetEntity: User::class)]
     private User $user;
 
-    private PlayerNotificationSettingsEnum $notificationSettings;
+    #[ORM\Column(type: 'string', unique: false)]
+    private string $notificationSettings;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $holidayMode;
 
+    #[ORM\Column(type: 'string', options: ['default' => 'en'])]
     private string $languagePreferences;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $darkMode;
 
-    public function getUuid(): string
+    public function getId(): ?int
     {
-        return $this->uuid;
+        return $this->id;
     }
 
-    public function setUuid(string $uuid): void
+    public function setId(int $id): void
     {
-        $this->uuid = $uuid;
+        $this->id = $id;
     }
 
     public function getUser(): User
@@ -41,12 +53,12 @@ class PlayerSettings implements PlayerSettingsInterface
         $this->user = $user;
     }
 
-    public function getNotificationSettings(): PlayerNotificationSettingsEnum
+    public function getNotificationSettings(): string
     {
         return $this->notificationSettings;
     }
 
-    public function setNotificationSettings(PlayerNotificationSettingsEnum $notificationSettings): void
+    public function setNotificationSettings(string $notificationSettings): void
     {
         $this->notificationSettings = $notificationSettings;
     }

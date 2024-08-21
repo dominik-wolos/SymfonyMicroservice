@@ -8,19 +8,19 @@ use App\Components\Category\Entity\Category;
 
 interface CategoryStatisticInterface
 {
-    public function getUuid(): string;
+    public function getId(): ?int;
 
-    public function setUuid(string $uuid): void;
+    public function setId(int $id): void;
 
-    public function getCategory(): ?Category;
+    public function getStatistic(): Statistic;
 
-    public function setCategory(?Category $category): void;
+    public function getCategory(): Category;
 
-    public function getStatistic(): ?Statistic;
+    public function setCategory(Category $category): void;
 
-    public function setStatistic(?Statistic $statistic): void;
+    public function setStatistic(Statistic $statistic): void;
 
-    public function getMultiplier(): ?int;
+    public function getMultiplier(): int;
 
-    public function setMultiplier(?int $multiplier): void;
+    public function setMultiplier(int $multiplier): void;
 }

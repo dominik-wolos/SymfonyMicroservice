@@ -4,26 +4,35 @@ declare(strict_types=1);
 
 namespace App\Components\Player\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Components\Statistic\Entity\StatisticValue;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 
+#[ApiResource]
+#[ORM\Entity]
+#[ORM\Table(name: 'player_statistics')]
 class PlayerStatistics implements PlayerStatisticsInterface
 {
-    private int $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    private ?int $id = null;
 
+    #[ORM\OneToOne(targetEntity: Player::class)]
     private Player $player;
 
-    /** @var Collection|StatisticValue[] */
+    #[ORM\OneToMany(mappedBy: 'playerStatistics', targetEntity: StatisticValue::class)]
     private Collection $statisticValues;
 
-    public function getUuid(): string
+    public function getId(): ?int
     {
-        return $this->uuid;
+        return $this->id;
     }
 
-    public function setUuid(string $uuid): void
+    public function setId(int $id): void
     {
-        $this->uuid = $uuid;
+        $this->id = $id;
     }
 
     public function getPlayer(): Player

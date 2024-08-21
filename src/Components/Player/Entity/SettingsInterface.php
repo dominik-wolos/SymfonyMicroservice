@@ -7,19 +7,19 @@ namespace App\Components\Player\Entity;
 use App\Components\Task\Enum\PlayerNotificationSettingsEnum;
 use App\Components\User\Entity\User;
 
-interface PlayerSettingsInterface
+interface SettingsInterface
 {
-    public function getUuid(): string;
+    public function getId(): ?int;
 
-    public function setUuid(string $uuid): void;
+    public function setId(int $id): void;
 
     public function getUser(): User;
 
     public function setUser(User $user): void;
 
-    public function getNotificationSettings(): PlayerNotificationSettingsEnum;
+    public function getNotificationSettings(): string;
 
-    public function setNotificationSettings(PlayerNotificationSettingsEnum $notificationSettings): void;
+    public function setNotificationSettings(string $notificationSettings): void;
 
     public function isHolidayMode(): bool;
 

@@ -6,26 +6,35 @@ namespace App\Components\Player\Entity;
 
 use App\Components\User\Entity\User;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Entity]
+#[ORM\Table(name: 'player')]
 class Player implements PlayerInterface
 {
-    private int $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    private ?int $id = null;
 
+    #[ORM\OneToOne(targetEntity: User::class)]
     private User $user;
 
+    #[ORM\Column(type: 'string', unique: true)]
     private string $name;
 
-    /** @var Collection|Player[] */
+    #[ORM\ManyToMany(targetEntity: Player::class)]
+    #[ORM\JoinTable(name: 'player_friend')]
     private Collection $friends;
 
-    public function getUuid(): string
+    public function getId(): ?int
     {
-        return $this->uuid;
+        return $this->id;
     }
 
-    public function setUuid(string $uuid): void
+    public function setId(int $id): void
     {
-        $this->uuid = $uuid;
+        $this->id = $id;
     }
 
     public function getUser(): User

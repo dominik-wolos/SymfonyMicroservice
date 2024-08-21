@@ -4,26 +4,38 @@ declare(strict_types=1);
 
 namespace App\Components\Category\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Components\Statistic\Entity\CategoryStatistic;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 
+#[ApiResource]
+#[ORM\Entity]
+#[ORM\Table(name: 'category')]
 class Category implements CategoryInterface
 {
-    private int $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    private ?int $id = null;
 
+    #[ORM\Column(type: 'string', unique: true)]
+    private string $code;
+
+    #[ORM\Column(type: 'string')]
     private string $name;
 
-    /** @var Collection|CategoryStatistic[] */
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: CategoryStatistic::class)]
     private Collection $categoryStatistics;
 
-    public function getUuid(): string
+    public function getId(): ?int
     {
-        return $this->uuid;
+        return $this->id;
     }
 
-    public function setUuid(string $uuid): void
+    public function setId(int $id): void
     {
-        $this->uuid = $uuid;
+        $this->id = $id;
     }
 
     public function getName(): string

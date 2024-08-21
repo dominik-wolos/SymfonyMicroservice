@@ -11,9 +11,9 @@ use App\Components\Task\Enum\TaskStatusEnum;
 
 interface TaskInterface
 {
-    public function getUuid(): string;
+    public function getId(): ?int;
 
-    public function setUuid(string $uuid): void;
+    public function setId(int $id): void;
 
     public function getName(): string;
 
@@ -31,13 +31,13 @@ interface TaskInterface
 
     public function setCategory(Category $category): void;
 
-    public function getDifficulty(): TaskDifficultyEnum;
+    public function getDifficulty(): string;
 
-    public function setDifficulty(TaskDifficultyEnum $difficulty): void;
+    public function setDifficulty(string $difficulty): void;
 
-    public function getStatus(): TaskStatusEnum;
+    public function getStatus(): string;
 
-    public function setStatus(TaskStatusEnum $status): void;
+    public function setStatus(string $status): void;
 
     public function getCreatedAt(): \DateTime;
 

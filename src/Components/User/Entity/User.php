@@ -4,30 +4,41 @@ declare(strict_types=1);
 
 namespace App\Components\User\Entity;
 
-use App\Components\Player\Entity\PlayerSettings;
+use App\Components\Player\Entity\Settings;
+use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Entity]
+#[ORM\Table(name: 'user')]
 class User implements UserInterface
 {
-    private int $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    private ?int $id = null;
 
+    #[ORM\Column(type: 'string', unique: true)]
     private string $email;
 
+    #[ORM\Column(type: 'string')]
     private string $password;
 
+    #[ORM\Column(type: 'string')]
     private string $salt;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private bool $enabled = true;
 
-    private PlayerSettings $playerSettings;
+    #[ORM\OneToOne(targetEntity: Settings::class)]
+    private Settings $playerSettings;
 
-    public function getUuid(): string
+    public function getId(): ?int
     {
-        return $this->uuid;
+        return $this->id;
     }
 
-    public function setUuid(string $uuid): void
+    public function setId(int $id): void
     {
-        $this->uuid = $uuid;
+        $this->id = $id;
     }
 
     public function getEmail(): string
@@ -70,12 +81,12 @@ class User implements UserInterface
         $this->enabled = $enabled;
     }
 
-    public function getPlayerSettings(): PlayerSettings
+    public function getPlayerSettings(): Settings
     {
         return $this->playerSettings;
     }
 
-    public function setPlayerSettings(PlayerSettings $playerSettings): void
+    public function setPlayerSettings(Settings $playerSettings): void
     {
         $this->playerSettings = $playerSettings;
     }

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Components\User\Entity;
 
-use App\Components\Player\Entity\PlayerSettings;
+use App\Components\Player\Entity\Settings;
 
 interface UserInterface
 {
-    public function getUuid(): string;
+    public function getId(): ?int;
 
-    public function setUuid(string $uuid): void;
+    public function setId(int $id): void;
 
     public function getEmail(): string;
 
@@ -28,7 +28,7 @@ interface UserInterface
 
     public function setEnabled(bool $enabled): void;
 
-    public function getPlayerSettings(): PlayerSettings;
+    public function getPlayerSettings(): Settings;
 
-    public function setPlayerSettings(PlayerSettings $playerSettings): void;
+    public function setPlayerSettings(Settings $playerSettings): void;
 }

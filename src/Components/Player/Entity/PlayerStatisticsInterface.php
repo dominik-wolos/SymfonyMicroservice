@@ -9,9 +9,9 @@ use Doctrine\Common\Collections\Collection;
 
 interface PlayerStatisticsInterface
 {
-    public function getUuid(): string;
+    public function getId(): ?int;
 
-    public function setUuid(string $uuid): void;
+    public function setId(int $id): void;
 
     public function getPlayer(): Player;
 

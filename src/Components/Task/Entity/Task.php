@@ -4,43 +4,53 @@ declare(strict_types=1);
 
 namespace App\Components\Task\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Components\Category\Entity\Category;
 use App\Components\Player\Entity\Player;
-use App\Components\Task\Enum\TaskDifficultyEnum;
-use App\Components\Task\Enum\TaskStatusEnum;
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\Table;
+use Doctrine\ORM\Mapping as ORM;
 
-#[Entity]
-#[Table(name: 'task')]
+#[ApiResource]
+#[ORM\Entity]
+#[ORM\Table(name: 'task')]
 class Task implements TaskInterface
 {
-    private string $uuid;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    private ?int $id = null;
 
+    #[ORM\Column(type: 'string', unique: true)]
     private string $name;
 
+    #[ORM\Column(type: 'text')]
     private string $description;
 
+    #[ORM\OneToOne(targetEntity: Player::class)]
     private Player $player;
 
+    #[ORM\OneToOne(targetEntity: Category::class)]
     private Category $category;
 
-    private TaskDifficultyEnum $difficulty;
+    #[ORM\Column(type: 'string')]
+    private string $difficulty;
 
-    private TaskStatusEnum $status;
+    #[ORM\Column(type: 'string')]
+    private string $status;
 
+    #[ORM\Column(type: 'datetime')]
     private \DateTime $createdAt;
 
+    #[ORM\Column(type: 'datetime')]
     private \DateTime $completedAt;
 
-    public function getUuid(): string
+    public function getId(): ?int
     {
-        return $this->uuid;
+        return $this->id;
     }
 
-    public function setUuid(string $uuid): void
+    public function setId(int $id): void
     {
-        $this->uuid = $uuid;
+        $this->id = $id;
     }
 
     public function getName(): string
@@ -83,22 +93,22 @@ class Task implements TaskInterface
         $this->category = $category;
     }
 
-    public function getDifficulty(): TaskDifficultyEnum
+    public function getDifficulty(): string
     {
         return $this->difficulty;
     }
 
-    public function setDifficulty(TaskDifficultyEnum $difficulty): void
+    public function setDifficulty(string $difficulty): void
     {
         $this->difficulty = $difficulty;
     }
 
-    public function getStatus(): TaskStatusEnum
+    public function getStatus(): string
     {
         return $this->status;
     }
 
-    public function setStatus(TaskStatusEnum $status): void
+    public function setStatus(string $status): void
     {
         $this->status = $status;
     }

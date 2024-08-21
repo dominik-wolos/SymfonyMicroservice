@@ -8,9 +8,9 @@ use App\Components\Player\Entity\PlayerStatistics;
 
 interface StatisticValueInterface
 {
-    public function setUuid(string $uuid): void;
+    public function setId(int $id): void;
 
-    public function getUuid(): string;
+    public function getId(): ?int;
 
     public function getStatistic(): Statistic;
 

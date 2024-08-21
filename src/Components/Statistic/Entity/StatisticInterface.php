@@ -6,9 +6,9 @@ namespace App\Components\Statistic\Entity;
 
 interface StatisticInterface
 {
-    public function getUuid(): string;
+    public function getId(): ?int;
 
-    public function setUuid(string $uuid): void;
+    public function setId(int $id): void;
 
     public function getName(): string;
 
