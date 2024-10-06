@@ -8,6 +8,8 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Components\Statistic\Entity\StatisticValue;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Valid;
 
 #[ApiResource]
 #[ORM\Entity]
@@ -20,9 +22,12 @@ class PlayerStatistics implements PlayerStatisticsInterface
     private ?int $id = null;
 
     #[ORM\OneToOne(targetEntity: Player::class)]
+    #[Valid()]
+    #[NotNull()]
     private Player $player;
 
     #[ORM\OneToMany(mappedBy: 'playerStatistics', targetEntity: StatisticValue::class)]
+    #[Valid()]
     private Collection $statisticValues;
 
     public function getId(): ?int

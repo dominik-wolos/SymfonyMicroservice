@@ -9,6 +9,12 @@ use Doctrine\Common\Collections\Collection;
 
 interface CategoryInterface
 {
+    public const CATEGORY_CREATE = 'category:create';
+
+    public const CATEGORY_GET = 'category:get';
+
+    public const CATEGORY_UPDATE = 'category:create';
+
     public function getId(): ?int;
 
     public function setId(int $id): void;

@@ -18,7 +18,7 @@ class CategoryStatistic implements CategoryStatisticInterface
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Category::class)]
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'categoryStatistics', fetch: 'LAZY')]
     private Category $category;
 
     #[ORM\OneToOne(targetEntity: Statistic::class)]

@@ -19,7 +19,7 @@ class StatisticValue implements StatisticValueInterface
     #[ORM\ManyToOne(targetEntity: Statistic::class)]
     private Statistic $statistic;
 
-    #[ORM\ManyToOne(targetEntity: PlayerStatistics::class)]
+    #[ORM\ManyToOne(targetEntity: PlayerStatistics::class, inversedBy: 'statisticValues', fetch: 'LAZY')]
     private PlayerStatistics $playerStatistics;
 
     #[ORM\Column(type: 'integer')]

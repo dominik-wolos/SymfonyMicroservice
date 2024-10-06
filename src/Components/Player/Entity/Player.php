@@ -7,6 +7,8 @@ namespace App\Components\Player\Entity;
 use App\Components\User\Entity\User;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Valid;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'player')]
@@ -18,13 +20,17 @@ class Player implements PlayerInterface
     private ?int $id = null;
 
     #[ORM\OneToOne(targetEntity: User::class)]
+    #[NotNull()]
+    #[Valid()]
     private User $user;
 
     #[ORM\Column(type: 'string', unique: true)]
+    #[NotNull()]
     private string $name;
 
     #[ORM\ManyToMany(targetEntity: Player::class)]
     #[ORM\JoinTable(name: 'player_friend')]
+    #[Valid()]
     private Collection $friends;
 
     public function getId(): ?int

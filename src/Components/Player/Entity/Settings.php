@@ -7,6 +7,8 @@ namespace App\Components\Player\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Components\User\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Valid;
 
 #[ApiResource]
 #[ORM\Entity]
@@ -19,6 +21,7 @@ class Settings implements SettingsInterface
     private ?int $id = null;
 
     #[ORM\OneToOne(targetEntity: User::class)]
+    #[NotNull]
     private User $user;
 
     #[ORM\Column(type: 'string', unique: false)]
