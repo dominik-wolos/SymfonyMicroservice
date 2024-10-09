@@ -9,6 +9,14 @@ use App\Components\User\Entity\User;
 
 interface SettingsInterface
 {
+    public const CREATE = 'settings:create';
+
+    public const WRITE = 'settings:write';
+
+    public const READ = 'settings:read';
+
+    public const ITEM_READ = 'settings:item:read';
+
     public function getId(): ?int;
 
     public function setId(int $id): void;
