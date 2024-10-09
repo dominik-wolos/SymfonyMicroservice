@@ -25,10 +25,10 @@ class Task implements TaskInterface
     #[ORM\Column(type: 'text')]
     private string $description;
 
-    #[ORM\OneToOne(targetEntity: Player::class)]
+    #[ORM\ManyToOne(targetEntity: Player::class)]
     private Player $player;
 
-    #[ORM\OneToOne(targetEntity: Category::class)]
+    #[ORM\ManyToOne(targetEntity: Category::class)]
     private Category $category;
 
     #[ORM\Column(type: 'string')]

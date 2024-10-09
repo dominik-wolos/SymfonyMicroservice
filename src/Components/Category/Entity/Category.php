@@ -50,8 +50,8 @@ use Symfony\Component\Validator\Constraints\NotNull;
         ),
         new Delete()
     ],
-    normalizationContext: ['groups' => ['category:read']],
-    denormalizationContext: ['groups' => ['category:write']]
+    normalizationContext: ['groups' => [self::READ, self::ITEM_READ]],
+    denormalizationContext: ['groups' => [self::WRITE, self::CREATE]]
 )]
 #[ORM\Entity]
 class Category implements CategoryInterface
