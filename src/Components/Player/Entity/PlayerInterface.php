@@ -9,6 +9,14 @@ use Doctrine\Common\Collections\Collection;
 
 interface PlayerInterface
 {
+    public const CREATE = 'player:create';
+
+    public const WRITE = 'player:write';
+
+    public const READ = 'player:read';
+
+    public const ITEM_READ = 'player:item:read';
+
     public function getId(): ?int;
 
     public function setId(int $id): void;
