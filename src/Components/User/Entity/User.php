@@ -57,7 +57,7 @@ class User implements UserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
-    #[Groups([self::READ])]
+    #[Groups([self::ITEM_READ])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', unique: true)]
