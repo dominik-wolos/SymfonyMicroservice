@@ -8,6 +8,14 @@ use App\Components\Player\Entity\Settings;
 
 interface UserInterface
 {
+    public const CREATE = 'user:create';
+
+    public const WRITE = 'user:write';
+
+    public const READ = 'user:read';
+
+    public const ITEM_READ = 'user:item:read';
+
     public function getId(): ?int;
 
     public function setId(int $id): void;
