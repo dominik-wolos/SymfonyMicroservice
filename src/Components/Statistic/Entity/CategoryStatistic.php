@@ -25,12 +25,6 @@ class CategoryStatistic implements CategoryStatisticInterface
     private Statistic $statistic;
 
     #[ORM\Column(type: 'integer')]
-    private int $currentValue;
-
-    #[ORM\Column(type: 'datetime')]
-    private \DateTimeInterface $recalculatedAt;
-
-    #[ORM\Column(type: 'integer')]
     private int $multiplier;
 
     public function getId(): ?int
