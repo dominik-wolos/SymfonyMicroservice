@@ -10,45 +10,74 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
-use App\ApiResource\ApiContextGroups;
 use App\Components\Statistic\Entity\CategoryStatistic;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\NotNull;
 
 #[ApiResource(
-    normalizationContext: ['groups' => [self::SHOW, self::INDEX]],
-    denormalizationContext: ['groups' => [self::CREATE, self::UPDATE]]
+    operations: [
+        new GetCollection(
+            normalizationContext: ['groups' => [
+                self::ITEM_READ,
+            ]]
+        ),
+        new Get(normalizationContext: ['groups' => [
+            self::READ,
+            self::ITEM_READ
+        ]]),
+        new Post(
+            normalizationContext: ['groups' => [
+                self::READ,
+                self::ITEM_READ
+                ]
+            ],
+            denormalizationContext: ['groups' => [
+                self::CREATE,
+                self::WRITE
+            ]]
+        ),
+        new Patch(
+            normalizationContext: ['groups' => [
+                self::READ,
+                self::ITEM_READ
+            ]],
+            denormalizationContext: ['groups' => [
+                self::WRITE
+            ]]
+        ),
+        new Delete()
+    ],
+    normalizationContext: ['groups' => ['category:read']],
+    denormalizationContext: ['groups' => ['category:write']]
 )]
-#[Get(normalizationContext: ['groups' => [self::SHOW]])]
-#[GetCollection(normalizationContext: ['groups' => [self::INDEX]])]
-#[Post(
-    normalizationContext: ['groups' => [self::SHOW]],
-    denormalizationContext: ['groups' => [self::CREATE]]
-)]
-#[Delete(normalizationContext: ['groups' => [self::SHOW]])]
 #[ORM\Entity]
-class Category implements CategoryInterface, ApiContextGroups
+class Category implements CategoryInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[Groups([self::ITEM_READ])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', unique: true)]
-    #[NotNull()]
+    #[NotNull]
+    #[Groups([self::ITEM_READ, self::CREATE])]
+    #[Assert\Unique]
     private string $code;
 
     #[ORM\Column(type: 'string')]
-    #[NotNull()]
+    #[NotNull]
+    #[Groups([self::ITEM_READ , self::WRITE])]
     private string $name;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: CategoryStatistic::class)]
+    #[Groups([self::READ, self::WRITE])]
+    #[Assert\Valid]
     private Collection $categoryStatistics;
 
-    #[Groups([self::SHOW, self::INDEX])]
     public function getId(): ?int
     {
         return $this->id;
@@ -59,36 +88,30 @@ class Category implements CategoryInterface, ApiContextGroups
         $this->id = $id;
     }
 
-    #[Groups([self::SHOW, self::INDEX])]
     public function getName(): string
     {
         return $this->name;
     }
 
-    #[Groups([self::UPDATE, self::CREATE])]
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    #[Groups([self::SHOW, self::INDEX])]
     public function getCode(): string
     {
         return $this->code;
     }
-    #[Groups([self::CREATE])]
     public function setCode(string $code): void
     {
         $this->code = $code;
     }
 
-    #[Groups([self::SHOW])]
     public function getCategoryStatistics(): Collection
     {
         return $this->categoryStatistics;
     }
 
-    #[Groups([self::EXCLUDED])]
     public function setCategoryStatistics(Collection $categoryStatistics): void
     {
         $this->categoryStatistics = $categoryStatistics;
@@ -110,11 +133,5 @@ class Category implements CategoryInterface, ApiContextGroups
         }
 
         $this->categoryStatistics->removeElement($categoryStatistic);
-    }
-
-    #[Groups([self::EXCLUDED])]
-    public function hasCategoryStatistic(CategoryStatistic $categoryStatistic): bool
-    {
-        return $this->categoryStatistics->contains($categoryStatistic);
     }
 }

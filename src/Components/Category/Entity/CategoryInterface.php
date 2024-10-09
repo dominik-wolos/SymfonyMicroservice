@@ -9,11 +9,13 @@ use Doctrine\Common\Collections\Collection;
 
 interface CategoryInterface
 {
-    public const CATEGORY_CREATE = 'category:create';
+    public const CREATE = 'category:create';
 
-    public const CATEGORY_GET = 'category:get';
+    public const WRITE = 'category:write';
 
-    public const CATEGORY_UPDATE = 'category:create';
+    public const READ = 'category:read';
+
+    public const ITEM_READ = 'category:item:read';
 
     public function getId(): ?int;
 
@@ -30,6 +32,4 @@ interface CategoryInterface
     public function addCategoryStatistic(CategoryStatistic $categoryStatistic): void;
 
     public function removeCategoryStatistic(CategoryStatistic $categoryStatistic): void;
-
-    public function hasCategoryStatistic(CategoryStatistic $categoryStatistic): bool;
 }
