@@ -11,6 +11,14 @@ use App\Components\Task\Enum\TaskStatusEnum;
 
 interface TaskInterface
 {
+    public const CREATE = 'task:create';
+
+    public const WRITE = 'task:write';
+
+    public const READ = 'task:read';
+
+    public const ITEM_READ = 'task:item:read';
+
     public function getId(): ?int;
 
     public function setId(int $id): void;
