@@ -82,7 +82,7 @@ class Task implements TaskInterface
     private Category $category;
 
     #[ORM\Column(type: 'string')]
-    #[Groups([self::ITEM_READ, self::WRITE])]
+    #[Groups([self::READ, self::WRITE])]
     private string $difficulty;
 
     #[ORM\Column(type: 'string')]
