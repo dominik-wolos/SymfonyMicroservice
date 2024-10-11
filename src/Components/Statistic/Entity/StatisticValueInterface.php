@@ -8,6 +8,14 @@ use App\Components\Player\Entity\PlayerStatistics;
 
 interface StatisticValueInterface
 {
+    public const CREATE = 'statistic_value:create';
+
+    public const WRITE = 'statistic_value:write';
+
+    public const READ = 'statistic_value:read';
+
+    public const ITEM_READ = 'statistic_value:item:read';
+
     public function setId(int $id): void;
 
     public function getId(): ?int;
@@ -23,4 +31,8 @@ interface StatisticValueInterface
     public function getValue(): int;
 
     public function setValue(int $value): void;
+
+    public function getLevel(): int;
+
+    public function setLevel(int $level): void;
 }

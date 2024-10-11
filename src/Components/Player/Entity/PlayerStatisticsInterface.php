@@ -9,6 +9,14 @@ use Doctrine\Common\Collections\Collection;
 
 interface PlayerStatisticsInterface
 {
+    public const CREATE = 'player_statistics:create';
+
+    public const WRITE = 'player_statistics:write';
+
+    public const READ = 'player_statistics:read';
+
+    public const ITEM_READ = 'player_statistics:item:read';
+
     public function getId(): ?int;
 
     public function setId(int $id): void;
