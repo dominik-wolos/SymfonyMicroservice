@@ -8,6 +8,14 @@ use App\Components\Category\Entity\Category;
 
 interface CategoryStatisticInterface
 {
+    public const CREATE = 'category_statistic:create';
+
+    public const WRITE = 'category_statistic:write';
+
+    public const READ = 'category_statistic:read';
+
+    public const ITEM_READ = 'category_statistic:item:read';
+
     public function getId(): ?int;
 
     public function setId(int $id): void;
