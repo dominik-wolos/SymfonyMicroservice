@@ -63,10 +63,9 @@ class Settings implements SettingsInterface
     private ?int $id = null;
 
     #[ORM\OneToOne(targetEntity: User::class)]
-    #[NotNull]
     #[Valid]
     #[Groups([self::ITEM_READ, self::CREATE])]
-    private User $user;
+    private ?User $user;
 
     #[ORM\Column(type: 'string', unique: false)]
     #[Groups([self::ITEM_READ, self::WRITE])]
