@@ -93,7 +93,7 @@ class Settings implements SettingsInterface
         $this->id = $id;
     }
 
-    public function getUser(): User
+    public function getUser(): ?User
     {
         return $this->user;
     }

@@ -21,7 +21,7 @@ interface SettingsInterface
 
     public function setId(int $id): void;
 
-    public function getUser(): User;
+    public function getUser(): ?User;
 
     public function setUser(User $user): void;
 
