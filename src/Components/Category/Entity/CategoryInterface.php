@@ -17,6 +17,8 @@ interface CategoryInterface
 
     public const ITEM_READ = 'category:item:read';
 
+    public const UPDATE = 'category:update';
+
     public function getId(): ?int;
 
     public function setId(int $id): void;

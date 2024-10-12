@@ -77,7 +77,7 @@ class Player implements PlayerInterface
     private string $name;
 
     #[ORM\ManyToMany(targetEntity: Player::class)]
-    #[Groups([self::READ, self::WRITE])]
+    #[Groups([self::ITEM_READ, self::WRITE])]
     #[ORM\JoinTable(name: 'player_friend')]
     #[Valid()]
     private Collection $friends;
@@ -85,6 +85,7 @@ class Player implements PlayerInterface
     #[ORM\ManyToMany(targetEntity: RewardItem::class, inversedBy: 'players')]
     #[ORM\JoinTable(name: 'players_rewards')]
     #[Valid]
+    #[Groups([self::ITEM_READ, self::WRITE])]
     private Collection $obtainedRewards;
 
     public function __construct()

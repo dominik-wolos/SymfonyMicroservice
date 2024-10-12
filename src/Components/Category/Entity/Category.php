@@ -45,7 +45,8 @@ use Symfony\Component\Validator\Constraints\NotNull;
                 self::ITEM_READ
             ]],
             denormalizationContext: ['groups' => [
-                self::WRITE
+                self::WRITE,
+                self::UPDATE
             ]]
         ),
         new Delete()
@@ -65,7 +66,6 @@ class Category implements CategoryInterface
     #[ORM\Column(type: 'string', unique: true)]
     #[NotNull]
     #[Groups([self::ITEM_READ, self::CREATE])]
-    #[Assert\Unique]
     private string $code;
 
     #[ORM\Column(type: 'string')]
@@ -74,7 +74,7 @@ class Category implements CategoryInterface
     private string $name;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: CategoryStatistic::class)]
-    #[Groups([self::READ, self::WRITE])]
+    #[Groups([self::READ, self::UPDATE])]
     #[Assert\Valid]
     private Collection $categoryStatistics;
 
@@ -119,7 +119,7 @@ class Category implements CategoryInterface
 
     public function addCategoryStatistic(CategoryStatistic $categoryStatistic): void
     {
-        if ($this->hasCategoryStatistic($categoryStatistic)) {
+        if ($this->categoryStatistics->contains($categoryStatistic)) {
             return;
         }
 
@@ -128,7 +128,7 @@ class Category implements CategoryInterface
 
     public function removeCategoryStatistic(CategoryStatistic $categoryStatistic): void
     {
-        if (!$this->hasCategoryStatistic($categoryStatistic)) {
+        if (!$this->categoryStatistics->contains($categoryStatistic)) {
             return;
         }
 
