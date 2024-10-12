@@ -56,6 +56,7 @@ class TaskReward implements TaskRewardInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[Groups([self::ITEM_READ])]
     private int $id;
 
