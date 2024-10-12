@@ -10,7 +10,9 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use App\Components\Task\Entity\RewardItem;
 use App\Components\User\Entity\User;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -80,6 +82,17 @@ class Player implements PlayerInterface
     #[Valid()]
     private Collection $friends;
 
+    #[ORM\ManyToMany(targetEntity: RewardItem::class, inversedBy: 'players')]
+    #[ORM\JoinTable(name: 'players_rewards')]
+    #[Valid]
+    private Collection $obtainedRewards;
+
+    public function __construct()
+    {
+        $this->friends = new ArrayCollection();
+        $this->obtainedRewards = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -141,5 +154,24 @@ class Player implements PlayerInterface
     public function hasFriend(self $friend): bool
     {
         return $this->friends->contains($friend);
+    }
+
+    public function getObtainedRewards(): Collection
+    {
+        return $this->obtainedRewards;
+    }
+
+    public function addObtainedReward(RewardItem $rewardItem): void
+    {
+        if (!$this->obtainedRewards->contains($rewardItem)) {
+            $this->obtainedRewards->add($rewardItem);
+        }
+    }
+
+    public function removeObtainedReward(RewardItem $rewardItem): void
+    {
+        if ($this->obtainedRewards->contains($rewardItem)) {
+            $this->obtainedRewards->removeElement($rewardItem);
+        }
     }
 }

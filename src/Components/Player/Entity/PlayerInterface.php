@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Components\Player\Entity;
 
+use App\Components\Task\Entity\RewardItem;
 use App\Components\User\Entity\User;
 use Doctrine\Common\Collections\Collection;
 
@@ -38,4 +39,10 @@ interface PlayerInterface
     public function removeFriend(Player $friend): void;
 
     public function hasFriend(Player $friend): bool;
+
+    public function getObtainedRewards(): Collection;
+
+    public function addObtainedReward(RewardItem $rewardItem): void;
+
+    public function removeObtainedReward(RewardItem $rewardItem): void;
 }
