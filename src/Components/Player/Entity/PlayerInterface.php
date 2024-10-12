@@ -2,14 +2,23 @@
 
 declare(strict_types=1);
 
-namespace App\Component\Player\Entity;
+namespace App\Components\Player\Entity;
 
-use App\Component\User\Entity\User;
+use App\Components\Task\Entity\RewardItem;
+use App\Components\User\Entity\User;
 use Doctrine\Common\Collections\Collection;
 
 interface PlayerInterface
 {
-    public function getId(): int;
+    public const CREATE = 'player:create';
+
+    public const WRITE = 'player:write';
+
+    public const READ = 'player:read';
+
+    public const ITEM_READ = 'player:item:read';
+
+    public function getId(): ?int;
 
     public function setId(int $id): void;
 
@@ -30,4 +39,10 @@ interface PlayerInterface
     public function removeFriend(Player $friend): void;
 
     public function hasFriend(Player $friend): bool;
+
+    public function getObtainedRewards(): Collection;
+
+    public function addObtainedReward(RewardItem $rewardItem): void;
+
+    public function removeObtainedReward(RewardItem $rewardItem): void;
 }

@@ -1,0 +1,16 @@
+api_platform:
+    title: Hello API Platform
+    defaults:
+        stateless: true
+        cache_headers:
+            vary: ['Content-Type', 'Authorization', 'Origin']
+    formats:
+        json: ['application/json']
+        jsonld: ['application/ld+json']
+    mapping:
+        paths:
+            - '%kernel.project_dir%/src/Components/Category/Entity'
+            - '%kernel.project_dir%/src/Components/Statistic/Entity'
+            - '%kernel.project_dir%/src/Components/Player/Entity'
+            - '%kernel.project_dir%/src/Components/Task/Entity'
+            - '%kernel.project_dir%/src/Components/User/Entity'

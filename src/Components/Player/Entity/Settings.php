@@ -10,10 +10,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use App\Components\Task\Entity\RewardItem;
 use App\Components\User\Entity\User;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints\NotNull;
@@ -56,8 +53,8 @@ use Symfony\Component\Validator\Constraints\Valid;
     denormalizationContext: ['groups' => [self::WRITE, self::CREATE]]
 )]
 #[ORM\Entity]
-#[ORM\Table(name: 'player')]
-class Player implements PlayerInterface
+#[ORM\Table(name: 'player_settings')]
+class Settings implements SettingsInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -66,32 +63,26 @@ class Player implements PlayerInterface
     private ?int $id = null;
 
     #[ORM\OneToOne(targetEntity: User::class)]
+    #[NotNull]
+    #[Valid]
     #[Groups([self::ITEM_READ, self::CREATE])]
-    #[NotNull()]
-    #[Valid()]
     private User $user;
 
-    #[ORM\Column(type: 'string', unique: true)]
+    #[ORM\Column(type: 'string', unique: false)]
     #[Groups([self::ITEM_READ, self::WRITE])]
-    #[NotNull()]
-    private string $name;
+    private string $notificationSettings;
 
-    #[ORM\ManyToMany(targetEntity: Player::class)]
-    #[Groups([self::READ, self::WRITE])]
-    #[ORM\JoinTable(name: 'player_friend')]
-    #[Valid()]
-    private Collection $friends;
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    #[Groups([self::ITEM_READ, self::WRITE])]
+    private bool $holidayMode;
 
-    #[ORM\ManyToMany(targetEntity: RewardItem::class, inversedBy: 'players')]
-    #[ORM\JoinTable(name: 'players_rewards')]
-    #[Valid]
-    private Collection $obtainedRewards;
+    #[ORM\Column(type: 'string', options: ['default' => 'en'])]
+    #[Groups([self::ITEM_READ, self::WRITE])]
+    private string $languagePreferences;
 
-    public function __construct()
-    {
-        $this->friends = new ArrayCollection();
-        $this->obtainedRewards = new ArrayCollection();
-    }
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    #[Groups([self::ITEM_READ, self::WRITE])]
+    private bool $darkMode;
 
     public function getId(): ?int
     {
@@ -113,65 +104,43 @@ class Player implements PlayerInterface
         $this->user = $user;
     }
 
-    public function getName(): string
+    public function getNotificationSettings(): string
     {
-        return $this->name;
+        return $this->notificationSettings;
     }
 
-    public function setName(string $name): void
+    public function setNotificationSettings(string $notificationSettings): void
     {
-        $this->name = $name;
+        $this->notificationSettings = $notificationSettings;
     }
 
-    public function getFriends(): Collection
+    public function isHolidayMode(): bool
     {
-        return $this->friends;
+        return $this->holidayMode;
     }
 
-    public function setFriends(Collection $friends): void
+    public function setHolidayMode(bool $holidayMode): void
     {
-        $this->friends = $friends;
+        $this->holidayMode = $holidayMode;
     }
 
-    public function addFriend(self $friend): void
+    public function getLanguagePreferences(): string
     {
-        if ($this->hasFriend($friend)) {
-            return;
-        }
-
-        $this->friends->add($friend);
+        return $this->languagePreferences;
     }
 
-    public function removeFriend(self $friend): void
+    public function setLanguagePreferences(string $languagePreferences): void
     {
-        if (!$this->hasFriend($friend)) {
-            return;
-        }
-
-        $this->friends->removeElement($friend);
+        $this->languagePreferences = $languagePreferences;
     }
 
-    public function hasFriend(self $friend): bool
+    public function isDarkMode(): bool
     {
-        return $this->friends->contains($friend);
+        return $this->darkMode;
     }
 
-    public function getObtainedRewards(): Collection
+    public function setDarkMode(bool $darkMode): void
     {
-        return $this->obtainedRewards;
-    }
-
-    public function addObtainedReward(RewardItem $rewardItem): void
-    {
-        if (!$this->obtainedRewards->contains($rewardItem)) {
-            $this->obtainedRewards->add($rewardItem);
-        }
-    }
-
-    public function removeObtainedReward(RewardItem $rewardItem): void
-    {
-        if ($this->obtainedRewards->contains($rewardItem)) {
-            $this->obtainedRewards->removeElement($rewardItem);
-        }
+        $this->darkMode = $darkMode;
     }
 }

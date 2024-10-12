@@ -2,25 +2,85 @@
 
 declare(strict_types=1);
 
-namespace App\Component\User\Entity;
+namespace App\Components\User\Entity;
 
-use App\Component\Player\Entity\PlayerSettings;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use App\Components\Player\Entity\Settings;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
+#[ORM\Entity]
+#[ORM\Table(name: 'user')]
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            normalizationContext: ['groups' => [
+                self::ITEM_READ,
+            ]]
+        ),
+        new Get(normalizationContext: ['groups' => [
+            self::READ,
+            self::ITEM_READ
+        ]]),
+        new Post(
+            normalizationContext: ['groups' => [
+                self::READ,
+                self::ITEM_READ
+            ]
+            ],
+            denormalizationContext: ['groups' => [
+                self::CREATE,
+                self::WRITE
+            ]]
+        ),
+        new Patch(
+            normalizationContext: ['groups' => [
+                self::READ,
+                self::ITEM_READ
+            ]],
+            denormalizationContext: ['groups' => [
+                self::WRITE
+            ]]
+        ),
+        new Delete()
+    ],
+    normalizationContext: ['groups' => [self::READ, self::ITEM_READ]],
+    denormalizationContext: ['groups' => [self::WRITE, self::CREATE]]
+)]
 class User implements UserInterface
 {
-    private int $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[Groups([self::ITEM_READ])]
+    private ?int $id = null;
 
+    #[ORM\Column(type: 'string', unique: true)]
+    #[Groups([self::CREATE, self::ITEM_READ])]
     private string $email;
 
+    #[ORM\Column(type: 'string')]
+    #[Groups([self::CREATE])]
     private string $password;
 
+    #[ORM\Column(type: 'string')]
+    #[Groups([self::CREATE])]
     private string $salt;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
+    #[Groups([self::ITEM_READ, self::WRITE])]
     private bool $enabled = true;
 
-    private PlayerSettings $playerSettings;
+    #[ORM\OneToOne(targetEntity: Settings::class)]
+    #[Groups([self::READ, self::WRITE])]
+    private Settings $playerSettings;
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -70,12 +130,12 @@ class User implements UserInterface
         $this->enabled = $enabled;
     }
 
-    public function getPlayerSettings(): PlayerSettings
+    public function getPlayerSettings(): Settings
     {
         return $this->playerSettings;
     }
 
-    public function setPlayerSettings(PlayerSettings $playerSettings): void
+    public function setPlayerSettings(Settings $playerSettings): void
     {
         $this->playerSettings = $playerSettings;
     }

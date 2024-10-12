@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Components\Category\Entity;
+namespace App\Components\Task\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
@@ -10,12 +10,8 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use App\Components\Statistic\Entity\CategoryStatistic;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Constraints\NotNull;
 
 #[ApiResource(
     operations: [
@@ -32,7 +28,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
             normalizationContext: ['groups' => [
                 self::READ,
                 self::ITEM_READ
-                ]
+            ]
             ],
             denormalizationContext: ['groups' => [
                 self::CREATE,
@@ -54,31 +50,32 @@ use Symfony\Component\Validator\Constraints\NotNull;
     denormalizationContext: ['groups' => [self::WRITE, self::CREATE]]
 )]
 #[ORM\Entity]
-class Category implements CategoryInterface
+#[ORM\Table(name: 'reward_item')]
+class RewardItem implements RewardItemInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[Groups([self::ITEM_READ])]
-    private ?int $id = null;
+    private int $id;
 
-    #[ORM\Column(type: 'string', unique: true)]
-    #[NotNull]
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Groups([self::ITEM_READ, self::CREATE])]
-    #[Assert\Unique]
     private string $code;
 
-    #[ORM\Column(type: 'string')]
-    #[NotNull]
-    #[Groups([self::ITEM_READ , self::WRITE])]
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Groups([self::ITEM_READ, self::WRITE])]
+    private string $type;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Groups([self::ITEM_READ, self::WRITE])]
     private string $name;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: CategoryStatistic::class)]
+    #[ORM\Column(type: 'text')]
     #[Groups([self::READ, self::WRITE])]
-    #[Assert\Valid]
-    private Collection $categoryStatistics;
+    private string $description;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -98,40 +95,13 @@ class Category implements CategoryInterface
         $this->name = $name;
     }
 
-    public function getCode(): string
+    public function getDescription(): string
     {
-        return $this->code;
-    }
-    public function setCode(string $code): void
-    {
-        $this->code = $code;
+        return $this->description;
     }
 
-    public function getCategoryStatistics(): Collection
+    public function setDescription(string $description): void
     {
-        return $this->categoryStatistics;
-    }
-
-    public function setCategoryStatistics(Collection $categoryStatistics): void
-    {
-        $this->categoryStatistics = $categoryStatistics;
-    }
-
-    public function addCategoryStatistic(CategoryStatistic $categoryStatistic): void
-    {
-        if ($this->hasCategoryStatistic($categoryStatistic)) {
-            return;
-        }
-
-        $this->categoryStatistics->add($categoryStatistic);
-    }
-
-    public function removeCategoryStatistic(CategoryStatistic $categoryStatistic): void
-    {
-        if (!$this->hasCategoryStatistic($categoryStatistic)) {
-            return;
-        }
-
-        $this->categoryStatistics->removeElement($categoryStatistic);
+        $this->description = $description;
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Components\Category\Entity;
+namespace App\Components\Task\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
@@ -10,12 +10,9 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use App\Components\Statistic\Entity\CategoryStatistic;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Constraints\NotNull;
 
 #[ApiResource(
     operations: [
@@ -32,7 +29,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
             normalizationContext: ['groups' => [
                 self::READ,
                 self::ITEM_READ
-                ]
+            ]
             ],
             denormalizationContext: ['groups' => [
                 self::CREATE,
@@ -54,31 +51,38 @@ use Symfony\Component\Validator\Constraints\NotNull;
     denormalizationContext: ['groups' => [self::WRITE, self::CREATE]]
 )]
 #[ORM\Entity]
-class Category implements CategoryInterface
+#[ORM\Table(name: 'task_reward')]
+class TaskReward implements TaskRewardInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[Groups([self::ITEM_READ])]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(type: 'string', unique: true)]
-    #[NotNull]
+    #[Groups([self::ITEM_READ, self::WRITE])]
+    private string $type;
+
+    #[ORM\Column(type: 'string', unique: true)]
     #[Groups([self::ITEM_READ, self::CREATE])]
-    #[Assert\Unique]
+    #[Assert\NotBlank]
     private string $code;
 
-    #[ORM\Column(type: 'string')]
-    #[NotNull]
-    #[Groups([self::ITEM_READ , self::WRITE])]
-    private string $name;
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[Groups([self::ITEM_READ, self::WRITE])]
+    #[Assert\Positive]
+    private int $experiencePoints;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: CategoryStatistic::class)]
-    #[Groups([self::READ, self::WRITE])]
-    #[Assert\Valid]
-    private Collection $categoryStatistics;
+    #[ORM\ManyToOne(targetEntity: Task::class, inversedBy: 'rewards')]
+    #[Groups([self::ITEM_READ, self::CREATE])]
+    private TaskInterface $task;
 
-    public function getId(): ?int
+    #[ORM\OneToOne(targetEntity: RewardItem::class, inversedBy: 'taskReward')]
+    #[Groups([self::ITEM_READ, self::CREATE])]
+    private ?RewardItemInterface $rewardItem;
+
+    public function getId(): int
     {
         return $this->id;
     }
@@ -88,50 +92,53 @@ class Category implements CategoryInterface
         $this->id = $id;
     }
 
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
-
     public function getCode(): string
     {
         return $this->code;
     }
+
     public function setCode(string $code): void
     {
         $this->code = $code;
     }
 
-    public function getCategoryStatistics(): Collection
+    public function getType(): string
     {
-        return $this->categoryStatistics;
+        return $this->type;
     }
 
-    public function setCategoryStatistics(Collection $categoryStatistics): void
+    public function setType(string $type): void
     {
-        $this->categoryStatistics = $categoryStatistics;
+        $this->type = $type;
     }
 
-    public function addCategoryStatistic(CategoryStatistic $categoryStatistic): void
+    public function getExperiencePoints(): int
     {
-        if ($this->hasCategoryStatistic($categoryStatistic)) {
-            return;
-        }
-
-        $this->categoryStatistics->add($categoryStatistic);
+        return $this->experiencePoints;
     }
 
-    public function removeCategoryStatistic(CategoryStatistic $categoryStatistic): void
+    public function setExperiencePoints(int $experiencePoints): void
     {
-        if (!$this->hasCategoryStatistic($categoryStatistic)) {
-            return;
-        }
+        $this->experiencePoints = $experiencePoints;
+    }
 
-        $this->categoryStatistics->removeElement($categoryStatistic);
+    public function getTask(): TaskInterface
+    {
+        return $this->task;
+    }
+
+    public function setTask(TaskInterface $task): void
+    {
+        $this->task = $task;
+    }
+
+    public function getRewardItem(): ?RewardItemInterface
+    {
+        return $this->rewardItem;
+    }
+
+    public function setRewardItem(?RewardItemInterface $rewardItem): void
+    {
+        $this->rewardItem = $rewardItem;
     }
 }

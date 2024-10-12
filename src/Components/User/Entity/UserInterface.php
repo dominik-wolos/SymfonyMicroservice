@@ -2,13 +2,21 @@
 
 declare(strict_types=1);
 
-namespace App\Component\User\Entity;
+namespace App\Components\User\Entity;
 
-use App\Component\Player\Entity\PlayerSettings;
+use App\Components\Player\Entity\Settings;
 
 interface UserInterface
 {
-    public function getId(): int;
+    public const CREATE = 'user:create';
+
+    public const WRITE = 'user:write';
+
+    public const READ = 'user:read';
+
+    public const ITEM_READ = 'user:item:read';
+
+    public function getId(): ?int;
 
     public function setId(int $id): void;
 
@@ -28,7 +36,7 @@ interface UserInterface
 
     public function setEnabled(bool $enabled): void;
 
-    public function getPlayerSettings(): PlayerSettings;
+    public function getPlayerSettings(): Settings;
 
-    public function setPlayerSettings(PlayerSettings $playerSettings): void;
+    public function setPlayerSettings(Settings $playerSettings): void;
 }

@@ -2,21 +2,79 @@
 
 declare(strict_types=1);
 
-namespace App\Component\Player\Entity;
+namespace App\Components\Player\Entity;
 
-use App\Component\Statistic\Entity\StatisticValue;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use App\Components\Statistic\Entity\StatisticValue;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Valid;
 
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            normalizationContext: ['groups' => [
+                self::ITEM_READ,
+            ]]
+        ),
+        new Get(normalizationContext: ['groups' => [
+            self::READ,
+            self::ITEM_READ
+        ]]),
+        new Post(
+            normalizationContext: ['groups' => [
+                self::READ,
+                self::ITEM_READ
+            ]
+            ],
+            denormalizationContext: ['groups' => [
+                self::CREATE,
+                self::WRITE
+            ]]
+        ),
+        new Patch(
+            normalizationContext: ['groups' => [
+                self::READ,
+                self::ITEM_READ
+            ]],
+            denormalizationContext: ['groups' => [
+                self::WRITE
+            ]]
+        ),
+        new Delete()
+    ],
+    normalizationContext: ['groups' => [self::READ, self::ITEM_READ]],
+    denormalizationContext: ['groups' => [self::WRITE, self::CREATE]]
+)]
+#[ORM\Entity]
+#[ORM\Table(name: 'player_statistics')]
 class PlayerStatistics implements PlayerStatisticsInterface
 {
-    private int $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[Groups([self::ITEM_READ])]
+    private ?int $id = null;
 
+    #[ORM\OneToOne(targetEntity: Player::class)]
+    #[Valid()]
+    #[NotNull()]
+    #[Groups([self::ITEM_READ, self::CREATE])]
     private Player $player;
 
-    /** @var Collection|StatisticValue[] */
+    #[ORM\OneToMany(mappedBy: 'playerStatistics', targetEntity: StatisticValue::class)]
+    #[Valid()]
+    #[Groups([self::ITEM_READ, self::WRITE])]
     private Collection $statisticValues;
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -64,6 +122,7 @@ class PlayerStatistics implements PlayerStatisticsInterface
         $this->statisticValues->removeElement($statisticValue);
     }
 
+    #[Groups(['excluded'])]
     private function hasStatisticValue(StatisticValue $statisticValue): bool
     {
         return $this->statisticValues->contains($statisticValue);
