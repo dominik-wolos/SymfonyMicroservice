@@ -82,6 +82,12 @@ class TaskReward implements TaskRewardInterface
     #[Groups([self::ITEM_READ, self::CREATE])]
     private ?RewardItemInterface $rewardItem;
 
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[Groups([self::ITEM_READ])]
+    private int $coins = 0;
+
+    private bool $rewardCollected = false;
+
     public function getId(): int
     {
         return $this->id;
@@ -132,6 +138,13 @@ class TaskReward implements TaskRewardInterface
         $this->task = $task;
     }
 
+    public function canBeCollected(): bool
+    {
+        return null !== $this?->task->getCompletedAt()
+            && !$this->rewardCollected
+        ;
+    }
+
     public function getRewardItem(): ?RewardItemInterface
     {
         return $this->rewardItem;
@@ -140,5 +153,15 @@ class TaskReward implements TaskRewardInterface
     public function setRewardItem(?RewardItemInterface $rewardItem): void
     {
         $this->rewardItem = $rewardItem;
+    }
+
+    public function getCoins(): int
+    {
+        return $this->coins;
+    }
+
+    public function setCoins(int $coins): void
+    {
+        $this->coins = $coins;
     }
 }

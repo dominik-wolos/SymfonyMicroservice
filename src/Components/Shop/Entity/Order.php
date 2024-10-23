@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Components\Player\Entity;
+namespace App\Components\Shop\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
@@ -10,11 +10,10 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use App\Components\User\Entity\User;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
-use Symfony\Component\Validator\Constraints\NotNull;
-use Symfony\Component\Validator\Constraints\Valid;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     operations: [
@@ -53,37 +52,40 @@ use Symfony\Component\Validator\Constraints\Valid;
     denormalizationContext: ['groups' => [self::WRITE, self::CREATE]]
 )]
 #[ORM\Entity]
-#[ORM\Table(name: 'player_settings')]
-class Settings implements SettingsInterface
+#[ORM\Table(name: 'shop_order')]
+class Order implements OrderInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[Groups([self::ITEM_READ])]
-    private ?int $id = null;
+    private int $id;
 
-    #[ORM\OneToOne(targetEntity: User::class)]
-    #[Valid]
-    #[Groups([self::ITEM_READ])]
-    private User $user;
-
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(type: 'string', length: 15)]
+    #[Assert\Length(min: 3, max: 15)]
+    #[Assert\AtLeastOneOf([
+        new Assert\IdenticalTo(self::STATUS_NEW),
+        new Assert\IdenticalTo(self::STATUS_PAID),
+    ])]
     #[Groups([self::ITEM_READ, self::WRITE])]
-    private string $notificationSettings;
+    private string $status;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[Assert\GreaterThan(0)]
     #[Groups([self::ITEM_READ, self::WRITE])]
-    private bool $holidayMode;
+    private int $total;
 
-    #[ORM\Column(type: 'string', options: ['default' => 'en'])]
+    #[ORM\Column(type: 'datetime_immutable')]
+    #[Assert\NotNull]
     #[Groups([self::ITEM_READ, self::WRITE])]
-    private string $languagePreferences;
+    private \DateTimeImmutable $placedAt;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    #[Groups([self::ITEM_READ, self::WRITE])]
-    private bool $darkMode;
+    #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'order')]
+    #[Assert\Valid]
+    #[Groups([self::READ, self::WRITE])]
+    private Collection $items;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -93,53 +95,48 @@ class Settings implements SettingsInterface
         $this->id = $id;
     }
 
-    public function getUser(): User
+    public function getStatus(): string
     {
-        return $this->user;
+        return $this->status;
     }
 
-    public function setUser(User $user): void
+    public function setStatus(string $status): void
     {
-        $this->user = $user;
+        $this->status = $status;
     }
 
-    public function getNotificationSettings(): string
+    public function getTotal(): int
     {
-        return $this->notificationSettings;
+        return $this->total;
     }
 
-    public function setNotificationSettings(string $notificationSettings): void
+    public function setTotal(int $total): void
     {
-        $this->notificationSettings = $notificationSettings;
+        $this->total = $total;
     }
 
-    public function isHolidayMode(): bool
+    public function getPlacedAt(): \DateTimeImmutable
     {
-        return $this->holidayMode;
+        return $this->placedAt;
     }
 
-    public function setHolidayMode(bool $holidayMode): void
+    public function setPlacedAt(\DateTimeImmutable $placedAt): void
     {
-        $this->holidayMode = $holidayMode;
+        $this->placedAt = $placedAt;
     }
 
-    public function getLanguagePreferences(): string
+    public function getItems(): Collection
     {
-        return $this->languagePreferences;
+        return $this->items;
     }
 
-    public function setLanguagePreferences(string $languagePreferences): void
+    public function setItems(Collection $items): void
     {
-        $this->languagePreferences = $languagePreferences;
+        $this->items = $items;
     }
 
-    public function isDarkMode(): bool
+    public function isPaid(): bool
     {
-        return $this->darkMode;
-    }
-
-    public function setDarkMode(bool $darkMode): void
-    {
-        $this->darkMode = $darkMode;
+        return self::STATUS_PAID === $this->status;
     }
 }

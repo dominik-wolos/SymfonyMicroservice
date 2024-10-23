@@ -47,13 +47,13 @@ use Symfony\Component\Validator\Constraints\Valid;
                 self::ITEM_READ
             ]],
             denormalizationContext: ['groups' => [
-                self::WRITE
+                self::WRITE,
             ]]
         ),
         new Delete()
     ],
     normalizationContext: ['groups' => [self::READ, self::ITEM_READ]],
-    denormalizationContext: ['groups' => [self::WRITE, self::CREATE]]
+    denormalizationContext: ['groups' => [self::WRITE, self::CREATE,]]
 )]
 #[ORM\Entity]
 #[ORM\Table(name: 'player')]
@@ -76,16 +76,10 @@ class Player implements PlayerInterface
     #[NotNull()]
     private string $name;
 
-    #[ORM\ManyToMany(targetEntity: Player::class)]
-    #[Groups([self::ITEM_READ, self::WRITE])]
-    #[ORM\JoinTable(name: 'player_friend')]
-    #[Valid()]
-    private Collection $friends;
-
     #[ORM\ManyToMany(targetEntity: RewardItem::class, inversedBy: 'players')]
     #[ORM\JoinTable(name: 'players_rewards')]
     #[Valid]
-    #[Groups([self::ITEM_READ, self::WRITE])]
+    #[Groups([self::ITEM_READ, self::UPDATE])]
     private Collection $obtainedRewards;
 
     public function __construct()
@@ -122,39 +116,6 @@ class Player implements PlayerInterface
     public function setName(string $name): void
     {
         $this->name = $name;
-    }
-
-    public function getFriends(): Collection
-    {
-        return $this->friends;
-    }
-
-    public function setFriends(Collection $friends): void
-    {
-        $this->friends = $friends;
-    }
-
-    public function addFriend(self $friend): void
-    {
-        if ($this->hasFriend($friend)) {
-            return;
-        }
-
-        $this->friends->add($friend);
-    }
-
-    public function removeFriend(self $friend): void
-    {
-        if (!$this->hasFriend($friend)) {
-            return;
-        }
-
-        $this->friends->removeElement($friend);
-    }
-
-    public function hasFriend(self $friend): bool
-    {
-        return $this->friends->contains($friend);
     }
 
     public function getObtainedRewards(): Collection

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Components\Player\Entity;
+namespace App\Components\Shop\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
@@ -10,12 +10,13 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use App\Components\User\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Attribute\Groups;
-use Symfony\Component\Validator\Constraints\NotNull;
-use Symfony\Component\Validator\Constraints\Valid;
+use Symfony\Component\Validator\Constraints as Assert;
 
+#[ORM\Entity]
+#[ORM\Table(name: 'product')]
 #[ApiResource(
     operations: [
         new GetCollection(
@@ -52,38 +53,40 @@ use Symfony\Component\Validator\Constraints\Valid;
     normalizationContext: ['groups' => [self::READ, self::ITEM_READ]],
     denormalizationContext: ['groups' => [self::WRITE, self::CREATE]]
 )]
-#[ORM\Entity]
-#[ORM\Table(name: 'player_settings')]
-class Settings implements SettingsInterface
+class Product implements ProductInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[Groups([self::ITEM_READ])]
-    private ?int $id = null;
+    private int $id;
 
-    #[ORM\OneToOne(targetEntity: User::class)]
-    #[Valid]
+    #[ORM\Column(type: 'string', length: 30)]
+    #[Assert\Length(min: 3, max: 30)]
+    #[Groups([self::ITEM_READ, self::WRITE])]
+    private string $name;
+
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[Assert\GreaterThanOrEqual(0)]
+    #[Groups([self::ITEM_READ, self::WRITE])]
+    private int $price;
+
+    #[ORM\Column(type: 'text')]
+    #[Assert\Length(min: 3, max: 255)]
+    #[Groups([self::ITEM_READ, self::WRITE])]
+    private string $description;
+
+
+    #[ORM\Column(type: 'datetime')]
     #[Groups([self::ITEM_READ])]
-    private User $user;
+    private \DateTimeImmutable $createdAt;
 
-    #[ORM\Column(type: 'string')]
-    #[Groups([self::ITEM_READ, self::WRITE])]
-    private string $notificationSettings;
+    #[ORM\Column(type: 'datetime_immutable')]
+    #[Gedmo\Timestampable]
+    #[Groups([self::ITEM_READ])]
+    private \DateTime $updatedAt;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    #[Groups([self::ITEM_READ, self::WRITE])]
-    private bool $holidayMode;
-
-    #[ORM\Column(type: 'string', options: ['default' => 'en'])]
-    #[Groups([self::ITEM_READ, self::WRITE])]
-    private string $languagePreferences;
-
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    #[Groups([self::ITEM_READ, self::WRITE])]
-    private bool $darkMode;
-
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -93,53 +96,53 @@ class Settings implements SettingsInterface
         $this->id = $id;
     }
 
-    public function getUser(): User
+    public function getName(): string
     {
-        return $this->user;
+        return $this->name;
     }
 
-    public function setUser(User $user): void
+    public function setName(string $name): void
     {
-        $this->user = $user;
+        $this->name = $name;
     }
 
-    public function getNotificationSettings(): string
+    public function getPrice(): int
     {
-        return $this->notificationSettings;
+        return $this->price;
     }
 
-    public function setNotificationSettings(string $notificationSettings): void
+    public function setPrice(int $price): void
     {
-        $this->notificationSettings = $notificationSettings;
+        $this->price = $price;
     }
 
-    public function isHolidayMode(): bool
+    public function getDescription(): string
     {
-        return $this->holidayMode;
+        return $this->description;
     }
 
-    public function setHolidayMode(bool $holidayMode): void
+    public function setDescription(string $description): void
     {
-        $this->holidayMode = $holidayMode;
+        $this->description = $description;
     }
 
-    public function getLanguagePreferences(): string
+    public function getCreatedAt(): \DateTimeImmutable
     {
-        return $this->languagePreferences;
+        return $this->createdAt;
     }
 
-    public function setLanguagePreferences(string $languagePreferences): void
+    public function setCreatedAt(\DateTimeImmutable $createdAt): void
     {
-        $this->languagePreferences = $languagePreferences;
+        $this->createdAt = $createdAt;
     }
 
-    public function isDarkMode(): bool
+    public function getUpdatedAt(): \DateTime
     {
-        return $this->darkMode;
+        return $this->updatedAt;
     }
 
-    public function setDarkMode(bool $darkMode): void
+    public function setUpdatedAt(\DateTime $updatedAt): void
     {
-        $this->darkMode = $darkMode;
+        $this->updatedAt = $updatedAt;
     }
 }

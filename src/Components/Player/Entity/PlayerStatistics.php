@@ -11,6 +11,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Components\Statistic\Entity\StatisticValue;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -66,13 +67,18 @@ class PlayerStatistics implements PlayerStatisticsInterface
     #[ORM\OneToOne(targetEntity: Player::class)]
     #[Valid()]
     #[NotNull()]
-    #[Groups([self::ITEM_READ, self::CREATE])]
+    #[Groups([self::ITEM_READ])]
     private Player $player;
 
     #[ORM\OneToMany(mappedBy: 'playerStatistics', targetEntity: StatisticValue::class)]
     #[Valid()]
     #[Groups([self::ITEM_READ, self::WRITE])]
     private Collection $statisticValues;
+
+    public function __construct()
+    {
+        $this->statisticValues = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {

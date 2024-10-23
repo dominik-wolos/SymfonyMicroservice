@@ -34,7 +34,13 @@ interface TaskRewardInterface
 
     public function setTask(TaskInterface $task): void;
 
+    public function canBeCollected(): bool;
+
     public function getRewardItem(): ?RewardItemInterface;
 
     public function setRewardItem(?RewardItemInterface $rewardItem): void;
+
+    public function getCoins(): int;
+
+    public function setCoins(int $coins): void;
 }

@@ -18,6 +18,8 @@ interface PlayerInterface
 
     public const ITEM_READ = 'player:item:read';
 
+    public const UPDATE = 'player:update';
+
     public function getId(): ?int;
 
     public function setId(int $id): void;
@@ -29,16 +31,6 @@ interface PlayerInterface
     public function getName(): string;
 
     public function setName(string $name): void;
-
-    public function getFriends(): Collection;
-
-    public function setFriends(Collection $friends): void;
-
-    public function addFriend(Player $friend): void;
-
-    public function removeFriend(Player $friend): void;
-
-    public function hasFriend(Player $friend): bool;
 
     public function getObtainedRewards(): Collection;
 
