@@ -16,12 +16,12 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
         mappings:
-            User:
+            Shop:
                 type: attribute
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/Components/User/Entity'
-                prefix: 'App\Components\User\Entity'
-                alias: App/Components/User
+                dir: '%kernel.project_dir%/src/Components/Shop/Entity'
+                prefix: 'App\Components\Shop\Entity'
+                alias: App/Components/Shop
             Player:
                 type: attribute
                 is_bundle: false

@@ -128,7 +128,6 @@ class PlayerStatistics implements PlayerStatisticsInterface
         $this->statisticValues->removeElement($statisticValue);
     }
 
-    #[Groups(['excluded'])]
     private function hasStatisticValue(StatisticValue $statisticValue): bool
     {
         return $this->statisticValues->contains($statisticValue);

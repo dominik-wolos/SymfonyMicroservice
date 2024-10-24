@@ -10,8 +10,8 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use App\Components\Statistic\Entity\StatisticInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
@@ -57,28 +57,40 @@ class OrderItem implements OrderItemInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[Groups([self::ITEM_READ])]
     private int $id;
 
     #[ORM\Column(type: 'string', length: 30)]
     #[Assert\NotNull]
     #[Assert\Length(min: 3, max: 30)]
+    #[Groups([self::ITEM_READ, self::WRITE])]
     private string $name;
 
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[Assert\GreaterThanOrEqual(0)]
+    #[Groups([self::ITEM_READ])]
     private int $price;
-
-    #[ORM\ManyToOne(targetEntity: Product::class)]
-    #[Assert\Valid]
-    private StatisticInterface $statistic;
 
     #[ORM\ManyToOne(targetEntity: Product::class)]
     #[Assert\Valid]
     private ProductInterface $product;
 
-    #[ORM\ManyToOne(targetEntity: Order::class, inversedBy: 'orderItems')]
-    #[Assert\Valid]
-    private OrderInterface $order;
+    #[ORM\Column(type: 'datetime_immutable')]
+    #[Groups([self::ITEM_READ])]
+    private \DateTimeImmutable $boughAt;
+
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[Groups([self::ITEM_READ])]
+    private int $validThrough;
+
+    #[ORM\Column(type: 'boolean')]
+    #[Groups([self::ITEM_READ])]
+    private bool $isPaid = false;
+
+    public function __construct()
+    {
+        $this->boughAt = new \DateTimeImmutable();
+    }
 
     public function getId(): int
     {
@@ -120,23 +132,33 @@ class OrderItem implements OrderItemInterface
         $this->product = $product;
     }
 
-    public function getOrder(): OrderInterface
+    public function getBoughAt(): \DateTimeImmutable
     {
-        return $this->order;
+        return $this->boughAt;
     }
 
-    public function setOrder(OrderInterface $order): void
+    public function setBoughAt(\DateTimeImmutable $boughAt): void
     {
-        $this->order = $order;
+        $this->boughAt = $boughAt;
     }
 
-    public function getStatistic(): StatisticInterface
+    public function getValidThrough(): int
     {
-        return $this->statistic;
+        return $this->validThrough;
     }
 
-    public function setStatistic(StatisticInterface $statistic): void
+    public function setValidThrough(int $validThrough): void
     {
-        $this->statistic = $statistic;
+        $this->validThrough = $validThrough;
+    }
+
+    public function isPaid(): bool
+    {
+        return $this->isPaid;
+    }
+
+    public function setIsPaid(bool $isPaid): void
+    {
+        $this->isPaid = $isPaid;
     }
 }

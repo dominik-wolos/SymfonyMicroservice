@@ -65,28 +65,22 @@ class Player implements PlayerInterface
     #[Groups([self::ITEM_READ])]
     private ?int $id = null;
 
-    #[ORM\OneToOne(targetEntity: User::class)]
-    #[Groups([self::ITEM_READ, self::CREATE])]
-    #[NotNull()]
-    #[Valid()]
-    private User $user;
-
     #[ORM\Column(type: 'string', unique: true)]
     #[Groups([self::ITEM_READ, self::WRITE])]
     #[NotNull()]
     private string $name;
 
-    #[ORM\ManyToMany(targetEntity: RewardItem::class, inversedBy: 'players')]
-    #[ORM\JoinTable(name: 'players_rewards')]
-    #[Valid]
-    #[Groups([self::ITEM_READ, self::UPDATE])]
-    private Collection $obtainedRewards;
+    #[ORM\Column(type: 'string', unique: true)]
+    #[Groups([self::CREATE, self::ITEM_READ])]
+    private string $email;
 
-    public function __construct()
-    {
-        $this->friends = new ArrayCollection();
-        $this->obtainedRewards = new ArrayCollection();
-    }
+    #[ORM\Column(type: 'string')]
+    #[Groups([self::CREATE])]
+    private string $password;
+
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
+    #[Groups([self::ITEM_READ, self::WRITE])]
+    private bool $enabled = true;
 
     public function getId(): ?int
     {
@@ -96,16 +90,6 @@ class Player implements PlayerInterface
     public function setId(int $id): void
     {
         $this->id = $id;
-    }
-
-    public function getUser(): User
-    {
-        return $this->user;
-    }
-
-    public function setUser(User $user): void
-    {
-        $this->user = $user;
     }
 
     public function getName(): string
@@ -118,22 +102,33 @@ class Player implements PlayerInterface
         $this->name = $name;
     }
 
-    public function getObtainedRewards(): Collection
+    public function getEmail(): string
     {
-        return $this->obtainedRewards;
+        return $this->email;
     }
 
-    public function addObtainedReward(RewardItem $rewardItem): void
+    public function setEmail(string $email): void
     {
-        if (!$this->obtainedRewards->contains($rewardItem)) {
-            $this->obtainedRewards->add($rewardItem);
-        }
+        $this->email = $email;
     }
 
-    public function removeObtainedReward(RewardItem $rewardItem): void
+    public function getPassword(): string
     {
-        if ($this->obtainedRewards->contains($rewardItem)) {
-            $this->obtainedRewards->removeElement($rewardItem);
-        }
+        return $this->password;
+    }
+
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): void
+    {
+        $this->enabled = $enabled;
     }
 }

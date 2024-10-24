@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace App\Components\Player\Entity;
 
-use App\Components\Task\Entity\RewardItem;
-use App\Components\User\Entity\User;
-use Doctrine\Common\Collections\Collection;
-
 interface PlayerInterface
 {
     public const CREATE = 'player:create';
@@ -24,17 +20,19 @@ interface PlayerInterface
 
     public function setId(int $id): void;
 
-    public function getUser(): User;
-
-    public function setUser(User $user): void;
-
     public function getName(): string;
 
     public function setName(string $name): void;
 
-    public function getObtainedRewards(): Collection;
+    public function getEmail(): string;
 
-    public function addObtainedReward(RewardItem $rewardItem): void;
+    public function setEmail(string $email): void;
 
-    public function removeObtainedReward(RewardItem $rewardItem): void;
+    public function getPassword(): string;
+
+    public function setPassword(string $password): void;
+
+    public function isEnabled(): bool;
+
+    public function setEnabled(bool $enabled): void;
 }

@@ -89,11 +89,15 @@ class Task implements TaskInterface
     #[Groups([self::ITEM_READ, self::WRITE])]
     private string $status;
 
+    #[ORM\OneToOne(targetEntity: TaskReward::class, mappedBy: 'task')]
+    #[Groups([self::ITEM_READ, self::CREATE])]
+    private TaskRewardInterface $reward;
+
     #[ORM\Column(type: 'datetime')]
     #[Groups([self::ITEM_READ])]
     private \DateTime $createdAt;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     #[Groups([self::ITEM_READ, self::WRITE])]
     private \DateTime $completedAt;
 

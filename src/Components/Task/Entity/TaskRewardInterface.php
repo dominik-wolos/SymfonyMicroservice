@@ -22,10 +22,6 @@ interface TaskRewardInterface
 
     public function setCode(string $code): void;
 
-    public function getType(): string;
-
-    public function setType(string $type): void;
-
     public function getExperiencePoints(): int;
 
     public function setExperiencePoints(int $experiencePoints): void;
@@ -35,10 +31,6 @@ interface TaskRewardInterface
     public function setTask(TaskInterface $task): void;
 
     public function canBeCollected(): bool;
-
-    public function getRewardItem(): ?RewardItemInterface;
-
-    public function setRewardItem(?RewardItemInterface $rewardItem): void;
 
     public function getCoins(): int;
 

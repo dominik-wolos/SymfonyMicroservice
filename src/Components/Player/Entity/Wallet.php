@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Components\Player\Entity;
 
-use App\Components\Shop\Entity\OrderInterface;
+use App\Components\Shop\Entity\OrderItemInterface;
 use App\Components\Task\Entity\TaskRewardInterface;
 
 class Wallet implements WalletInterface
@@ -43,16 +43,16 @@ class Wallet implements WalletInterface
         $this->balance += $taskReward->getCoins();
     }
 
-    public function purchase(OrderInterface $order): void
+    public function purchase(OrderItemInterface $order): void
     {
         if ($order->isPaid()) {
             throw new \Exception('Order is already paid');
         }
 
-        if ($this->balance < $order->getTotal()) {
+        if ($this->balance < $order->getPrice()) {
             throw new \Exception('Not enough money');
         }
 
-        $this->balance -= $order->getTotal();
+        $this->balance -= $order->getPrice();
     }
 }

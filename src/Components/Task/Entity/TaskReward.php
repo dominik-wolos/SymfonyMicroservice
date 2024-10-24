@@ -61,10 +61,6 @@ class TaskReward implements TaskRewardInterface
     private int $id;
 
     #[ORM\Column(type: 'string', unique: true)]
-    #[Groups([self::ITEM_READ, self::WRITE])]
-    private string $type;
-
-    #[ORM\Column(type: 'string', unique: true)]
     #[Groups([self::ITEM_READ, self::CREATE])]
     #[Assert\NotBlank]
     private string $code;
@@ -74,13 +70,9 @@ class TaskReward implements TaskRewardInterface
     #[Assert\Positive]
     private int $experiencePoints;
 
-    #[ORM\ManyToOne(targetEntity: Task::class, inversedBy: 'rewards')]
+    #[ORM\OneToOne(targetEntity: Task::class, inversedBy: 'reward')]
     #[Groups([self::ITEM_READ, self::CREATE])]
     private TaskInterface $task;
-
-    #[ORM\OneToOne(targetEntity: RewardItem::class, inversedBy: 'taskReward')]
-    #[Groups([self::ITEM_READ, self::CREATE])]
-    private ?RewardItemInterface $rewardItem;
 
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[Groups([self::ITEM_READ])]
@@ -108,16 +100,6 @@ class TaskReward implements TaskRewardInterface
         $this->code = $code;
     }
 
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): void
-    {
-        $this->type = $type;
-    }
-
     public function getExperiencePoints(): int
     {
         return $this->experiencePoints;
@@ -143,16 +125,6 @@ class TaskReward implements TaskRewardInterface
         return null !== $this?->task->getCompletedAt()
             && !$this->rewardCollected
         ;
-    }
-
-    public function getRewardItem(): ?RewardItemInterface
-    {
-        return $this->rewardItem;
-    }
-
-    public function setRewardItem(?RewardItemInterface $rewardItem): void
-    {
-        $this->rewardItem = $rewardItem;
     }
 
     public function getCoins(): int

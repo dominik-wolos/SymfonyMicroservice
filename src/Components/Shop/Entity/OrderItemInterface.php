@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Components\Shop\Entity;
 
-use App\Components\Statistic\Entity\StatisticInterface;
-
 interface OrderItemInterface
 {
     public const CREATE = 'order_item:create';
@@ -32,11 +30,11 @@ interface OrderItemInterface
 
     public function setProduct(ProductInterface $product): void;
 
-    public function getOrder(): OrderInterface;
+    public function getBoughAt(): \DateTimeImmutable;
 
-    public function setOrder(OrderInterface $order): void;
+    public function setBoughAt(\DateTimeImmutable $boughAt): void;
 
-    public function getStatistic(): StatisticInterface;
+    public function getValidThrough(): int;
 
-    public function setStatistic(StatisticInterface $statistic): void;
+    public function setValidThrough(int $validThrough): void;
 }
