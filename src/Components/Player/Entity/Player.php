@@ -10,15 +10,30 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use App\Components\Task\Entity\RewardItem;
-use App\Components\User\Entity\User;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Components\Security\Processor\UserPasswordHasher;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints\NotNull;
-use Symfony\Component\Validator\Constraints\Valid;
 
+#[ApiResource(
+    uriTemplate: '/register',
+    operations: [
+        new Post(
+            processor: UserPasswordHasher::class,
+            normalizationContext: ['groups' => [
+                self::READ,
+                self::ITEM_READ
+            ]
+            ],
+            denormalizationContext: ['groups' => [
+                self::CREATE,
+                self::WRITE
+            ]]
+        )
+    ],
+    normalizationContext: ['groups' => [self::READ, self::ITEM_READ]],
+    denormalizationContext: ['groups' => [self::WRITE, self::CREATE,]]
+)]
 #[ApiResource(
     operations: [
         new GetCollection(
@@ -30,17 +45,6 @@ use Symfony\Component\Validator\Constraints\Valid;
             self::READ,
             self::ITEM_READ
         ]]),
-        new Post(
-            normalizationContext: ['groups' => [
-                self::READ,
-                self::ITEM_READ
-            ]
-            ],
-            denormalizationContext: ['groups' => [
-                self::CREATE,
-                self::WRITE
-            ]]
-        ),
         new Patch(
             normalizationContext: ['groups' => [
                 self::READ,
@@ -81,6 +85,9 @@ class Player implements PlayerInterface
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
     #[Groups([self::ITEM_READ, self::WRITE])]
     private bool $enabled = true;
+
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
 
     public function getId(): ?int
     {
@@ -130,5 +137,24 @@ class Player implements PlayerInterface
     public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;
+    }
+
+    public function getRoles(): array
+    {
+        return [];
+    }
+
+    public function setRoles(array $roles): void
+    {
+        $this->roles = $roles;
+    }
+
+    public function eraseCredentials(): void
+    {
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
     }
 }

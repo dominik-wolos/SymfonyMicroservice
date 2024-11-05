@@ -14,3 +14,8 @@ api_platform:
             - '%kernel.project_dir%/src/Components/Player/Entity'
             - '%kernel.project_dir%/src/Components/Task/Entity'
             - '%kernel.project_dir%/src/Components/Shop/Entity'
+    swagger:
+        api_keys:
+            - name: Authorization
+              type: header
+              key: Bearer

@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Components\Player\Entity;
 
-interface PlayerInterface
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+
+interface PlayerInterface extends UserInterface, PasswordAuthenticatedUserInterface
 {
     public const CREATE = 'player:create';
 

@@ -1,17 +1,53 @@
+parameters:
+    api_route: "/api"
+    api_registration_route: "^%api_route%/register"
+    #exclude registration route from api endpoints
+    api_endpoints_regex: "^%api_route%/(?!register).*$"
+
 security:
     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
-        users_in_memory: { memory: null }
+        app_player_provider:
+            entity:
+                class: App\Components\Player\Entity\Player
+                property: email
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
+        register:
+            pattern: "%api_registration_route%"
+            stateless: true
+            security: false
+
+        api:
+            pattern: "%api_endpoints_regex%"
+            provider: app_player_provider
+            stateless: true
+            json_login:
+                check_path: "auth"
+                login_path: "auth"
+                username_path: email
+                password_path: password
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            custom_authenticators:
+                - app.authenticator
+
         main:
-            lazy: true
-            provider: users_in_memory
+            stateless: true
+            provider: app_player_provider
+            json_login:
+                check_path: auth # The name in routes.yaml is enough for mapping
+                username_path: email
+                password_path: password
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            jwt: ~
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -22,9 +58,10 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
-
+#        - { path: "%api_route%", roles: IS_AUTHENTICATED_ANONYMOUSLY }
+#        - { path: "%api_registration_route%", roles: IS_AUTHENTICATED_ANONYMOUSLY }
+#        - { path: "%api_endpoints_regex%", roles: IS_AUTHENTICATED_FULLY }
+#lexik_jwt_authentication.security.jwt_authenticator
 when@test:
     security:
         password_hashers:

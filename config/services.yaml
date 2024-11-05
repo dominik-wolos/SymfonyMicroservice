@@ -22,3 +22,13 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    app.authenticator:
+        class: App\Components\Security\Authenticator\JWTTokenAuthenticator
+        parent: lexik_jwt_authentication.security.jwt_authenticator
+        bind:
+            $userProvider: '@security.user.provider.concrete.app_player_provider'
+
+    App\Components\Security\Processor\UserPasswordHasher:
+        bind:
+            $processor: '@api_platform.doctrine.orm.state.persist_processor'

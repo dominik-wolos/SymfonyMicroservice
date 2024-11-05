@@ -3,3 +3,7 @@ controllers:
     path: ../src/Core/Controller/
     namespace: App\Core\Controller
   type: attribute
+
+auth:
+  path: /auth
+  methods: ['POST']
