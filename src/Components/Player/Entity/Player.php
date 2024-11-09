@@ -87,7 +87,7 @@ class Player implements PlayerInterface
     private bool $enabled = true;
 
     #[ORM\Column(type: 'json')]
-    private array $roles = [];
+    private array $roles = ["ROLE_USER"];
 
     public function getId(): ?int
     {
