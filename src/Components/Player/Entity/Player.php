@@ -10,11 +10,26 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use App\ApiResource\Controller\UserFromTokenAction;
+use App\ApiResource\Provider\CurrentPlayerProvider;
 use App\Components\Security\Processor\UserPasswordHasher;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints\NotNull;
 
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate: '/player-from-token',
+            provider: CurrentPlayerProvider::class,
+            openapiContext: [
+                'summary' => 'Retrieve the authenticated user’s information',
+                'description' => 'Returns information about the authenticated user',
+            ],
+            normalizationContext: ['groups' => [self::READ, self::ITEM_READ]],
+        )
+    ]
+)]
 #[ApiResource(
     uriTemplate: '/register',
     operations: [
@@ -141,7 +156,7 @@ class Player implements PlayerInterface
 
     public function getRoles(): array
     {
-        return [];
+        return $this->roles;
     }
 
     public function setRoles(array $roles): void
@@ -158,3 +173,4 @@ class Player implements PlayerInterface
         return $this->email;
     }
 }
+

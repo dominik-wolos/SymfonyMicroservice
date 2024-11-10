@@ -1,5 +1,6 @@
 parameters:
     api_route: "/api"
+    api_anonymous_available_regex: "^%api_route%/(register|auth|docs*)$"
     api_registration_route: "^%api_route%/register"
     #exclude registration route from api endpoints
     api_endpoints_regex: "^%api_route%/(?!register).*$"
@@ -29,8 +30,8 @@ security:
             provider: app_player_provider
             stateless: true
             json_login:
-                check_path: "auth"
-                login_path: "auth"
+                check_path: "/api/auth"
+                login_path: "/api/auth"
                 username_path: email
                 password_path: password
                 success_handler: lexik_jwt_authentication.handler.authentication_success
@@ -39,15 +40,9 @@ security:
                 - app.authenticator
 
         main:
+            pattern: "%api_route%|%api_anonymous_available_regex%"
             stateless: true
-            provider: app_player_provider
-            json_login:
-                check_path: auth # The name in routes.yaml is enough for mapping
-                username_path: email
-                password_path: password
-                success_handler: lexik_jwt_authentication.handler.authentication_success
-                failure_handler: lexik_jwt_authentication.handler.authentication_failure
-            jwt: ~
+            security: false
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -58,8 +53,7 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: "%api_route%", roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: "%api_registration_route%", roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: "%api_anonymous_available_regex%", roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: "%api_endpoints_regex%", roles: ROLE_USER }
 #lexik_jwt_authentication.security.jwt_authenticator
 when@test:
