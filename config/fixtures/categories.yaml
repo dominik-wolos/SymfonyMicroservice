@@ -1,0 +1,6 @@
+parameters:
+    app.fixtures.default_categories:
+        - { name: 'Chess', code: 'chess' }
+        - { name: 'Home duties', code: 'home_duties' }
+        - { name: 'Gym', code: 'gym' }
+        - { name: 'Meditation', code: 'meditation' }

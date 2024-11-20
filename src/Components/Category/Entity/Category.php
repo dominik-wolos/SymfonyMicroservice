@@ -10,12 +10,16 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use App\Components\Player\Entity\Player;
+use App\Components\Player\Entity\PlayerInterface;
 use App\Components\Statistic\Entity\CategoryStatistic;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Valid;
 
 #[ApiResource(
     operations: [
@@ -78,6 +82,17 @@ class Category implements CategoryInterface
     #[Assert\Valid]
     private Collection $categoryStatistics;
 
+    #[ORM\ManyToOne(targetEntity: Player::class)]
+    #[Valid()]
+    #[NotNull()]
+    #[Groups([self::ITEM_READ])]
+    private Player $player;
+
+    public function __construct()
+    {
+        $this->categoryStatistics = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -133,5 +148,15 @@ class Category implements CategoryInterface
         }
 
         $this->categoryStatistics->removeElement($categoryStatistic);
+    }
+
+    public function getPlayer(): Player
+    {
+        return $this->player;
+    }
+
+    public function setPlayer(Player $player): void
+    {
+        $this->player = $player;
     }
 }

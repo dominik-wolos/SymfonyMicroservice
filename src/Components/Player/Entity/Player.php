@@ -10,10 +10,10 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use App\ApiResource\Controller\UserFromTokenAction;
-use App\ApiResource\Provider\CurrentPlayerProvider;
-use App\Components\Security\Processor\UserPasswordHasher;
+use App\Api\Provider\CurrentPlayerProvider;
+use App\Components\Security\Processor\PlayerRegistrationProcessor;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints\NotNull;
 
@@ -34,7 +34,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
     uriTemplate: '/register',
     operations: [
         new Post(
-            processor: UserPasswordHasher::class,
+            processor: PlayerRegistrationProcessor::class,
             normalizationContext: ['groups' => [
                 self::READ,
                 self::ITEM_READ
@@ -76,6 +76,8 @@ use Symfony\Component\Validator\Constraints\NotNull;
 )]
 #[ORM\Entity]
 #[ORM\Table(name: 'player')]
+#[UniqueEntity(fields: ['email'], message: 'This email is already in use.')]
+#[UniqueEntity(fields: ['name'], message: 'This username is already in use.')]
 class Player implements PlayerInterface
 {
     #[ORM\Id]
@@ -102,7 +104,11 @@ class Player implements PlayerInterface
     private bool $enabled = true;
 
     #[ORM\Column(type: 'json')]
+    #[Groups([self::ITEM_READ])]
     private array $roles = ["ROLE_USER"];
+
+    #[ORM\OneToOne(targetEntity: PlayerStatistics::class, cascade: ['persist', 'remove'])]
+    private PlayerStatisticsInterface $playerStatistics;
 
     public function getId(): ?int
     {
@@ -171,6 +177,16 @@ class Player implements PlayerInterface
     public function getUserIdentifier(): string
     {
         return $this->email;
+    }
+
+    public function getPlayerStatistics(): PlayerStatisticsInterface
+    {
+        return $this->playerStatistics;
+    }
+
+    public function setPlayerStatistics(PlayerStatisticsInterface $playerStatistics): void
+    {
+        $this->playerStatistics = $playerStatistics;
     }
 }
 

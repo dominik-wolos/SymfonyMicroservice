@@ -7,13 +7,15 @@ namespace App\Components\Security\Processor;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Components\Player\Entity\Player;
+use App\Core\Creator\DefaultDataCreator;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-final readonly class UserPasswordHasher implements ProcessorInterface
+final readonly class PlayerRegistrationProcessor implements ProcessorInterface
 {
 
     public function __construct(
         private ProcessorInterface $processor,
+        private DefaultDataCreator $defaultDataCreator,
         private UserPasswordHasherInterface $passwordHasher
     )
     {
@@ -28,6 +30,9 @@ final readonly class UserPasswordHasher implements ProcessorInterface
             $data,
             $data->getPassword()
         );
+
+        $this->defaultDataCreator->create($data);
+
         $data->setPassword($hashedPassword);
         $data->eraseCredentials();
 

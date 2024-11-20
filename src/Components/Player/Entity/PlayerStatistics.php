@@ -64,7 +64,7 @@ class PlayerStatistics implements PlayerStatisticsInterface
     #[Groups([self::ITEM_READ])]
     private ?int $id = null;
 
-    #[ORM\OneToOne(targetEntity: Player::class)]
+    #[ORM\OneToOne(targetEntity: Player::class, cascade: ['persist', 'remove'])]
     #[Valid()]
     #[NotNull()]
     #[Groups([self::ITEM_READ])]

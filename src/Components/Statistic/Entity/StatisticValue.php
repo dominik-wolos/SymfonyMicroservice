@@ -70,11 +70,11 @@ class StatisticValue implements StatisticValueInterface
 
     #[ORM\Column(type: 'integer')]
     #[Groups([self::ITEM_READ, self::WRITE])]
-    private int $value;
+    private int $value = 0;
 
     #[ORM\Column(type: 'integer')]
     #[Groups([self::ITEM_READ, self::WRITE])]
-    private int $level;
+    private int $level = 1;
 
     public function setId(int $id): void
     {
@@ -104,6 +104,9 @@ class StatisticValue implements StatisticValueInterface
     public function setPlayerStatistics(PlayerStatistics $playerStatistics): void
     {
         $this->playerStatistics = $playerStatistics;
+        if (!$playerStatistics->getStatisticValues()->contains($this)) {
+            $playerStatistics->addStatisticValue($this);
+        }
     }
 
     public function getValue(): int

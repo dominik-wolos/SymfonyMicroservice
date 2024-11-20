@@ -38,4 +38,8 @@ interface PlayerInterface extends UserInterface, PasswordAuthenticatedUserInterf
     public function isEnabled(): bool;
 
     public function setEnabled(bool $enabled): void;
+
+    public function getPlayerStatistics(): PlayerStatisticsInterface;
+
+    public function setPlayerStatistics(PlayerStatisticsInterface $playerStatistics): void;
 }

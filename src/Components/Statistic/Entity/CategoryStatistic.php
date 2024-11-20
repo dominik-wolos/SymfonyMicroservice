@@ -90,6 +90,9 @@ class CategoryStatistic implements CategoryStatisticInterface
     public function setCategory(Category $category): void
     {
         $this->category = $category;
+        if (!$category->getCategoryStatistics()->contains($this)) {
+            $category->addCategoryStatistic($this);
+        }
     }
 
     public function getStatistic(): Statistic

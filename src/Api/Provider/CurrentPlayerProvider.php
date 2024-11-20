@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\ApiResource\Provider;
+namespace App\Api\Provider;
 
 use ApiPlatform\State\ProviderInterface;
 use App\Components\Player\Entity\Player;

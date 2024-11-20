@@ -67,7 +67,7 @@ class Statistic implements StatisticInterface
     #[Assert\NotNull]
     private string $code;
 
-    #[ORM\Column(type: 'string', unique: true)]
+    #[ORM\Column(type: 'string')]
     #[Groups([self::ITEM_READ, self::WRITE])]
     private string $name;
 
