@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Components\Statistic\Entity;
 
-use App\Components\Player\Entity\PlayerInterface;
+use App\Components\Player\Entity\PlayerStatistics;
 
 interface StatisticInterface
 {
@@ -16,17 +16,19 @@ interface StatisticInterface
 
     public const ITEM_READ = 'statistic:item:read';
 
-    public function getId(): ?int;
-
     public function setId(int $id): void;
 
-    public function getName(): string;
+    public function getId(): ?int;
 
-    public function setName(string $name): void;
+    public function getPlayerStatistics(): PlayerStatistics;
 
-    public function setCode(string $code): void;
+    public function setPlayerStatistics(PlayerStatistics $playerStatistics): void;
 
-    public function getPlayer(): PlayerInterface;
+    public function getValue(): int;
 
-    public function setPlayer(PlayerInterface $player): void;
+    public function setValue(int $value): void;
+
+    public function getLevel(): int;
+
+    public function setLevel(int $level): void;
 }

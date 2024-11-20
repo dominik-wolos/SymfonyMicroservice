@@ -108,6 +108,7 @@ class Player implements PlayerInterface
     private array $roles = ["ROLE_USER"];
 
     #[ORM\OneToOne(targetEntity: PlayerStatistics::class, cascade: ['persist', 'remove'])]
+    #[Groups([self::ITEM_READ])]
     private PlayerStatisticsInterface $playerStatistics;
 
     public function getId(): ?int

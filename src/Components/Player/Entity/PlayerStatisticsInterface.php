@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Components\Player\Entity;
 
-use App\Components\Statistic\Entity\StatisticValue;
+use App\Components\Statistic\Entity\StatisticInterface;
 use Doctrine\Common\Collections\Collection;
 
 interface PlayerStatisticsInterface
@@ -25,11 +25,13 @@ interface PlayerStatisticsInterface
 
     public function setPlayer(Player $player): void;
 
-    public function getStatisticValues(): Collection;
+    public function getStatistics(): Collection;
 
-    public function setStatisticValues(Collection $statisticValues): void;
+    public function setStatistics(Collection $statistic): void;
 
-    public function addStatisticValue(StatisticValue $statisticValue): void;
+    public function addStatistic(StatisticInterface $statistic): void;
 
-    public function removeStatisticValue(StatisticValue $statisticValue): void;
+    public function removeStatistic(StatisticInterface $statistic): void;
+
+    public function hasStatistic(StatisticInterface $statistic): bool;
 }

@@ -9,14 +9,12 @@ use App\Components\Player\Entity\PlayerInterface;
 use App\Components\Player\Factory\PlayerStatisticsFactoryInterface;
 use App\Components\Statistic\Entity\StatisticInterface;
 use App\Components\Statistic\Factory\CategoryStatisticFactoryInterface;
-use App\Components\Statistic\Factory\StatisticValueFactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 final class StatisticRelatedResourcesCreator implements StatisticRelatedResourcesCreatorInterface
 {
     public function __construct(
         private CategoryStatisticFactoryInterface $categoryStatisticFactory,
-        private StatisticValueFactoryInterface $statisticValueFactory,
         private PlayerStatisticsFactoryInterface $playerStatisticsFactory,
         private EntityManagerInterface $entityManager,
     ) {
@@ -39,12 +37,6 @@ final class StatisticRelatedResourcesCreator implements StatisticRelatedResource
             $this->entityManager->persist($categoryStatistic);
         }
 
-        $statisticValue = $this->statisticValueFactory->createForPlayerStatisticsAndStatistic(
-            $playerStatistics,
-            $statistic
-        );
-
-        $this->entityManager->persist($statisticValue);
         $this->entityManager->persist($playerStatistics);
 
         if ($flush) {

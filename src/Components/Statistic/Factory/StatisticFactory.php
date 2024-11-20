@@ -23,7 +23,7 @@ final class StatisticFactory implements StatisticFactoryInterface
         $statistic = $this->createNew();
         $statistic->setName($name);
         $statistic->setCode(uniqid($code, true));
-        $statistic->setPlayer($player);
+        $statistic->setPlayerStatistics($player->getPlayerStatistics());
 
         return $statistic;
     }

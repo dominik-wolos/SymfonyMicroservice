@@ -10,11 +10,11 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use App\Components\Player\Entity\Player;
 use App\Components\Player\Entity\PlayerInterface;
+use App\Components\Player\Entity\PlayerStatistics;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 #[ApiResource(
     operations: [
@@ -63,26 +63,67 @@ class Statistic implements StatisticInterface
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', unique: true)]
-    #[Groups([self::ITEM_READ, self::CREATE])]
-    #[Assert\NotNull]
+    #[Groups([self::ITEM_READ, self::CREATE, PlayerInterface::ITEM_READ])]
+    #[NotNull]
     private string $code;
 
     #[ORM\Column(type: 'string')]
-    #[Groups([self::ITEM_READ, self::WRITE])]
+    #[Groups([self::ITEM_READ, self::WRITE, PlayerInterface::ITEM_READ])]
     private string $name;
 
-    #[ORM\ManyToOne(targetEntity: Player::class)]
-    #[Groups([self::ITEM_READ, self::WRITE])]
-    private PlayerInterface $player;
+    #[ORM\ManyToOne(targetEntity: PlayerStatistics::class, inversedBy: 'statistics', fetch: 'LAZY')]
+    #[Groups([self::ITEM_READ, self::CREATE])]
+    private PlayerStatistics $playerStatistics;
+
+    #[ORM\Column(type: 'integer')]
+    #[Groups([self::ITEM_READ, self::WRITE, PlayerInterface::ITEM_READ])]
+    private int $value = 0;
+
+    #[ORM\Column(type: 'integer')]
+    #[Groups([self::ITEM_READ, self::WRITE, PlayerInterface::ITEM_READ])]
+    private int $level = 1;
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function setId(int $id): void
+    public function getPlayerStatistics(): PlayerStatistics
     {
-        $this->id = $id;
+        return $this->playerStatistics;
+    }
+
+    public function setPlayerStatistics(PlayerStatistics $playerStatistics): void
+    {
+        $this->playerStatistics = $playerStatistics;
+        if (!$playerStatistics->hasStatistic($this)) {
+            $playerStatistics->addStatistic($this);
+        }
+    }
+
+    public function getValue(): int
+    {
+        return $this->value;
+    }
+
+    public function setValue(int $value): void
+    {
+        $this->value = $value;
+    }
+
+    public function getLevel(): int
+    {
+        return $this->level;
+    }
+
+    public function setLevel(int $level): void
+    {
+        $this->level = $level;
     }
 
     public function getCode(): string
@@ -103,15 +144,5 @@ class Statistic implements StatisticInterface
     public function setName(string $name): void
     {
         $this->name = $name;
-    }
-
-    public function getPlayer(): PlayerInterface
-    {
-        return $this->player;
-    }
-
-    public function setPlayer(PlayerInterface $player): void
-    {
-        $this->player = $player;
     }
 }

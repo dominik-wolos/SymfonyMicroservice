@@ -10,7 +10,8 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use App\Components\Statistic\Entity\StatisticValue;
+use App\Components\Statistic\Entity\Statistic;
+use App\Components\Statistic\Entity\StatisticInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -70,14 +71,14 @@ class PlayerStatistics implements PlayerStatisticsInterface
     #[Groups([self::ITEM_READ])]
     private Player $player;
 
-    #[ORM\OneToMany(mappedBy: 'playerStatistics', targetEntity: StatisticValue::class)]
+    #[ORM\OneToMany(mappedBy: 'playerStatistics', targetEntity: Statistic::class)]
     #[Valid()]
-    #[Groups([self::ITEM_READ, self::WRITE])]
-    private Collection $statisticValues;
+    #[Groups([self::ITEM_READ, self::WRITE, PlayerInterface::ITEM_READ])]
+    private Collection $statistics;
 
     public function __construct()
     {
-        $this->statisticValues = new ArrayCollection();
+        $this->statistics = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -100,36 +101,36 @@ class PlayerStatistics implements PlayerStatisticsInterface
         $this->player = $player;
     }
 
-    public function getStatisticValues(): Collection
+    public function getStatistics(): Collection
     {
-        return $this->statisticValues;
+        return $this->statistics;
     }
 
-    public function setStatisticValues(Collection $statisticValues): void
+    public function setStatistics(Collection $statistic): void
     {
-        $this->statisticValues = $statisticValues;
+        $this->statistics = $statistic;
     }
 
-    public function addStatisticValue(StatisticValue $statisticValue): void
+    public function addStatistic(StatisticInterface $statistic): void
     {
-        if ($this->hasStatisticValue($statisticValue)) {
+        if ($this->hasStatistic($statistic)) {
             return;
         }
 
-        $this->statisticValues->add($statisticValue);
+        $this->statistics->add($statistic);
     }
 
-    public function removeStatisticValue(StatisticValue $statisticValue): void
+    public function removeStatistic(StatisticInterface $statistic): void
     {
-        if (!$this->hasStatisticValue($statisticValue)) {
+        if (!$this->hasStatistic($statistic)) {
             return;
         }
 
-        $this->statisticValues->removeElement($statisticValue);
+        $this->statistics->removeElement($statistic);
     }
 
-    private function hasStatisticValue(StatisticValue $statisticValue): bool
+    public function hasStatistic(StatisticInterface $statistic): bool
     {
-        return $this->statisticValues->contains($statisticValue);
+        return $this->statistics->contains($statistic);
     }
 }
