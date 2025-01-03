@@ -65,16 +65,20 @@ class Task implements TaskInterface
     #[Groups([self::ITEM_READ])]
     private string $code;
 
+    #[ORM\Column(type: 'string')]
+    #[Groups([self::ITEM_READ, self::CREATE])]
+    private string $type;
+
     #[ORM\Column(type: 'string', unique: true)]
     #[Groups([self::ITEM_READ, self::WRITE])]
     private string $name;
 
-    #[ORM\Column(type: 'text')]
+    #[ORM\Column(type: 'text', nullable: true)]
     #[Groups([self::READ, self::WRITE])]
     private string $description;
 
     #[ORM\ManyToOne(targetEntity: Player::class)]
-    #[Groups([self::ITEM_READ, self::CREATE])]
+    #[Groups([self::ITEM_READ])]
     private Player $player;
 
     #[ORM\ManyToOne(targetEntity: Category::class)]
@@ -86,19 +90,27 @@ class Task implements TaskInterface
     private string $difficulty;
 
     #[ORM\Column(type: 'string')]
-    #[Groups([self::ITEM_READ, self::WRITE])]
+    #[Groups([self::ITEM_READ])]
     private string $status = self::NEW;
 
     #[ORM\OneToOne(targetEntity: TaskReward::class, mappedBy: 'task')]
-    #[Groups([self::ITEM_READ, self::CREATE])]
+    #[Groups([self::ITEM_READ])]
     private TaskRewardInterface $reward;
 
     #[ORM\Column(type: 'datetime')]
     #[Groups([self::ITEM_READ])]
     private \DateTime $createdAt;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: 'datetime')]
     #[Groups([self::ITEM_READ, self::WRITE])]
+    private \DateTimeInterface $startsAt;
+
+    #[ORM\Column(type: 'datetime')]
+    #[Groups([self::ITEM_READ, self::WRITE])]
+    private \DateTimeInterface $endsAt;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[Groups([self::ITEM_READ])]
     private \DateTime $completedAt;
 
     public function __construct()
@@ -210,5 +222,35 @@ class Task implements TaskInterface
     public function setReward(TaskRewardInterface $reward): void
     {
         $this->reward = $reward;
+    }
+
+    public function getStartsAt(): \DateTimeInterface
+    {
+        return $this->startsAt;
+    }
+
+    public function setStartsAt(\DateTimeInterface $startsAt): void
+    {
+        $this->startsAt = $startsAt;
+    }
+
+    public function getEndsAt(): \DateTimeInterface
+    {
+        return $this->endsAt;
+    }
+
+    public function setEndsAt(\DateTimeInterface $endsAt): void
+    {
+        $this->endsAt = $endsAt;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): void
+    {
+        $this->type = $type;
     }
 }

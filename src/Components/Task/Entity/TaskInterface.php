@@ -61,4 +61,12 @@ interface TaskInterface extends TaskStates, TaskTypes, TaskDifficulties
     public function getReward(): TaskRewardInterface;
 
     public function setReward(TaskRewardInterface $reward): void;
+
+    public function getStartsAt(): \DateTimeInterface;
+
+    public function setStartsAt(\DateTimeInterface $startsAt): void;
+
+    public function getEndsAt(): \DateTimeInterface;
+
+    public function setEndsAt(\DateTimeInterface $endsAt): void;
 }
