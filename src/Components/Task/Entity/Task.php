@@ -71,7 +71,7 @@ class Task implements TaskInterface
     #[Groups([self::ITEM_READ, self::CREATE])]
     private string $type;
 
-    #[ORM\Column(type: 'string', unique: true)]
+    #[ORM\Column(type: 'string', unique: false)]
     #[Groups([self::ITEM_READ, self::WRITE])]
     private string $name;
 
