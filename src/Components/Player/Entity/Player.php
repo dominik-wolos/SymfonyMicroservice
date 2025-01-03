@@ -235,4 +235,14 @@ class Player implements PlayerInterface
     {
         $this->userPhotoPath = $userPhotoPath;
     }
+
+    public function getBalance(): int
+    {
+        return $this->balance;
+    }
+
+    public function setBalance(int $balance): void
+    {
+        $this->balance = $balance;
+    }
 }

@@ -42,4 +42,20 @@ interface PlayerInterface extends UserInterface, PasswordAuthenticatedUserInterf
     public function getPlayerStatistics(): PlayerStatisticsInterface;
 
     public function setPlayerStatistics(PlayerStatisticsInterface $playerStatistics): void;
+
+    public function getPlayerLevel(): int;
+
+    public function setPlayerLevel(int $playerLevel): void;
+
+    public function getPlayerExperience(): int;
+
+    public function setPlayerExperience(int $playerExperience): void;
+
+    public function getUserPhotoPath(): ?string;
+
+    public function setUserPhotoPath(?string $userPhotoPath): void;
+
+    public function getBalance(): int;
+
+    public function setBalance(int $balance): void;
 }
