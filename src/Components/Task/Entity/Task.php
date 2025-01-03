@@ -12,6 +12,7 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Components\Category\Entity\Category;
 use App\Components\Player\Entity\Player;
+use App\Components\Task\Processor\TaskCreationProcessor;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
@@ -27,6 +28,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
             self::ITEM_READ
         ]]),
         new Post(
+            processor: TaskCreationProcessor::class,
             normalizationContext: ['groups' => [
                 self::READ,
                 self::ITEM_READ
@@ -93,7 +95,12 @@ class Task implements TaskInterface
     #[Groups([self::ITEM_READ])]
     private string $status = self::NEW;
 
-    #[ORM\OneToOne(targetEntity: TaskReward::class, mappedBy: 'task')]
+    #[ORM\OneToOne(
+        targetEntity: TaskReward::class,
+        mappedBy: 'task',
+        cascade: ['persist', 'remove'],
+        orphanRemoval: true
+    )]
     #[Groups([self::ITEM_READ])]
     private TaskRewardInterface $reward;
 

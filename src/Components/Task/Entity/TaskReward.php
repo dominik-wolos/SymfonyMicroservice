@@ -60,15 +60,10 @@ class TaskReward implements TaskRewardInterface
     #[Groups([self::ITEM_READ])]
     private int $id;
 
-    #[ORM\Column(type: 'string', unique: true)]
-    #[Groups([self::ITEM_READ, self::CREATE])]
-    #[Assert\NotBlank]
-    private string $code;
-
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[Groups([self::ITEM_READ, self::WRITE])]
     #[Assert\Positive]
-    private int $experiencePoints;
+    private int $experience;
 
     #[ORM\OneToOne(targetEntity: Task::class, inversedBy: 'reward')]
     #[Groups([self::ITEM_READ, self::CREATE])]
@@ -100,14 +95,14 @@ class TaskReward implements TaskRewardInterface
         $this->code = $code;
     }
 
-    public function getExperiencePoints(): int
+    public function getExperience(): int
     {
-        return $this->experiencePoints;
+        return $this->experience;
     }
 
-    public function setExperiencePoints(int $experiencePoints): void
+    public function setExperience(int $experience): void
     {
-        $this->experiencePoints = $experiencePoints;
+        $this->experience = $experience;
     }
 
     public function getTask(): TaskInterface

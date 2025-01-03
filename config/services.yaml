@@ -34,3 +34,6 @@ services:
     App\Components\Security\Processor\PlayerRegistrationProcessor:
         bind:
             $processor: '@api_platform.doctrine.orm.state.persist_processor'
+    App\Components\Task\Processor\TaskCreationProcessor:
+        bind:
+            $processor: '@api_platform.doctrine.orm.state.persist_processor'

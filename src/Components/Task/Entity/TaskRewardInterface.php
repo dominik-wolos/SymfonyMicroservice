@@ -22,9 +22,9 @@ interface TaskRewardInterface
 
     public function setCode(string $code): void;
 
-    public function getExperiencePoints(): int;
+    public function getExperience(): int;
 
-    public function setExperiencePoints(int $experiencePoints): void;
+    public function setExperience(int $experience): void;
 
     public function getTask(): TaskInterface;
 
