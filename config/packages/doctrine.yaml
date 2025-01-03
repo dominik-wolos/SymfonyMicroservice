@@ -46,6 +46,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Components/Statistic/Entity'
                 prefix: 'App\Components\Statistic\Entity'
                 alias: App/Components/Statistic
+            Challenge:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Components/Challenge/Entity'
+                prefix: 'App\Components\Challenge\Entity'
+                alias: App/Components/Challenge
 when@test:
     doctrine:
         dbal:

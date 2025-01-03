@@ -87,7 +87,7 @@ class Task implements TaskInterface
 
     #[ORM\Column(type: 'string')]
     #[Groups([self::ITEM_READ, self::WRITE])]
-    private string $status;
+    private string $status = self::NEW;
 
     #[ORM\OneToOne(targetEntity: TaskReward::class, mappedBy: 'task')]
     #[Groups([self::ITEM_READ, self::CREATE])]
@@ -200,5 +200,15 @@ class Task implements TaskInterface
     public function getCode(): string
     {
         return $this->code;
+    }
+
+    public function getReward(): TaskRewardInterface
+    {
+        return $this->reward;
+    }
+
+    public function setReward(TaskRewardInterface $reward): void
+    {
+        $this->reward = $reward;
     }
 }

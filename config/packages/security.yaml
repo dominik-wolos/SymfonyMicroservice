@@ -16,15 +16,10 @@ security:
                 class: App\Components\Player\Entity\Player
                 property: email
     firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-
         register:
             pattern: "%api_registration_route%"
             stateless: true
             security: false
-
         api:
             pattern: "%api_endpoints_regex%"
             provider: app_player_provider
@@ -49,6 +44,9 @@ security:
 
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used

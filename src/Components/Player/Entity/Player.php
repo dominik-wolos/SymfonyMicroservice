@@ -107,6 +107,22 @@ class Player implements PlayerInterface
     #[Groups([self::ITEM_READ])]
     private array $roles = ["ROLE_USER"];
 
+    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    #[Groups([self::ITEM_READ])]
+    private int $playerLevel;
+
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[Groups([self::ITEM_READ])]
+    private int $playerExperience;
+
+    #[ORM\Column(type: 'string', nullable: true, options: ['default' => ''])]
+    #[Groups([self::ITEM_READ])]
+    private ?string $userPhotoPath = null;
+
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[Groups([self::ITEM_READ])]
+    private int $balance = 0;
+
     #[ORM\OneToOne(targetEntity: PlayerStatistics::class, cascade: ['persist', 'remove'])]
     #[Groups([self::ITEM_READ])]
     private PlayerStatisticsInterface $playerStatistics;
@@ -189,5 +205,34 @@ class Player implements PlayerInterface
     {
         $this->playerStatistics = $playerStatistics;
     }
-}
 
+    public function getPlayerLevel(): int
+    {
+        return $this->playerLevel;
+    }
+
+    public function setPlayerLevel(int $playerLevel): void
+    {
+        $this->playerLevel = $playerLevel;
+    }
+
+    public function getPlayerExperience(): int
+    {
+        return $this->playerExperience;
+    }
+
+    public function setPlayerExperience(int $playerExperience): void
+    {
+        $this->playerExperience = $playerExperience;
+    }
+
+    public function getUserPhotoPath(): ?string
+    {
+        return $this->userPhotoPath;
+    }
+
+    public function setUserPhotoPath(?string $userPhotoPath): void
+    {
+        $this->userPhotoPath = $userPhotoPath;
+    }
+}

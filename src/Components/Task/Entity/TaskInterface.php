@@ -6,10 +6,11 @@ namespace App\Components\Task\Entity;
 
 use App\Components\Category\Entity\Category;
 use App\Components\Player\Entity\Player;
-use App\Components\Task\Enum\TaskDifficultyEnum;
-use App\Components\Task\Enum\TaskStatusEnum;
+use App\Components\Task\Dictionary\TaskStates;
+use App\Components\Task\Dictionary\TaskTypes;
+use App\Components\Task\Dictionary\TaskDifficulties;
 
-interface TaskInterface
+interface TaskInterface extends TaskStates, TaskTypes, TaskDifficulties
 {
     public const CREATE = 'task:create';
 
@@ -54,4 +55,10 @@ interface TaskInterface
     public function getCompletedAt(): \DateTime;
 
     public function setCompletedAt(\DateTime $completedAt): void;
+
+    public function getCode(): string;
+
+    public function getReward(): TaskRewardInterface;
+
+    public function setReward(TaskRewardInterface $reward): void;
 }

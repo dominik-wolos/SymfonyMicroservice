@@ -1,5 +1,5 @@
 api_platform:
-    title: Hello API Platform
+    title: Task Microservice
     defaults:
         stateless: true
         cache_headers:
@@ -14,6 +14,7 @@ api_platform:
             - '%kernel.project_dir%/src/Components/Player/Entity'
             - '%kernel.project_dir%/src/Components/Task/Entity'
             - '%kernel.project_dir%/src/Components/Shop/Entity'
+            - '%kernel.project_dir%/src/Components/Challenge/Entity'
     swagger:
         api_keys:
             - name: Authorization
