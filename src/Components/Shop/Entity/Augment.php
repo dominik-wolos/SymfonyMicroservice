@@ -15,6 +15,7 @@ use App\Components\Category\Entity\CategoryInterface;
 use App\Components\Player\Entity\Player;
 use App\Components\Player\Entity\PlayerInterface;
 use App\Components\Shop\Enum\AugmentTypes;
+use App\Components\Shop\Processor\AugmentCreationProcessor;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -34,6 +35,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             self::ITEM_READ
         ]]),
         new Post(
+            processor: AugmentCreationProcessor::class,
             normalizationContext: ['groups' => [
                 self::READ,
                 self::ITEM_READ
