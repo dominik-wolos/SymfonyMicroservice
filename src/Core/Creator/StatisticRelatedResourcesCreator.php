@@ -24,14 +24,14 @@ final class StatisticRelatedResourcesCreator implements StatisticRelatedResource
         PlayerInterface $player,
         StatisticInterface $statistic,
         CategoryInterface $category = null,
-        bool $flush = true
+        bool $flush = true,
     ): void {
         $playerStatistics = $player->getPlayerStatistics();
 
         if (null !== $category) {
             $categoryStatistic = $this->categoryStatisticFactory->createForCategoryAndStatistic(
                 $category,
-                $statistic
+                $statistic,
             );
 
             $this->entityManager->persist($categoryStatistic);

@@ -6,9 +6,9 @@ namespace App\Components\Task\Entity;
 
 use App\Components\Category\Entity\Category;
 use App\Components\Player\Entity\Player;
+use App\Components\Task\Dictionary\TaskDifficulties;
 use App\Components\Task\Dictionary\TaskStates;
 use App\Components\Task\Dictionary\TaskTypes;
-use App\Components\Task\Dictionary\TaskDifficulties;
 
 interface TaskInterface extends TaskStates, TaskTypes, TaskDifficulties
 {

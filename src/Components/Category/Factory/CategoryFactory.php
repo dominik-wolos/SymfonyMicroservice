@@ -18,7 +18,7 @@ final class CategoryFactory implements CategoryFactoryInterface
     public function createForPlayerAndCodeAndName(
         PlayerInterface $player,
         string $code,
-        string $name
+        string $name,
     ): CategoryInterface {
         $category = new Category();
         $category->setPlayer($player);

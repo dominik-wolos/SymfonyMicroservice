@@ -14,6 +14,6 @@ interface StatisticFactoryInterface
     public function createForPlayerAndCodeAndName(
         PlayerInterface $player,
         string $name,
-        string $code
+        string $code,
     ): StatisticInterface;
 }

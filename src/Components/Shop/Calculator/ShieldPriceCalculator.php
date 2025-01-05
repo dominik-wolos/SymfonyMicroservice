@@ -20,6 +20,6 @@ final class ShieldPriceCalculator extends AugmentPriceCalculator
 
     public function supports(AugmentInterface $augment): bool
     {
-        return $augment->getType() === AugmentTypes::SHIELD;
+        return AugmentTypes::SHIELD === $augment->getType();
     }
 }

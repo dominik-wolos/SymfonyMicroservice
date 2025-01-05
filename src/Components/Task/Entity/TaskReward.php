@@ -19,36 +19,36 @@ use Symfony\Component\Validator\Constraints as Assert;
         new GetCollection(
             normalizationContext: ['groups' => [
                 self::ITEM_READ,
-            ]]
+            ]],
         ),
         new Get(normalizationContext: ['groups' => [
             self::READ,
-            self::ITEM_READ
+            self::ITEM_READ,
         ]]),
         new Post(
             normalizationContext: ['groups' => [
                 self::READ,
-                self::ITEM_READ
-            ]
+                self::ITEM_READ,
+            ],
             ],
             denormalizationContext: ['groups' => [
                 self::CREATE,
-                self::WRITE
-            ]]
+                self::WRITE,
+            ]],
         ),
         new Patch(
             normalizationContext: ['groups' => [
                 self::READ,
-                self::ITEM_READ
+                self::ITEM_READ,
             ]],
             denormalizationContext: ['groups' => [
-                self::WRITE
-            ]]
+                self::WRITE,
+            ]],
         ),
-        new Delete()
+        new Delete(),
     ],
     normalizationContext: ['groups' => [self::READ, self::ITEM_READ]],
-    denormalizationContext: ['groups' => [self::WRITE, self::CREATE]]
+    denormalizationContext: ['groups' => [self::WRITE, self::CREATE]],
 )]
 #[ORM\Entity]
 #[ORM\Table(name: 'task_reward')]
@@ -117,8 +117,8 @@ class TaskReward implements TaskRewardInterface
 
     public function canBeCollected(): bool
     {
-        return null !== $this?->task->getCompletedAt()
-            && !$this->rewardCollected
+        return null !== $this?->task->getCompletedAt() &&
+            !$this->rewardCollected
         ;
     }
 

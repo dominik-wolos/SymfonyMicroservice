@@ -22,7 +22,7 @@ final class DefaultDataCreator implements DefaultDataCreatorInterface
         #[Autowire('%app.fixtures.default_categories%')]
         private array $defaultCategories,
         #[Autowire('%app.fixtures.default_statistics%')]
-        private array $defaultStatistics
+        private array $defaultStatistics,
     ) {
     }
 
@@ -37,7 +37,7 @@ final class DefaultDataCreator implements DefaultDataCreatorInterface
             $category = $this->categoryFactory->createForPlayerAndCodeAndName(
                 $player,
                 $categoryCode,
-                $categoryName
+                $categoryName,
             );
 
             $this->entityManager->persist($category);
@@ -64,7 +64,7 @@ final class DefaultDataCreator implements DefaultDataCreatorInterface
                 $player,
                 $statistic,
                 $category,
-                false
+                false,
             );
         }
 

@@ -12,7 +12,7 @@ final class ExperienceCalculator implements ExperienceCalculatorInterface
     {
         $player = $task->getPlayer();
 
-        if ($player->getPlayerLevel() < 5) {
+        if (5 > $player->getPlayerLevel()) {
             return 25;
         }
 

@@ -15,44 +15,43 @@ use App\Components\Player\Entity\PlayerStatistics;
 use App\Components\Statistic\Processor\StatisticCreationProcessor;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
-use Symfony\Component\Validator\Constraints\NotNull;
 
 #[ApiResource(
     operations: [
         new GetCollection(
             normalizationContext: ['groups' => [
                 self::ITEM_READ,
-            ]]
+            ]],
         ),
         new Get(normalizationContext: ['groups' => [
             self::READ,
-            self::ITEM_READ
+            self::ITEM_READ,
         ]]),
         new Post(
             processor: StatisticCreationProcessor::class,
             normalizationContext: ['groups' => [
                 self::READ,
-                self::ITEM_READ
-            ]
+                self::ITEM_READ,
+            ],
             ],
             denormalizationContext: ['groups' => [
                 self::CREATE,
-                self::WRITE
-            ]]
+                self::WRITE,
+            ]],
         ),
         new Patch(
             normalizationContext: ['groups' => [
                 self::READ,
-                self::ITEM_READ
+                self::ITEM_READ,
             ]],
             denormalizationContext: ['groups' => [
-                self::WRITE
-            ]]
+                self::WRITE,
+            ]],
         ),
-        new Delete()
+        new Delete(),
     ],
     normalizationContext: ['groups' => [self::READ, self::ITEM_READ]],
-    denormalizationContext: ['groups' => [self::WRITE, self::CREATE]]
+    denormalizationContext: ['groups' => [self::WRITE, self::CREATE]],
 )]
 #[ORM\Entity(repositoryClass: 'App\Components\Statistic\Repository\StatisticRepository')]
 #[ORM\Table(name: 'statistic')]

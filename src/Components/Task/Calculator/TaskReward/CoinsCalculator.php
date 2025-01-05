@@ -12,7 +12,7 @@ final class CoinsCalculator implements CoinsCalculatorInterface
     {
         $player = $task->getPlayer();
 
-        if ($player->getPlayerLevel() < 5) {
+        if (5 > $player->getPlayerLevel()) {
             return 1;
         }
 

@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\Components\Shop\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Components\Category\Entity\Category;
 use App\Components\Category\Entity\CategoryInterface;
@@ -17,7 +15,6 @@ use App\Components\Player\Entity\PlayerInterface;
 use App\Components\Shop\Enum\AugmentTypes;
 use App\Components\Shop\Processor\AugmentCreationProcessor;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -28,27 +25,27 @@ use Symfony\Component\Validator\Constraints as Assert;
         new GetCollection(
             normalizationContext: ['groups' => [
                 self::ITEM_READ,
-            ]]
+            ]],
         ),
         new Get(normalizationContext: ['groups' => [
             self::READ,
-            self::ITEM_READ
+            self::ITEM_READ,
         ]]),
         new Post(
             processor: AugmentCreationProcessor::class,
             normalizationContext: ['groups' => [
                 self::READ,
-                self::ITEM_READ
-            ]
+                self::ITEM_READ,
+            ],
             ],
             denormalizationContext: ['groups' => [
                 self::CREATE,
-                self::WRITE
-            ]]
+                self::WRITE,
+            ]],
         ),
     ],
     normalizationContext: ['groups' => [self::READ, self::ITEM_READ]],
-    denormalizationContext: ['groups' => [self::CREATE]]
+    denormalizationContext: ['groups' => [self::CREATE]],
 )]
 class Augment implements AugmentInterface
 {

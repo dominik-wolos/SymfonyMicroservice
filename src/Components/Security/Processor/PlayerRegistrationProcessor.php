@@ -13,13 +13,11 @@ use Webmozart\Assert\Assert;
 
 final readonly class PlayerRegistrationProcessor implements ProcessorInterface
 {
-
     public function __construct(
         private ProcessorInterface $processor,
         private DefaultDataCreator $defaultDataCreator,
-        private UserPasswordHasherInterface $passwordHasher
-    )
-    {
+        private UserPasswordHasherInterface $passwordHasher,
+    ) {
     }
 
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): Player
@@ -32,7 +30,7 @@ final readonly class PlayerRegistrationProcessor implements ProcessorInterface
 
         $hashedPassword = $this->passwordHasher->hashPassword(
             $data,
-            $data->getPassword()
+            $data->getPassword(),
         );
 
         $this->defaultDataCreator->create($data);

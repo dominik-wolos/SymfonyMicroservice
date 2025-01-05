@@ -18,8 +18,8 @@ final class AugmentCreationProcessor implements ProcessorInterface
         private readonly ProcessorInterface $processor,
         private readonly CurrentPlayerProviderInterface $currentPlayerProvider,
         #[AutowireIterator(AugmentPriceCalculator::TAG)]
-        private readonly iterable $augmentPriceCalculators
-    ){
+        private readonly iterable $augmentPriceCalculators,
+    ) {
     }
 
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = [])
@@ -29,6 +29,7 @@ final class AugmentCreationProcessor implements ProcessorInterface
         foreach ($this->augmentPriceCalculators as $augmentPriceCalculator) {
             if ($augmentPriceCalculator->supports($data)) {
                 $data->setPrice($augmentPriceCalculator->calculate($data));
+
                 break;
             }
         }

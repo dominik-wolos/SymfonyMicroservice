@@ -12,7 +12,6 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Components\Category\Processor\CategoryCreationProcessor;
 use App\Components\Player\Entity\Player;
-use App\Components\Player\Entity\PlayerInterface;
 use App\Components\Statistic\Entity\CategoryStatistic;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -27,38 +26,38 @@ use Symfony\Component\Validator\Constraints\Valid;
         new GetCollection(
             normalizationContext: ['groups' => [
                 self::ITEM_READ,
-            ]]
+            ]],
         ),
         new Get(normalizationContext: ['groups' => [
             self::READ,
-            self::ITEM_READ
+            self::ITEM_READ,
         ]]),
         new Post(
             processor: CategoryCreationProcessor::class,
             normalizationContext: ['groups' => [
                 self::READ,
-                self::ITEM_READ
-                ]
+                self::ITEM_READ,
+                ],
             ],
             denormalizationContext: ['groups' => [
                 self::CREATE,
-                self::WRITE
-            ]]
+                self::WRITE,
+            ]],
         ),
         new Patch(
             normalizationContext: ['groups' => [
                 self::READ,
-                self::ITEM_READ
+                self::ITEM_READ,
             ]],
             denormalizationContext: ['groups' => [
                 self::WRITE,
-                self::UPDATE
-            ]]
+                self::UPDATE,
+            ]],
         ),
-        new Delete()
+        new Delete(),
     ],
     normalizationContext: ['groups' => [self::READ, self::ITEM_READ]],
-    denormalizationContext: ['groups' => [self::WRITE, self::CREATE]]
+    denormalizationContext: ['groups' => [self::WRITE, self::CREATE]],
 )]
 #[ORM\Entity]
 class Category implements CategoryInterface
@@ -75,7 +74,7 @@ class Category implements CategoryInterface
 
     #[ORM\Column(type: 'string')]
     #[NotNull]
-    #[Groups([self::ITEM_READ , self::WRITE])]
+    #[Groups([self::ITEM_READ, self::WRITE])]
     private string $name;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: CategoryStatistic::class)]

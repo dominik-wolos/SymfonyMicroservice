@@ -14,6 +14,6 @@ interface CategoryFactoryInterface
     public function createForPlayerAndCodeAndName(
         PlayerInterface $player,
         string $code,
-        string $name
+        string $name,
     ): CategoryInterface;
 }

@@ -22,16 +22,16 @@ final class CategoryCreationProcessor implements ProcessorInterface
         private readonly CurrentPlayerProviderInterface $currentPlayerProvider,
         private readonly CategoryStatisticFactoryInterface $categoryStatisticFactory,
         private readonly StatisticRepository $statisticRepository,
-        private readonly EntityManagerInterface $entityManager
+        private readonly EntityManagerInterface $entityManager,
     ) {
     }
 
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = [])
     {
-         Assert::isInstanceOf($data, CategoryInterface::class);
+        Assert::isInstanceOf($data, CategoryInterface::class);
 
         $player = $this->currentPlayerProvider->provide($operation, $uriVariables, $context);
-         Assert::isInstanceOf($player, PlayerInterface::class);
+        Assert::isInstanceOf($player, PlayerInterface::class);
 
         $data->setPlayer($player);
         $data->setCode(uniqid(sprintf('%s-', $player->getId()), true));
@@ -39,13 +39,13 @@ final class CategoryCreationProcessor implements ProcessorInterface
         $statisticsIds = array_filter(
             $data->getStatisticsIds(),
             fn (int $statisticId) => $player->getPlayerStatistics()->getStatistics()->exists(
-                fn (int $key, StatisticInterface $statistic) => $statistic->getId() === $statisticId
-            )
+                fn (int $key, StatisticInterface $statistic) => $statistic->getId() === $statisticId,
+            ),
         );
 
         $statistics = $this->statisticRepository->findStatisticsByIdsAndPlayer(
             $statisticsIds,
-            $player
+            $player,
         );
 
         foreach ($statistics as $statistic) {
