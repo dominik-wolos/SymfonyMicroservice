@@ -2,32 +2,60 @@
 
 declare(strict_types=1);
 
-namespace App\Component\Player\Entity;
+namespace App\Components\Player\Entity;
 
-use App\Component\User\Entity\User;
-use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-interface PlayerInterface
+interface PlayerInterface extends UserInterface, PasswordAuthenticatedUserInterface
 {
-    public function getId(): int;
+    public const CREATE = 'player:create';
+
+    public const WRITE = 'player:write';
+
+    public const READ = 'player:read';
+
+    public const ITEM_READ = 'player:item:read';
+
+    public const UPDATE = 'player:update';
+
+    public function getId(): ?int;
 
     public function setId(int $id): void;
-
-    public function getUser(): User;
-
-    public function setUser(User $user): void;
 
     public function getName(): string;
 
     public function setName(string $name): void;
 
-    public function getFriends(): Collection;
+    public function getEmail(): string;
 
-    public function setFriends(Collection $friends): void;
+    public function setEmail(string $email): void;
 
-    public function addFriend(Player $friend): void;
+    public function getPassword(): string;
 
-    public function removeFriend(Player $friend): void;
+    public function setPassword(string $password): void;
 
-    public function hasFriend(Player $friend): bool;
+    public function isEnabled(): bool;
+
+    public function setEnabled(bool $enabled): void;
+
+    public function getPlayerStatistics(): PlayerStatisticsInterface;
+
+    public function setPlayerStatistics(PlayerStatisticsInterface $playerStatistics): void;
+
+    public function getPlayerLevel(): int;
+
+    public function setPlayerLevel(int $playerLevel): void;
+
+    public function getPlayerExperience(): int;
+
+    public function setPlayerExperience(int $playerExperience): void;
+
+    public function getUserPhotoPath(): ?string;
+
+    public function setUserPhotoPath(?string $userPhotoPath): void;
+
+    public function getBalance(): int;
+
+    public function setBalance(int $balance): void;
 }

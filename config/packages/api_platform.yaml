@@ -1,0 +1,22 @@
+api_platform:
+    title: Task Microservice
+    defaults:
+        stateless: true
+        cache_headers:
+            vary: ['Content-Type', 'Authorization', 'Origin']
+    formats:
+        json: ['application/json']
+        jsonld: ['application/ld+json']
+    mapping:
+        paths:
+            - '%kernel.project_dir%/src/Components/Category/Entity'
+            - '%kernel.project_dir%/src/Components/Statistic/Entity'
+            - '%kernel.project_dir%/src/Components/Player/Entity'
+            - '%kernel.project_dir%/src/Components/Task/Entity'
+            - '%kernel.project_dir%/src/Components/Shop/Entity'
+            - '%kernel.project_dir%/src/Components/Challenge/Entity'
+    swagger:
+        api_keys:
+            - name: Authorization
+              type: header
+              key: Bearer

@@ -2,16 +2,25 @@
 
 declare(strict_types=1);
 
-namespace App\Component\Task\Entity;
+namespace App\Components\Task\Entity;
 
-use App\Component\Category\Entity\Category;
-use App\Component\Player\Entity\Player;
-use App\Component\Task\Enum\TaskDifficultyEnum;
-use App\Component\Task\Enum\TaskStatusEnum;
+use App\Components\Category\Entity\Category;
+use App\Components\Player\Entity\Player;
+use App\Components\Task\Dictionary\TaskStates;
+use App\Components\Task\Dictionary\TaskTypes;
+use App\Components\Task\Dictionary\TaskDifficulties;
 
-interface TaskInterface
+interface TaskInterface extends TaskStates, TaskTypes, TaskDifficulties
 {
-    public function getId(): int;
+    public const CREATE = 'task:create';
+
+    public const WRITE = 'task:write';
+
+    public const READ = 'task:read';
+
+    public const ITEM_READ = 'task:item:read';
+
+    public function getId(): ?int;
 
     public function setId(int $id): void;
 
@@ -23,10 +32,6 @@ interface TaskInterface
 
     public function setDescription(string $description): void;
 
-    public function getCode(): string;
-
-    public function setCode(string $code): void;
-
     public function getPlayer(): Player;
 
     public function setPlayer(Player $player): void;
@@ -35,13 +40,13 @@ interface TaskInterface
 
     public function setCategory(Category $category): void;
 
-    public function getDifficulty(): TaskDifficultyEnum;
+    public function getDifficulty(): string;
 
-    public function setDifficulty(TaskDifficultyEnum $difficulty): void;
+    public function setDifficulty(string $difficulty): void;
 
-    public function getStatus(): TaskStatusEnum;
+    public function getStatus(): string;
 
-    public function setStatus(TaskStatusEnum $status): void;
+    public function setStatus(string $status): void;
 
     public function getCreatedAt(): \DateTime;
 
@@ -50,4 +55,18 @@ interface TaskInterface
     public function getCompletedAt(): \DateTime;
 
     public function setCompletedAt(\DateTime $completedAt): void;
+
+    public function getCode(): string;
+
+    public function getReward(): TaskRewardInterface;
+
+    public function setReward(TaskRewardInterface $reward): void;
+
+    public function getStartsAt(): \DateTimeInterface;
+
+    public function setStartsAt(\DateTimeInterface $startsAt): void;
+
+    public function getEndsAt(): \DateTimeInterface;
+
+    public function setEndsAt(\DateTimeInterface $endsAt): void;
 }

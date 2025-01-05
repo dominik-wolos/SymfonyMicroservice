@@ -2,23 +2,33 @@
 
 declare(strict_types=1);
 
-namespace App\Component\Statistic\Entity;
+namespace App\Components\Statistic\Entity;
 
-use App\Component\Category\Entity\Category;
+use App\Components\Category\Entity\Category;
 
 interface CategoryStatisticInterface
 {
+    public const CREATE = 'category_statistic:create';
+
+    public const WRITE = 'category_statistic:write';
+
+    public const READ = 'category_statistic:read';
+
+    public const ITEM_READ = 'category_statistic:item:read';
+
     public function getId(): ?int;
 
-    public function getCategory(): ?Category;
+    public function setId(int $id): void;
 
-    public function setCategory(?Category $category): void;
+    public function getStatistic(): Statistic;
 
-    public function getStatistic(): ?Statistic;
+    public function getCategory(): Category;
 
-    public function setStatistic(?Statistic $statistic): void;
+    public function setCategory(Category $category): void;
 
-    public function getMultiplier(): ?int;
+    public function setStatistic(Statistic $statistic): void;
 
-    public function setMultiplier(?int $multiplier): void;
+    public function getMultiplier(): int;
+
+    public function setMultiplier(int $multiplier): void;
 }

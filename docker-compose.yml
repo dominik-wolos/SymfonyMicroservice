@@ -1,14 +1,18 @@
+version: '3.7'
+
 services:
   php:
     container_name: symfony_php
     build:
       context: .
       target: app_php_dev
+    depends_on:
+      - mysql
     environment:
       - APP_ENV=dev
       - APP_DEBUG=1
       - APP_SECRET=EDITME
-      - DATABASE_URL=mysql://symfony:${MYSQL_PASSWORD:-nopassword}@mysql/symfony_db
+      - DATABASE_URL=mysql://task:password@mysql/task?serverVersion=8.0.32&charset=utf8mb4
       - PHP_DATE_TIMEZONE=${PHP_DATE_TIMEZONE:-UTC}
     volumes:
       - .:/srv/app:rw,cached
@@ -20,14 +24,13 @@ services:
       - public-media:/srv/app/public/media:rw
 
   mysql:
-    container_name: symfony_mysql
-    image: mysql:5.7 # Sylius is fully working on mysql 8.0 version
+    image: mysql:8.0 # Sylius is fully working on mysql 8.0 version
     platform: linux/amd64
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-nopassword}
-      - MYSQL_DATABASE=symfony
-      - MYSQL_USER=symfony
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD:-nopassword}
+      - MYSQL_DATABASE=task
+      - MYSQL_USER=task
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_PASSWORD=password
     volumes:
       - mysql-data:/var/lib/mysql:rw
       # you may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
@@ -55,3 +58,7 @@ services:
 volumes:
   mysql-data:
   public-media:
+
+###> doctrine/doctrine-bundle ###
+  database_data:
+###< doctrine/doctrine-bundle ###

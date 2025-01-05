@@ -16,30 +16,42 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
         mappings:
-            User:
+            Shop:
                 type: attribute
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/Components/User/Entity'
-                prefix: 'App\User\Entity'
-                alias: App/User
+                dir: '%kernel.project_dir%/src/Components/Shop/Entity'
+                prefix: 'App\Components\Shop\Entity'
+                alias: App/Components/Shop
             Player:
                 type: attribute
                 is_bundle: false
                 dir: '%kernel.project_dir%/src/Components/Player/Entity'
-                prefix: 'App\Player\Entity'
-                alias: App/Player
+                prefix: 'App\Components\Player\Entity'
+                alias: App/Components/Player
             Task:
                 type: attribute
                 is_bundle: false
                 dir: '%kernel.project_dir%/src/Components/Task/Entity'
-                prefix: 'App\Task\Entity'
-                alias: App/Task
+                prefix: 'App\Components\Task\Entity'
+                alias: App/Components/Task
             Category:
                 type: attribute
                 is_bundle: false
                 dir: '%kernel.project_dir%/src/Components/Category/Entity'
-                prefix: 'App\Category\Entity'
-                alias: App/Category
+                prefix: 'App\Components\Category\Entity'
+                alias: App/Components/Category
+            Statistic:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Components/Statistic/Entity'
+                prefix: 'App\Components\Statistic\Entity'
+                alias: App/Components/Statistic
+            Challenge:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Components/Challenge/Entity'
+                prefix: 'App\Components\Challenge\Entity'
+                alias: App/Components/Challenge
 when@test:
     doctrine:
         dbal:

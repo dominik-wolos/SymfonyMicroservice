@@ -2,14 +2,24 @@
 
 declare(strict_types=1);
 
-namespace App\Component\Category\Entity;
+namespace App\Components\Category\Entity;
 
-use App\Component\Statistic\Entity\CategoryStatistic;
+use App\Components\Statistic\Entity\CategoryStatistic;
 use Doctrine\Common\Collections\Collection;
 
 interface CategoryInterface
 {
-    public function getId(): int;
+    public const CREATE = 'category:create';
+
+    public const WRITE = 'category:write';
+
+    public const READ = 'category:read';
+
+    public const ITEM_READ = 'category:item:read';
+
+    public const UPDATE = 'category:update';
+
+    public function getId(): ?int;
 
     public function setId(int $id): void;
 
@@ -24,6 +34,4 @@ interface CategoryInterface
     public function addCategoryStatistic(CategoryStatistic $categoryStatistic): void;
 
     public function removeCategoryStatistic(CategoryStatistic $categoryStatistic): void;
-
-    public function hasCategoryStatistic(CategoryStatistic $categoryStatistic): bool;
 }

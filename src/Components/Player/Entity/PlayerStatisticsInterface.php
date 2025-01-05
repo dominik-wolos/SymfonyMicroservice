@@ -2,14 +2,22 @@
 
 declare(strict_types=1);
 
-namespace App\Component\Player\Entity;
+namespace App\Components\Player\Entity;
 
-use App\Component\Statistic\Entity\StatisticValue;
+use App\Components\Statistic\Entity\StatisticInterface;
 use Doctrine\Common\Collections\Collection;
 
 interface PlayerStatisticsInterface
 {
-    public function getId(): int;
+    public const CREATE = 'player_statistics:create';
+
+    public const WRITE = 'player_statistics:write';
+
+    public const READ = 'player_statistics:read';
+
+    public const ITEM_READ = 'player_statistics:item:read';
+
+    public function getId(): ?int;
 
     public function setId(int $id): void;
 
@@ -17,11 +25,13 @@ interface PlayerStatisticsInterface
 
     public function setPlayer(Player $player): void;
 
-    public function getStatisticValues(): Collection;
+    public function getStatistics(): Collection;
 
-    public function setStatisticValues(Collection $statisticValues): void;
+    public function setStatistics(Collection $statistic): void;
 
-    public function addStatisticValue(StatisticValue $statisticValue): void;
+    public function addStatistic(StatisticInterface $statistic): void;
 
-    public function removeStatisticValue(StatisticValue $statisticValue): void;
+    public function removeStatistic(StatisticInterface $statistic): void;
+
+    public function hasStatistic(StatisticInterface $statistic): bool;
 }

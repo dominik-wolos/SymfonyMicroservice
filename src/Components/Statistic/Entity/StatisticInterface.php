@@ -2,15 +2,33 @@
 
 declare(strict_types=1);
 
-namespace App\Component\Statistic\Entity;
+namespace App\Components\Statistic\Entity;
+
+use App\Components\Player\Entity\PlayerStatistics;
 
 interface StatisticInterface
 {
-    public function getId(): int;
+    public const CREATE = 'statistic:create';
+
+    public const WRITE = 'statistic:write';
+
+    public const READ = 'statistic:read';
+
+    public const ITEM_READ = 'statistic:item:read';
 
     public function setId(int $id): void;
 
-    public function getName(): string;
+    public function getId(): ?int;
 
-    public function setName(string $name): void;
+    public function getPlayerStatistics(): PlayerStatistics;
+
+    public function setPlayerStatistics(PlayerStatistics $playerStatistics): void;
+
+    public function getValue(): int;
+
+    public function setValue(int $value): void;
+
+    public function getLevel(): int;
+
+    public function setLevel(int $level): void;
 }
