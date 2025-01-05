@@ -252,8 +252,13 @@ class Player implements PlayerInterface
     }
 
     #[Groups([self::ITEM_READ])]
-    public function getActiveAugments(): Collection
+    public function getActiveAugments(): array
     {
-        return $this->augments->filter(fn(Augment $augment) => new \DateTime() < $augment->getValidUntil());
+        return array_values(
+            $this->augments->filter(
+                fn(Augment $augment) =>
+                new \DateTime() < $augment->getValidUntil()
+            )->toArray()
+        );
     }
 }
