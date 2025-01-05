@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Api\Provider;
 
-use ApiPlatform\State\ProviderInterface;
 use App\Components\Player\Entity\Player;
 use Symfony\Bundle\SecurityBundle\Security;
 
-final readonly class CurrentPlayerProvider implements ProviderInterface
+final readonly class CurrentPlayerProvider implements CurrentPlayerProviderInterface
 {
     public function __construct(private Security $security)
     {

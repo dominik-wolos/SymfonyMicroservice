@@ -12,6 +12,8 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Api\Provider\CurrentPlayerProvider;
 use App\Components\Security\Processor\PlayerRegistrationProcessor;
+use App\Components\Shop\Entity\Augment;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -126,6 +128,9 @@ class Player implements PlayerInterface
     #[ORM\OneToOne(targetEntity: PlayerStatistics::class, cascade: ['persist', 'remove'])]
     #[Groups([self::ITEM_READ])]
     private PlayerStatisticsInterface $playerStatistics;
+
+    #[ORM\OneToMany(targetEntity: Augment::class, mappedBy: 'player', fetch: 'LAZY')]
+    private Collection $augments;
 
     public function getId(): ?int
     {
@@ -244,5 +249,11 @@ class Player implements PlayerInterface
     public function setBalance(int $balance): void
     {
         $this->balance = $balance;
+    }
+
+    //#[Groups([self::ITEM_READ])]
+    public function getActiveAugments(): Collection
+    {
+        return $this->augments->filter(fn(Augment $augment) => new \DateTime() < $augment->getValidUntil());
     }
 }
