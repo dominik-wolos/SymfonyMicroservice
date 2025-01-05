@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use App\Components\Category\Processor\CategoryCreationProcessor;
 use App\Components\Player\Entity\Player;
 use App\Components\Player\Entity\PlayerInterface;
 use App\Components\Statistic\Entity\CategoryStatistic;
@@ -33,6 +34,7 @@ use Symfony\Component\Validator\Constraints\Valid;
             self::ITEM_READ
         ]]),
         new Post(
+            processor: CategoryCreationProcessor::class,
             normalizationContext: ['groups' => [
                 self::READ,
                 self::ITEM_READ
@@ -68,7 +70,6 @@ class Category implements CategoryInterface
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', unique: true)]
-    #[NotNull]
     #[Groups([self::ITEM_READ, self::CREATE])]
     private string $code;
 
@@ -78,15 +79,15 @@ class Category implements CategoryInterface
     private string $name;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: CategoryStatistic::class)]
-    #[Groups([self::READ, self::UPDATE])]
+    #[Groups([self::READ, self::WRITE])]
     #[Assert\Valid]
     private Collection $categoryStatistics;
 
     #[ORM\ManyToOne(targetEntity: Player::class)]
-    #[Valid()]
-    #[NotNull()]
     #[Groups([self::ITEM_READ])]
     private Player $player;
+
+    private array $statisticsIds = [];
 
     public function __construct()
     {
@@ -117,6 +118,7 @@ class Category implements CategoryInterface
     {
         return $this->code;
     }
+
     public function setCode(string $code): void
     {
         $this->code = $code;
@@ -158,5 +160,16 @@ class Category implements CategoryInterface
     public function setPlayer(Player $player): void
     {
         $this->player = $player;
+    }
+
+    public function getStatisticsIds(): array
+    {
+        return $this->statisticsIds;
+    }
+
+    #[Groups([self::WRITE])]
+    public function setStatisticsIds(array $statistics): void
+    {
+        $this->statisticsIds = $statistics;
     }
 }

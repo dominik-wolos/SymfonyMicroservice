@@ -12,6 +12,7 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Components\Player\Entity\PlayerInterface;
 use App\Components\Player\Entity\PlayerStatistics;
+use App\Components\Statistic\Processor\StatisticCreationProcessor;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints\NotNull;
@@ -28,6 +29,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
             self::ITEM_READ
         ]]),
         new Post(
+            processor: StatisticCreationProcessor::class,
             normalizationContext: ['groups' => [
                 self::READ,
                 self::ITEM_READ
@@ -52,7 +54,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
     normalizationContext: ['groups' => [self::READ, self::ITEM_READ]],
     denormalizationContext: ['groups' => [self::WRITE, self::CREATE]]
 )]
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: 'App\Components\Statistic\Repository\StatisticRepository')]
 #[ORM\Table(name: 'statistic')]
 class Statistic implements StatisticInterface
 {
@@ -63,24 +65,27 @@ class Statistic implements StatisticInterface
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', unique: true)]
-    #[Groups([self::ITEM_READ, self::CREATE, PlayerInterface::ITEM_READ])]
-    #[NotNull]
+    #[Groups([self::ITEM_READ, PlayerInterface::ITEM_READ])]
     private string $code;
 
     #[ORM\Column(type: 'string')]
     #[Groups([self::ITEM_READ, self::WRITE, PlayerInterface::ITEM_READ])]
     private string $name;
 
+    #[ORM\Column(type: 'string')]
+    #[Groups([self::ITEM_READ, self::WRITE, PlayerInterface::ITEM_READ])]
+    private string $iconPath;
+
     #[ORM\ManyToOne(targetEntity: PlayerStatistics::class, inversedBy: 'statistics', fetch: 'LAZY')]
-    #[Groups([self::ITEM_READ, self::CREATE])]
+    #[Groups([self::ITEM_READ])]
     private PlayerStatistics $playerStatistics;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups([self::ITEM_READ, self::WRITE, PlayerInterface::ITEM_READ])]
-    private int $value = 0;
+    #[Groups([self::ITEM_READ, PlayerInterface::ITEM_READ])]
+    private int $experience = 0;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups([self::ITEM_READ, self::WRITE, PlayerInterface::ITEM_READ])]
+    #[Groups([self::ITEM_READ, PlayerInterface::ITEM_READ])]
     private int $level = 1;
 
     public function setId(int $id): void
@@ -106,14 +111,14 @@ class Statistic implements StatisticInterface
         }
     }
 
-    public function getValue(): int
+    public function getExperience(): int
     {
-        return $this->value;
+        return $this->experience;
     }
 
-    public function setValue(int $value): void
+    public function setExperience(int $experience): void
     {
-        $this->value = $value;
+        $this->experience = $experience;
     }
 
     public function getLevel(): int
@@ -144,5 +149,15 @@ class Statistic implements StatisticInterface
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    public function getIconPath(): string
+    {
+        return $this->iconPath;
+    }
+
+    public function setIconPath(string $iconPath): void
+    {
+        $this->iconPath = $iconPath;
     }
 }

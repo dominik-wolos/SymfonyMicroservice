@@ -24,11 +24,23 @@ interface StatisticInterface
 
     public function setPlayerStatistics(PlayerStatistics $playerStatistics): void;
 
-    public function getValue(): int;
+    public function getExperience(): int;
 
-    public function setValue(int $value): void;
+    public function setExperience(int $value): void;
 
     public function getLevel(): int;
 
     public function setLevel(int $level): void;
+
+    public function getCode(): string;
+
+    public function setCode(string $code): void;
+
+    public function getName(): string;
+
+    public function setName(string $name): void;
+
+    public function getIconPath(): string;
+
+    public function setIconPath(string $iconPath): void;
 }

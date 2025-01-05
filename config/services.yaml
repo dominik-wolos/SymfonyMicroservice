@@ -40,3 +40,9 @@ services:
     App\Components\Shop\Processor\AugmentCreationProcessor:
         bind:
             $processor: '@api_platform.doctrine.orm.state.persist_processor'
+    App\Components\Statistic\Processor\StatisticCreationProcessor:
+        bind:
+            $processor: '@api_platform.doctrine.orm.state.persist_processor'
+    App\Components\Category\Processor\CategoryCreationProcessor:
+        bind:
+            $processor: '@api_platform.doctrine.orm.state.persist_processor'

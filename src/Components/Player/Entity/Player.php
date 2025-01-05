@@ -251,7 +251,7 @@ class Player implements PlayerInterface
         $this->balance = $balance;
     }
 
-    //#[Groups([self::ITEM_READ])]
+    #[Groups([self::ITEM_READ])]
     public function getActiveAugments(): Collection
     {
         return $this->augments->filter(fn(Augment $augment) => new \DateTime() < $augment->getValidUntil());
