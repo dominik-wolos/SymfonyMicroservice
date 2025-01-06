@@ -1,6 +1,6 @@
 parameters:
     app.fixtures.default_statistics:
-        - { name: 'Inteligence', code: 'inteligence', category: 'chess' }
-        - { name: 'Responsibility', code: 'responsibility', category: 'home_duties' }
-        - { name: 'Strength', code: 'strength', category: 'gym' }
-        - { name: 'Mental health', code: 'mental_health', category: 'meditation' }
+        - { name: 'Inteligence', code: 'inteligence', category: 'chess', icon_path: 'knowledge_bar' }
+        - { name: 'Responsibility', code: 'responsibility', category: 'home_duties', icon_path: 'determination_bar' }
+        - { name: 'Strength', code: 'strength', category: 'gym', icon_path: 'physical_fitness_bar' }
+        - { name: 'Mental health', code: 'mental_health', category: 'meditation', icon_path: 'inteligence_bar' }
