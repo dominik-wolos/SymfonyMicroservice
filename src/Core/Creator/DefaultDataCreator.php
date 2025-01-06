@@ -60,6 +60,7 @@ final class DefaultDataCreator implements DefaultDataCreatorInterface
             );
             $statistic->setIconPath($iconPath);
 
+            $statistic->setIconPath($iconPath);
             $this->entityManager->persist($statistic);
 
             $category = $categories[$categoryCode] ?? null;

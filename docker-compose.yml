@@ -14,6 +14,7 @@ services:
       - APP_SECRET=EDITME
       - DATABASE_URL=mysql://task:password@mysql/task?serverVersion=8.0.32&charset=utf8mb4
       - PHP_DATE_TIMEZONE=${PHP_DATE_TIMEZONE:-UTC}
+      - SENTRY_DSN=https://76fa7942e6a970ea854a4300bd0b0066@o927425.ingest.us.sentry.io/4508624291889152
     volumes:
       - .:/srv/app:rw,cached
       # if you develop on Linux, you may use a bind-mounted host directory instead
