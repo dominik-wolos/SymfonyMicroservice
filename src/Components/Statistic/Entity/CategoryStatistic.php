@@ -14,7 +14,7 @@ use App\Components\Category\Entity\Category;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: 'App\Components\Statistic\Repository\CategoryStatisticRepository')]
 #[ORM\Table(name: 'category_statistic')]
 #[ApiResource(
     operations: [
@@ -64,7 +64,7 @@ class CategoryStatistic implements CategoryStatisticInterface
     #[Groups([self::ITEM_READ, self::WRITE])]
     private Category $category;
 
-    #[ORM\OneToOne(targetEntity: Statistic::class)]
+    #[ORM\ManyToOne(targetEntity: Statistic::class)]
     #[Groups([self::ITEM_READ, self::CREATE])]
     private Statistic $statistic;
 
