@@ -94,33 +94,15 @@ RUN set -eux; \
     composer install --prefer-dist --no-autoloader --no-interaction --no-scripts --no-progress; \
     composer clear-cache
 
-FROM app_php_prod AS app_cron
 
+FROM app_php_dev AS app_php_prod
 RUN set -eux; \
 	apk add --no-cache --virtual .build-deps \
 		apk-cron \
         acl \
+        wget \
 	;
 
-COPY docker/cron/crontab /etc/crontabs/root
-COPY docker/cron/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-RUN chmod +x /usr/local/bin/docker-entrypoint
-
-ENTRYPOINT ["docker-entrypoint"]
-CMD ["crond", "-f"]
-
-FROM app_php_prod AS app_migrations_prod
-
-RUN apk add --no-cache wget acl
-COPY docker/migrations/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-RUN chmod +x /usr/local/bin/docker-entrypoint
-
-ENTRYPOINT ["docker-entrypoint"]
-
-FROM app_php_dev AS app_migrations_dev
-
-RUN apk add --no-cache wget acl
-COPY docker/migrations/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
 
 RUN composer dump-autoload --classmap-authoritative
