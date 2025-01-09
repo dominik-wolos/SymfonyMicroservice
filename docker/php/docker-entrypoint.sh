@@ -15,5 +15,6 @@ if [ "$1" = 'php-fpm' ] || [ "$1" = 'bin/console' ]; then
 		composer install --prefer-dist --no-progress --no-interaction
 		bin/console assets:install --no-interaction
 	fi
+fi
 
 exec docker-php-entrypoint "$@"
