@@ -12,7 +12,7 @@ services:
       - APP_ENV=dev
       - APP_DEBUG=1
       - APP_SECRET=EDITME
-      - DATABASE_URL=mysql://task:password@mysql/task?serverVersion=8.0.32&charset=utf8mb4
+      - DATABASE_URL="mysql://task:password@127.0.0.1:3307/task?serverVersion=8.0.32&charset=utf8mb4"
       - PHP_DATE_TIMEZONE=${PHP_DATE_TIMEZONE:-UTC}
     volumes:
       - .:/srv/app:rw,cached
@@ -36,7 +36,7 @@ services:
       # you may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
       # - ./docker/mysql/data:/var/lib/mysql:rw,delegated
     ports:
-      - "3307:3306"
+      - "3306:3306"
     cap_add:
       - SYS_NICE # prevent "mbind: Operation not permitted" errors
 
