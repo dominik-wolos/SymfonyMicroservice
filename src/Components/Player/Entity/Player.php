@@ -119,7 +119,7 @@ class Player implements PlayerInterface
 
     #[ORM\Column(type: 'string', nullable: true, options: ['default' => ''])]
     #[Groups([self::ITEM_READ])]
-    private ?string $userPhotoPath = null;
+    private ?string $userPhotoPath = '';
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     #[Groups([self::ITEM_READ])]
