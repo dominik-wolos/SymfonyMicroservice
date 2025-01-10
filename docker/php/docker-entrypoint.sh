@@ -15,12 +15,8 @@ if [ "$1" = 'php-fpm' ] || [ "$1" = 'bin/console' ]; then
 		composer install --prefer-dist --no-progress --no-interaction
 		bin/console assets:install --no-interaction
 	fi
-
-	while ping -c1 migrations >/dev/null 2>&1;
-	do
-	    (>&2 echo "Waiting for Migrations container to finish")
-	    sleep 1;
-	done;
 fi
 
 exec docker-php-entrypoint "$@"
+
+return 0
