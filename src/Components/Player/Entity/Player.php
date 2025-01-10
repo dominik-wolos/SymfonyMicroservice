@@ -111,11 +111,11 @@ class Player implements PlayerInterface
 
     #[ORM\Column(type: 'integer', options: ['default' => 1])]
     #[Groups([self::ITEM_READ])]
-    private int $playerLevel;
+    private int $playerLevel = 1;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     #[Groups([self::ITEM_READ])]
-    private int $playerExperience;
+    private int $playerExperience = 0;
 
     #[ORM\Column(type: 'string', nullable: true, options: ['default' => ''])]
     #[Groups([self::ITEM_READ])]
