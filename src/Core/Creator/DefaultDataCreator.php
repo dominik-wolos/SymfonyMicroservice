@@ -29,6 +29,8 @@ final class DefaultDataCreator implements DefaultDataCreatorInterface
     public function create(PlayerInterface $player): void
     {
         $categories = [];
+        $player->setPlayerLevel(1);
+        $player->setPlayerExperience(0);
         $player->setPlayerStatistics($this->playerStatisticsFactory->createForPlayer($player));
         foreach ($this->defaultCategories as $category) {
             $categoryName = $category['name'];
@@ -49,12 +51,14 @@ final class DefaultDataCreator implements DefaultDataCreatorInterface
             $statisticName = $statistic['name'];
             $statisticCode = $statistic['code'];
             $categoryCode = $statistic['category'];
+            $iconPath = $statistic['icon_path'];
 
             $statistic = $this->statisticFactory->createForPlayerAndCodeAndName(
                 $player,
                 $statisticName,
                 $statisticCode,
             );
+            $statistic->setIconPath($iconPath);
 
             $this->entityManager->persist($statistic);
 
