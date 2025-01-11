@@ -13,13 +13,11 @@ use Webmozart\Assert\Assert;
 
 final readonly class PlayerRegistrationProcessor implements ProcessorInterface
 {
-
     public function __construct(
         private ProcessorInterface $processor,
         private DefaultDataCreator $defaultDataCreator,
         private UserPasswordHasherInterface $passwordHasher
-    )
-    {
+    ) {
     }
 
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): Player
@@ -37,6 +35,11 @@ final readonly class PlayerRegistrationProcessor implements ProcessorInterface
 
         $this->defaultDataCreator->create($data);
 
+        do {
+            $photoNumber = random_int(1, 8);
+        } while (4 !== $photoNumber);
+
+        $data->setUserPhotoPath(sprintf('user_photo_%s', $photoNumber));
         $data->setPassword($hashedPassword);
         $data->eraseCredentials();
 

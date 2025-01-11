@@ -82,8 +82,6 @@ use Symfony\Component\Validator\Constraints\NotNull;
 #[UniqueEntity(fields: ['name'], message: 'This username is already in use.')]
 class Player implements PlayerInterface
 {
-    private const DEFAULT_USER_PHOTO_PATH = 'user_photo_1';
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
@@ -121,7 +119,7 @@ class Player implements PlayerInterface
 
     #[ORM\Column(type: 'string', nullable: true, options: ['default' => ''])]
     #[Groups([self::ITEM_READ])]
-    private ?string $userPhotoPath = self::DEFAULT_USER_PHOTO_PATH;
+    private ?string $userPhotoPath;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     #[Groups([self::ITEM_READ])]
@@ -235,7 +233,7 @@ class Player implements PlayerInterface
 
     public function getUserPhotoPath(): ?string
     {
-        return $this->userPhotoPath ?? self::DEFAULT_USER_PHOTO_PATH;
+        return $this->userPhotoPath;
     }
 
     public function setUserPhotoPath(?string $userPhotoPath): void
