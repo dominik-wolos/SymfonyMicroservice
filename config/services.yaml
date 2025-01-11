@@ -43,6 +43,6 @@ services:
     App\Components\Statistic\Processor\StatisticCreationProcessor:
         bind:
             $processor: '@api_platform.doctrine.orm.state.persist_processor'
-    App\Components\Category\Processor\CategoryCreationProcessor:
+    App\Components\Category\Processor\CategoryProcessor:
         bind:
             $processor: '@api_platform.doctrine.orm.state.persist_processor'

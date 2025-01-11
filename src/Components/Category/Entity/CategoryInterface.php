@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Components\Category\Entity;
 
 use App\Components\Statistic\Entity\CategoryStatistic;
+use App\Components\Statistic\Entity\CategoryStatisticInterface;
 use Doctrine\Common\Collections\Collection;
 
 interface CategoryInterface
@@ -34,4 +35,10 @@ interface CategoryInterface
     public function addCategoryStatistic(CategoryStatistic $categoryStatistic): void;
 
     public function removeCategoryStatistic(CategoryStatistic $categoryStatistic): void;
+
+    public function getStatisticsIds(): array;
+
+    public function setStatisticsIds(array $statistics): void;
+
+    public function getCategoryStatisticByStatisticId(int $removeId): ?CategoryStatisticInterface;
 }

@@ -60,11 +60,17 @@ class CategoryStatistic implements CategoryStatisticInterface
     #[Groups([self::ITEM_READ])]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'categoryStatistics', fetch: 'LAZY')]
+    #[ORM\ManyToOne(
+        targetEntity: Category::class,
+        inversedBy: 'categoryStatistics',
+        cascade: ['remove'],
+        fetch: 'LAZY'
+    )]
     #[Groups([self::ITEM_READ, self::WRITE])]
     private Category $category;
 
     #[ORM\ManyToOne(targetEntity: Statistic::class)]
+    #[ORM\JoinColumn(name: "statistic_id", referencedColumnName: "id", onDelete: "CASCADE")]
     #[Groups([self::ITEM_READ, self::CREATE])]
     private Statistic $statistic;
 
@@ -113,5 +119,10 @@ class CategoryStatistic implements CategoryStatisticInterface
     public function setMultiplier(int $multiplier): void
     {
         $this->multiplier = $multiplier;
+    }
+
+    public function getStatisticId(): ?int
+    {
+        return $this->statistic->getId();
     }
 }

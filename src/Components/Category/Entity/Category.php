@@ -10,9 +10,10 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use App\Components\Category\Processor\CategoryCreationProcessor;
+use App\Components\Category\Processor\CategoryProcessor;
 use App\Components\Player\Entity\Player;
 use App\Components\Statistic\Entity\CategoryStatistic;
+use App\Components\Statistic\Entity\CategoryStatisticInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -32,7 +33,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
             self::ITEM_READ
         ]]),
         new Post(
-            processor: CategoryCreationProcessor::class,
+            processor: CategoryProcessor::class,
             normalizationContext: ['groups' => [
                 self::READ,
                 self::ITEM_READ
@@ -44,6 +45,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
             ]]
         ),
         new Patch(
+            processor: CategoryProcessor::class,
             normalizationContext: ['groups' => [
                 self::READ,
                 self::ITEM_READ
@@ -76,7 +78,7 @@ class Category implements CategoryInterface
     #[Groups([self::ITEM_READ , self::WRITE])]
     private string $name;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: CategoryStatistic::class)]
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: CategoryStatistic::class, cascade: ['remove'])]
     #[Groups([self::READ])]
     #[Assert\Valid]
     private Collection $categoryStatistics;
@@ -169,5 +171,16 @@ class Category implements CategoryInterface
     public function setStatisticsIds(array $statistics): void
     {
         $this->statisticsIds = $statistics;
+    }
+
+    public function getCategoryStatisticByStatisticId(int $removeId): ?CategoryStatisticInterface
+    {
+        foreach ($this->categoryStatistics as $categoryStatistic) {
+            if ($categoryStatistic->getStatisticId() === $removeId) {
+                return $categoryStatistic;
+            }
+        }
+
+        return null;
     }
 }
