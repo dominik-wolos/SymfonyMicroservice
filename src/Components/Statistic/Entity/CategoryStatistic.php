@@ -63,7 +63,7 @@ class CategoryStatistic implements CategoryStatisticInterface
     #[ORM\ManyToOne(
         targetEntity: Category::class,
         inversedBy: 'categoryStatistics',
-        cascade: ['remove'],
+        cascade: ['remove', 'persist'],
         fetch: 'LAZY'
     )]
     #[Groups([self::ITEM_READ, self::WRITE])]
