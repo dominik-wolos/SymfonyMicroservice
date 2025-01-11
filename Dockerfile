@@ -49,7 +49,7 @@ RUN set -eux; \
     composer clear-cache
 
 # copy only specifically what we need
-COPY .env .env.prod ./
+COPY .env .env.prod .env.local ./
 COPY bin bin/
 COPY config config/
 COPY public public/

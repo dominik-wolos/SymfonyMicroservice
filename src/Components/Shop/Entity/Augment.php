@@ -184,6 +184,7 @@ class Augment implements AugmentInterface
         $this->player = $player;
     }
 
+    #[Groups([self::ITEM_READ, PlayerInterface::ITEM_READ])]
     public function getValidUntil(): \DateTimeInterface
     {
         return $this->createdAt->modify(sprintf('+%d days', $this->validForDays));
@@ -213,5 +214,11 @@ class Augment implements AugmentInterface
     public function getCategoryName(): string
     {
         return $this->category->getName();
+    }
+
+    #[Groups([self::ITEM_READ])]
+    public function getPlayerCurrentBalance(): int
+    {
+        return $this->player->getBalance();
     }
 }

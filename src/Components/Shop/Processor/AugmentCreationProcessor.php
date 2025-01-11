@@ -28,7 +28,8 @@ final class AugmentCreationProcessor implements ProcessorInterface
 
         foreach ($this->augmentPriceCalculators as $augmentPriceCalculator) {
             if ($augmentPriceCalculator->supports($data)) {
-                $data->setPrice($augmentPriceCalculator->calculate($data));
+                $augmentPriceCalculator->calculate($data);
+
                 break;
             }
         }
