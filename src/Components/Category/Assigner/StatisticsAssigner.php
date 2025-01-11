@@ -48,5 +48,7 @@ final class StatisticsAssigner implements StatisticsAssignerInterface
 
             $this->entityManager->remove($categoryStatistic);
         }
+
+        $this->entityManager->persist($category);
     }
 }
