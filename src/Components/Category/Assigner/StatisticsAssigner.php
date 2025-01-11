@@ -45,6 +45,7 @@ final class StatisticsAssigner implements StatisticsAssignerInterface
         $removeIds = array_diff($existingStatisticsIds, $statisticIds);
         foreach ($removeIds as $removeId) {
             $categoryStatistic = $category->getCategoryStatisticByStatisticId((int) $removeId);
+            $category->removeCategoryStatistic($categoryStatistic);
 
             $this->entityManager->remove($categoryStatistic);
         }
