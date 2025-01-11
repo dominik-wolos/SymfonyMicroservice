@@ -12,7 +12,6 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Components\Category\Processor\CategoryCreationProcessor;
 use App\Components\Player\Entity\Player;
-use App\Components\Player\Entity\PlayerInterface;
 use App\Components\Statistic\Entity\CategoryStatistic;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -20,7 +19,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\NotNull;
-use Symfony\Component\Validator\Constraints\Valid;
 
 #[ApiResource(
     operations: [
@@ -70,7 +68,7 @@ class Category implements CategoryInterface
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', unique: true)]
-    #[Groups([self::ITEM_READ, self::CREATE])]
+    #[Groups([self::ITEM_READ])]
     private string $code;
 
     #[ORM\Column(type: 'string')]
@@ -79,7 +77,7 @@ class Category implements CategoryInterface
     private string $name;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: CategoryStatistic::class)]
-    #[Groups([self::READ, self::WRITE])]
+    #[Groups([self::READ])]
     #[Assert\Valid]
     private Collection $categoryStatistics;
 

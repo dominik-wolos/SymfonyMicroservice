@@ -55,7 +55,6 @@ class Augment implements AugmentInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
-    #[Groups([self::ITEM_READ])]
     private int $id;
 
     #[ORM\Column(type: 'string', length: 30)]
@@ -82,11 +81,10 @@ class Augment implements AugmentInterface
     private int $multiplier;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'categoryStatistics', fetch: 'LAZY')]
-    #[Groups([self::ITEM_READ, self::WRITE])]
+    #[Groups([self::WRITE])]
     private Category $category;
 
     #[ORM\ManyToOne(targetEntity: Player::class, inversedBy: 'augments')]
-    #[Groups([self::ITEM_READ])]
     private PlayerInterface $player;
 
     public function __construct()
@@ -210,15 +208,9 @@ class Augment implements AugmentInterface
         $this->multiplier = $multiplier;
     }
 
-    #[Groups([PlayerInterface::ITEM_READ])]
+    #[Groups([PlayerInterface::ITEM_READ, self::ITEM_READ])]
     public function getCategoryName(): string
     {
         return $this->category->getName();
-    }
-
-    #[Groups([self::ITEM_READ])]
-    public function getPlayerCurrentBalance(): int
-    {
-        return $this->player->getBalance();
     }
 }
