@@ -31,4 +31,6 @@ interface CategoryStatisticInterface
     public function getMultiplier(): int;
 
     public function setMultiplier(int $multiplier): void;
-}
+
+    public function getStatisticId(): ?int;
+    }
