@@ -12,6 +12,8 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Components\Category\Processor\CategoryProcessor;
 use App\Components\Player\Entity\Player;
+use App\Components\Player\Entity\PlayerInterface;
+use App\Components\Shop\Entity\AugmentInterface;
 use App\Components\Statistic\Entity\CategoryStatistic;
 use App\Components\Statistic\Entity\CategoryStatisticInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -66,7 +68,11 @@ class Category implements CategoryInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
-    #[Groups([self::ITEM_READ])]
+    #[Groups([
+        self::ITEM_READ,
+        PlayerInterface::ITEM_READ,
+        AugmentInterface::ITEM_READ
+    ])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', unique: true)]
@@ -75,7 +81,12 @@ class Category implements CategoryInterface
 
     #[ORM\Column(type: 'string')]
     #[NotNull]
-    #[Groups([self::ITEM_READ , self::WRITE])]
+    #[Groups([
+        self::ITEM_READ ,
+        self::WRITE,
+        PlayerInterface::ITEM_READ,
+        AugmentInterface::ITEM_READ
+    ])]
     private string $name;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: CategoryStatistic::class, cascade: ['remove'])]

@@ -60,12 +60,8 @@ class CategoryStatistic implements CategoryStatisticInterface
     #[Groups([self::ITEM_READ])]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(
-        targetEntity: Category::class,
-        inversedBy: 'categoryStatistics',
-        cascade: ['remove'],
-        fetch: 'LAZY'
-    )]
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'categoryStatistics',)]
+    #[ORM\JoinColumn(name: "category_id", referencedColumnName: "id", onDelete: "CASCADE")]
     #[Groups([self::ITEM_READ, self::WRITE])]
     private Category $category;
 

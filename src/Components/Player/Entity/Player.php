@@ -11,6 +11,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Api\Provider\CurrentPlayerProvider;
+use App\Components\Category\Entity\Category;
 use App\Components\Security\Processor\PlayerRegistrationProcessor;
 use App\Components\Shop\Entity\Augment;
 use Doctrine\Common\Collections\Collection;
@@ -85,7 +86,6 @@ class Player implements PlayerInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
-    #[Groups([self::ITEM_READ])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', unique: true)]
@@ -131,6 +131,10 @@ class Player implements PlayerInterface
 
     #[ORM\OneToMany(targetEntity: Augment::class, mappedBy: 'player', fetch: 'LAZY')]
     private Collection $augments;
+
+    #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'player', fetch: 'LAZY')]
+    #[Groups([self::ITEM_READ])]
+    private Collection $categories;
 
     public function getId(): ?int
     {
@@ -260,5 +264,11 @@ class Player implements PlayerInterface
                 new \DateTime() < $augment->getValidUntil()
             )->toArray()
         );
+    }
+
+    #[Groups([self::ITEM_READ])]
+    public function getCategories(): Collection
+    {
+        return $this->categories;
     }
 }
