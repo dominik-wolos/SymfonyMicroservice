@@ -80,11 +80,13 @@ class Task implements TaskInterface
     private string $description;
 
     #[ORM\ManyToOne(targetEntity: Player::class)]
+    #[ORM\JoinColumn(nullable: false)]
     #[Groups([self::ITEM_READ])]
     private Player $player;
 
     #[ORM\ManyToOne(targetEntity: Category::class)]
     #[Groups([self::ITEM_READ, self::WRITE])]
+    #[ORM\JoinColumn(nullable: true)]
     private Category $category;
 
     #[ORM\Column(type: 'string')]
@@ -99,7 +101,7 @@ class Task implements TaskInterface
         targetEntity: TaskReward::class,
         mappedBy: 'task',
         cascade: ['persist', 'remove'],
-        orphanRemoval: true
+        orphanRemoval: true,
     )]
     #[Groups([self::ITEM_READ])]
     private TaskRewardInterface $reward;

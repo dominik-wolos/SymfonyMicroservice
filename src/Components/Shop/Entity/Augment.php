@@ -81,7 +81,7 @@ class Augment implements AugmentInterface
     private int $multiplier;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'categoryStatistics', fetch: 'LAZY')]
-    #[Groups([self::WRITE])]
+    #[Groups([self::WRITE, self::ITEM_READ, PlayerInterface::ITEM_READ])]
     private Category $category;
 
     #[ORM\ManyToOne(targetEntity: Player::class, inversedBy: 'augments')]

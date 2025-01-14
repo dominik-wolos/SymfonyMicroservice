@@ -61,11 +61,11 @@ class Statistic implements StatisticInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
-    #[Groups([self::ITEM_READ])]
+    #[Groups([self::ITEM_READ, PlayerInterface::ITEM_READ])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', unique: true)]
-    #[Groups([self::ITEM_READ, PlayerInterface::ITEM_READ])]
+    #[Groups([self::ITEM_READ])]
     private string $code;
 
     #[ORM\Column(type: 'string')]

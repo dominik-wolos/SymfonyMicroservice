@@ -8,7 +8,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: 'App\Components\Challenge\Repository\ChallengeRepository')]
 #[ORM\Table(name: 'challenge')]
 #[ApiResource(
     operations: [
