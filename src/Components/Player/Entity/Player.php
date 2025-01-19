@@ -39,8 +39,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
         new Post(
             processor: PlayerRegistrationProcessor::class,
             normalizationContext: ['groups' => [
-                self::READ,
-                self::ITEM_READ
+                self::REGISTER,
             ]
             ],
             denormalizationContext: ['groups' => [
@@ -49,7 +48,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
             ]]
         )
     ],
-    normalizationContext: ['groups' => [self::READ, self::ITEM_READ]],
+    normalizationContext: ['groups' => [self::REGISTER]],
     denormalizationContext: ['groups' => [self::WRITE, self::CREATE,]]
 )]
 #[ApiResource(
@@ -86,6 +85,7 @@ class Player implements PlayerInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[Groups(self::ITEM_READ)]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', unique: true)]

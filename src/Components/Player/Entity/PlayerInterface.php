@@ -19,6 +19,8 @@ interface PlayerInterface extends UserInterface, PasswordAuthenticatedUserInterf
 
     public const UPDATE = 'player:update';
 
+    public const REGISTER = 'player:register';
+
     public function getId(): ?int;
 
     public function setId(int $id): void;
