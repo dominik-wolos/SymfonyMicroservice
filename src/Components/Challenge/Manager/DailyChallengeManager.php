@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Components\Challenge\Manager;
 
-use ApiPlatform\Metadata\Get;
 use App\Api\Provider\CurrentPlayerProviderInterface;
 use App\Components\Task\Creator\TaskCreatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,7 +19,7 @@ final class DailyChallengeManager implements DailyChallengeManagerInterface
 
     public function accept(): void
     {
-        $player = $this->currentPlayerProvider->provide(new Get());
+        $player = $this->currentPlayerProvider->provideFromSecurity();
         $task = $this->taskCreator->createForPlayer($player);
     }
 

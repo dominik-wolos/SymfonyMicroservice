@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Components\Challenge\Provider;
 
+use ApiPlatform\Metadata\Operation;
 use App\Components\Challenge\Creator\DailyChallengeCreatorInterface;
 use App\Components\Challenge\Entity\DailyChallengeInterface;
 use App\Components\Challenge\Repository\DailyChallengeRepository;
@@ -16,8 +17,11 @@ final class DailyChallengeProvider implements DailyChallengeProviderInterface
     ) {
     }
 
-    public function getDailyChallenge(): DailyChallengeInterface
-    {
+    public function provide(
+        Operation $operation,
+        array $uriVariables = [],
+        array $context = []
+    ): DailyChallengeInterface {
         $challenge = $this->dailyChallengeRepository->getTodaysChallenge();
 
         if ($challenge !== null) {

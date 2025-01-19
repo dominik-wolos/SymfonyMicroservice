@@ -16,6 +16,11 @@ final readonly class CurrentPlayerProvider implements CurrentPlayerProviderInter
 
     public function provide($operation, array $uriVariables = [], array $context = []): ?Player
     {
+        return $this->provideFromSecurity();
+    }
+
+    public function provideFromSecurity(): ?Player
+    {
         $user = $this->security->getUser();
 
         if (!$user instanceof Player) {

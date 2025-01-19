@@ -24,6 +24,7 @@ final class DailyChallengeCreator implements DailyChallengeCreatorInterface
         $dailyChallenge = $this->dailyChallengeFactory->createForChallengeAndToday($challenge);
 
         $this->entityManager->persist($dailyChallenge);
+        $this->entityManager->flush();
 
         return $dailyChallenge;
     }

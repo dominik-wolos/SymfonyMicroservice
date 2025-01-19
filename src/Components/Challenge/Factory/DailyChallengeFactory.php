@@ -20,6 +20,10 @@ final class DailyChallengeFactory implements DailyChallengeFactoryInterface
         $dailyChallenge = new DailyChallenge();
         $dailyChallenge->setDate(new \DateTime('today'));
         $dailyChallenge->setChallenge($challenge);
+        $dailyChallenge->setName($challenge->getName());
+        $dailyChallenge->setDescription($challenge->getDescription());
+        $dailyChallenge->setCoins($challenge->getCoins());
+        $dailyChallenge->setPoints($challenge->getPoints());
 
         return $dailyChallenge;
     }
