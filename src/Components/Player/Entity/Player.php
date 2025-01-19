@@ -118,7 +118,7 @@ class Player implements PlayerInterface
     private int $playerExperience = 0;
 
     #[ORM\Column(type: 'string', nullable: true, options: ['default' => ''])]
-    #[Groups([self::ITEM_READ])]
+    #[Groups([self::ITEM_READ, self:: UPDATE])]
     private ?string $userPhotoPath;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
