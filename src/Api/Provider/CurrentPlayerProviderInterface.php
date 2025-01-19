@@ -10,4 +10,6 @@ use App\Components\Player\Entity\Player;
 interface CurrentPlayerProviderInterface extends ProviderInterface
 {
     public function provide($operation, array $uriVariables = [], array $context = []): ?Player;
+
+    public function provideFromSecurity(): ?Player;
 }

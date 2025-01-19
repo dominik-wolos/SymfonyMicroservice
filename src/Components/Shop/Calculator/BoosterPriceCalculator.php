@@ -13,7 +13,9 @@ final class BoosterPriceCalculator extends AugmentPriceCalculator
 {
     public function calculate(AugmentInterface $augment): int
     {
-        return $augment->getValidForDays() * $augment->getMultiplier() * 2;
+        $augment->setPrice($augment->getValidForDays() * $augment->getMultiplier() * 2);
+
+        return $augment->getPrice();
     }
 
     public function supports(AugmentInterface $augment): bool

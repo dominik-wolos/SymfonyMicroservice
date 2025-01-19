@@ -9,11 +9,17 @@ use Symfony\Bundle\SecurityBundle\Security;
 
 final readonly class CurrentPlayerProvider implements CurrentPlayerProviderInterface
 {
-    public function __construct(private Security $security)
-    {
+    public function __construct(
+        private readonly Security $security
+    ) {
     }
 
     public function provide($operation, array $uriVariables = [], array $context = []): ?Player
+    {
+        return $this->provideFromSecurity();
+    }
+
+    public function provideFromSecurity(): ?Player
     {
         $user = $this->security->getUser();
 
