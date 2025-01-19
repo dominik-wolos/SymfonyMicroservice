@@ -95,7 +95,6 @@ class Category implements CategoryInterface
     private Collection $categoryStatistics;
 
     #[ORM\ManyToOne(targetEntity: Player::class)]
-    #[Groups([self::ITEM_READ])]
     private Player $player;
 
     private array $statisticsIds = [];

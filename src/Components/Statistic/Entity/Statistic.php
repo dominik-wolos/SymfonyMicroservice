@@ -77,7 +77,6 @@ class Statistic implements StatisticInterface
     private string $iconPath = 'determination_bar';
 
     #[ORM\ManyToOne(targetEntity: PlayerStatistics::class, inversedBy: 'statistics', fetch: 'LAZY')]
-    #[Groups([self::ITEM_READ])]
     private PlayerStatistics $playerStatistics;
 
     #[ORM\Column(type: 'integer')]
