@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\Components\Shop\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Components\Category\Entity\Category;
 use App\Components\Category\Entity\CategoryInterface;
@@ -17,7 +15,6 @@ use App\Components\Player\Entity\PlayerInterface;
 use App\Components\Shop\Enum\AugmentTypes;
 use App\Components\Shop\Processor\AugmentCreationProcessor;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -90,6 +87,11 @@ class Augment implements AugmentInterface
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+    }
+
+    public function hasId(): bool
+    {
+        return isset($this->id);
     }
 
     public function getId(): int

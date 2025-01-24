@@ -22,7 +22,7 @@ final class AugmentCreationProcessor implements ProcessorInterface
     ){
     }
 
-    public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = [])
+    public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): mixed
     {
         Assert::isInstanceOf($data, AugmentInterface::class);
 
@@ -33,8 +33,10 @@ final class AugmentCreationProcessor implements ProcessorInterface
                 break;
             }
         }
-
         $data->setPlayer($this->currentPlayerProvider->provide($operation, $uriVariables, $context));
+        $wallet = $data->getPlayer()->getWallet();
+
+        $wallet->purchase($data);
 
         return $this->processor->process($data, $operation, $uriVariables, $context);
     }

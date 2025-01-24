@@ -4,16 +4,30 @@ declare(strict_types=1);
 
 namespace App\Components\Player\Entity;
 
-use App\Components\Shop\Entity\OrderItemInterface;
+use App\Api\DataProvider\DirectPlayerResourceInterface;
+use App\Components\Shop\Entity\AugmentInterface;
 use App\Components\Task\Entity\TaskRewardInterface;
+use Doctrine\ORM\Mapping as ORM;
 
-class Wallet implements WalletInterface
+#[ORM\Entity]
+#[ORM\Table(name: 'wallet')]
+class Wallet implements WalletInterface, DirectPlayerResourceInterface
 {
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private int $id;
 
+    #[ORM\OneToOne(targetEntity: Player::class, inversedBy: 'wallet')]
     private PlayerInterface $player;
 
+    #[ORM\Column(type: 'integer')]
     private int $balance;
+
+    public function __construct(int $balance)
+    {
+        $this->balance = $balance;
+    }
 
     public function getId(): int
     {
@@ -28,6 +42,7 @@ class Wallet implements WalletInterface
     public function setPlayer(PlayerInterface $player): void
     {
         $this->player = $player;
+        $player->setWallet($this);
     }
 
     public function getBalance(): int
@@ -43,16 +58,16 @@ class Wallet implements WalletInterface
         $this->balance += $taskReward->getCoins();
     }
 
-    public function purchase(OrderItemInterface $order): void
+    public function purchase(AugmentInterface $augment): void
     {
-        if ($order->isPaid()) {
-            throw new \Exception('Order is already paid');
+        if (true === $augment->hasId()) {
+            throw new \Exception('Augment is already purchased');
         }
 
-        if ($this->balance < $order->getPrice()) {
-            throw new \Exception('Not enough money');
+        if ($this->balance < $augment->getPrice()) {
+            throw new \Exception('Not enough coins');
         }
 
-        $this->balance -= $order->getPrice();
+        $this->balance -= $augment->getPrice();
     }
 }
