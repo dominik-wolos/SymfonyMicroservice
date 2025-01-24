@@ -94,6 +94,9 @@ final class CurrentPlayerQueryExtension implements QueryCollectionExtensionInter
 
     private function isMainRequest(array $context): bool
     {
+        if (!isset($context['root_operation'])) {
+            return true;
+        }
 
         $rootOperation = $context['root_operation'];
         Assert::isInstanceOf($rootOperation, Operation::class);

@@ -8,14 +8,16 @@ use App\Components\Task\Entity\TaskInterface;
 
 final class ExperienceCalculator implements ExperienceCalculatorInterface
 {
+    private const DIFFICULTY_MULTIPLIER_MAP = [
+        TaskInterface::EASY => 1,
+        TaskInterface::MEDIUM => 2,
+        TaskInterface::HARD => 3,
+    ];
+
     public function calculate(TaskInterface $task): int
     {
         $player = $task->getPlayer();
 
-        if ($player->getPlayerLevel() < 5) {
-            return 25;
-        }
-
-        return 15;
+        return 10 * self::DIFFICULTY_MULTIPLIER_MAP[$task->getDifficulty()] * $player->getPlayerLevel();
     }
 }
