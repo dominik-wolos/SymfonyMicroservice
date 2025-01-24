@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use App\Api\DataProvider\DirectPlayerResourceInterface;
 use App\Components\Statistic\Entity\Statistic;
 use App\Components\Statistic\Entity\StatisticInterface;
 use Doctrine\Common\Collections\ArrayCollection;
