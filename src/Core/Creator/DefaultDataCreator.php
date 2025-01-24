@@ -7,17 +7,19 @@ namespace App\Core\Creator;
 use App\Components\Category\Factory\CategoryFactoryInterface;
 use App\Components\Player\Entity\PlayerInterface;
 use App\Components\Player\Factory\PlayerStatisticsFactoryInterface;
+use App\Components\Player\Factory\WalletFactoryInterface;
 use App\Components\Statistic\Factory\StatisticFactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
-final class DefaultDataCreator implements DefaultDataCreatorInterface
+final readonly class DefaultDataCreator implements DefaultDataCreatorInterface
 {
     public function __construct(
         private CategoryFactoryInterface $categoryFactory,
         private StatisticFactoryInterface $statisticFactory,
         private StatisticRelatedResourcesCreatorInterface $statisticRelatedResourcesCreator,
         private PlayerStatisticsFactoryInterface $playerStatisticsFactory,
+        private WalletFactoryInterface $walletFactory,
         private EntityManagerInterface $entityManager,
         #[Autowire('%app.fixtures.default_categories%')]
         private array $defaultCategories,
@@ -73,6 +75,7 @@ final class DefaultDataCreator implements DefaultDataCreatorInterface
             );
         }
 
+        $wallet = $this->walletFactory->createForPlayer($player);
         $this->entityManager->flush();
     }
 }

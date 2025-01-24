@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Components\Player\Entity;
 
+use App\Components\Category\Entity\Category;
+use App\Components\Shop\Entity\Augment;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 interface PlayerInterface extends UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -59,5 +63,17 @@ interface PlayerInterface extends UserInterface, PasswordAuthenticatedUserInterf
 
     public function getBalance(): int;
 
-    public function setBalance(int $balance): void;
+    public function getActiveAugments(): array;
+
+    public function getCategories(): Collection;
+
+    public function getAugments(): Collection;
+
+    public function setAugments(Collection $augments): void;
+
+    public function getWallet(): WalletInterface;
+
+    public function setWallet(WalletInterface $wallet): void;
+
+    public function addCategory(Category $category): void;
 }

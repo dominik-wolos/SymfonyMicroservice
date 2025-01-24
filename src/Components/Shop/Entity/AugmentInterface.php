@@ -17,6 +17,8 @@ interface AugmentInterface
 
     public const ITEM_READ = 'item:item:read';
 
+    public function hasId(): bool;
+
     public function getId(): int;
 
     public function setId(int $id): void;

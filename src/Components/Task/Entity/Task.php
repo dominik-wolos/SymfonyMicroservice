@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use App\Api\DataProvider\DirectPlayerResourceInterface;
 use App\Components\Category\Entity\Category;
 use App\Components\Player\Entity\Player;
 use App\Components\Task\Processor\TaskCreationProcessor;
@@ -55,7 +56,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 )]
 #[ORM\Entity]
 #[ORM\Table(name: 'task')]
-class Task implements TaskInterface
+class Task implements TaskInterface, DirectPlayerResourceInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

@@ -7,7 +7,6 @@ namespace App\Components\Player\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Api\Provider\CurrentPlayerProvider;
@@ -53,15 +52,6 @@ use Symfony\Component\Validator\Constraints\NotNull;
 )]
 #[ApiResource(
     operations: [
-        new GetCollection(
-            normalizationContext: ['groups' => [
-                self::ITEM_READ,
-            ]]
-        ),
-        new Get(normalizationContext: ['groups' => [
-            self::READ,
-            self::ITEM_READ
-        ]]),
         new Patch(
             normalizationContext: ['groups' => [
                 self::READ,
@@ -121,10 +111,6 @@ class Player implements PlayerInterface
     #[Groups([self::ITEM_READ, self:: UPDATE])]
     private ?string $userPhotoPath;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    #[Groups([self::ITEM_READ])]
-    private int $balance = 0;
-
     #[ORM\OneToOne(targetEntity: PlayerStatistics::class, cascade: ['persist', 'remove'])]
     #[Groups([self::ITEM_READ])]
     private PlayerStatisticsInterface $playerStatistics;
@@ -135,6 +121,9 @@ class Player implements PlayerInterface
     #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'player', fetch: 'LAZY')]
     #[Groups([self::ITEM_READ])]
     private Collection $categories;
+
+    #[ORM\OneToOne(targetEntity: Wallet::class, cascade: ['persist', 'remove'])]
+    private WalletInterface $wallet;
 
     public function getId(): ?int
     {
@@ -245,14 +234,10 @@ class Player implements PlayerInterface
         $this->userPhotoPath = $userPhotoPath;
     }
 
+    #[Groups([self::ITEM_READ])]
     public function getBalance(): int
     {
-        return $this->balance;
-    }
-
-    public function setBalance(int $balance): void
-    {
-        $this->balance = $balance;
+        return $this->wallet->getBalance();
     }
 
     #[Groups([self::ITEM_READ])]
@@ -270,5 +255,34 @@ class Player implements PlayerInterface
     public function getCategories(): Collection
     {
         return $this->categories;
+    }
+
+    public function getAugments(): Collection
+    {
+        return $this->augments;
+    }
+
+    public function setAugments(Collection $augments): void
+    {
+        $this->augments = $augments;
+    }
+
+    public function getWallet(): WalletInterface
+    {
+        return $this->wallet;
+    }
+
+    public function setWallet(WalletInterface $wallet): void
+    {
+        $this->wallet = $wallet;
+    }
+
+    public function addCategory(Category $category): void
+    {
+        if ($this->categories->contains($category)) {
+            return;
+        }
+
+        $this->categories->add($category);
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Components\Player\Entity;
 
+use App\Components\Shop\Entity\AugmentInterface;
 use App\Components\Shop\Entity\OrderItemInterface;
 use App\Components\Task\Entity\TaskRewardInterface;
 
@@ -19,5 +20,5 @@ interface WalletInterface
 
     public function deposit(TaskRewardInterface $taskReward): void;
 
-    public function purchase(OrderItemInterface $order): void;
+    public function purchase(AugmentInterface $augment): void;
 }
