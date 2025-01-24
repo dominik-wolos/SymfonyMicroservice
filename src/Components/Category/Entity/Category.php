@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use App\Api\DataProvider\DirectPlayerResourceInterface;
 use App\Components\Category\Processor\CategoryProcessor;
 use App\Components\Player\Entity\Player;
 use App\Components\Player\Entity\PlayerInterface;
@@ -35,7 +36,6 @@ use Symfony\Component\Validator\Constraints\NotNull;
             self::ITEM_READ
         ]]),
         new Post(
-            processor: CategoryProcessor::class,
             normalizationContext: ['groups' => [
                 self::READ,
                 self::ITEM_READ
@@ -44,10 +44,10 @@ use Symfony\Component\Validator\Constraints\NotNull;
             denormalizationContext: ['groups' => [
                 self::CREATE,
                 self::WRITE
-            ]]
+            ]],
+            processor: CategoryProcessor::class
         ),
         new Patch(
-            processor: CategoryProcessor::class,
             normalizationContext: ['groups' => [
                 self::READ,
                 self::ITEM_READ
@@ -55,15 +55,16 @@ use Symfony\Component\Validator\Constraints\NotNull;
             denormalizationContext: ['groups' => [
                 self::WRITE,
                 self::UPDATE
-            ]]
+            ]],
+            processor: CategoryProcessor::class
         ),
         new Delete()
     ],
     normalizationContext: ['groups' => [self::READ, self::ITEM_READ]],
-    denormalizationContext: ['groups' => [self::WRITE, self::CREATE]]
+    denormalizationContext: ['groups' => [self::WRITE, self::CREATE]],
 )]
 #[ORM\Entity]
-class Category implements CategoryInterface
+class Category implements CategoryInterface, DirectPlayerResourceInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -183,6 +184,7 @@ class Category implements CategoryInterface
         $this->statisticsIds = $statistics;
     }
 
+    #[Groups([self::ITEM_READ])]
     public function getCategoryStatisticByStatisticId(int $removeId): ?CategoryStatisticInterface
     {
         foreach ($this->categoryStatistics as $categoryStatistic) {
@@ -192,5 +194,13 @@ class Category implements CategoryInterface
         }
 
         return null;
+    }
+
+    #[Groups([self::ITEM_READ])]
+    public function getStatistics(): array
+    {
+        return array_map(function (CategoryStatisticInterface $categoryStatistic) {
+            return $categoryStatistic->getStatistic();
+        }, $this->categoryStatistics->toArray());
     }
 }

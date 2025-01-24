@@ -10,12 +10,15 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use App\Api\DataProvider\IndirectPlayerResourceInterface;
+use App\Api\Filter\DirectPlayerResourceFilter;
+use App\Components\Category\Entity\CategoryInterface;
+use App\Components\Player\Entity\Player;
 use App\Components\Player\Entity\PlayerInterface;
 use App\Components\Player\Entity\PlayerStatistics;
 use App\Components\Statistic\Processor\StatisticCreationProcessor;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
-use Symfony\Component\Validator\Constraints\NotNull;
 
 #[ApiResource(
     operations: [
@@ -56,12 +59,12 @@ use Symfony\Component\Validator\Constraints\NotNull;
 )]
 #[ORM\Entity(repositoryClass: 'App\Components\Statistic\Repository\StatisticRepository')]
 #[ORM\Table(name: 'statistic')]
-class Statistic implements StatisticInterface
+class Statistic implements StatisticInterface, IndirectPlayerResourceInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
-    #[Groups([self::ITEM_READ, PlayerInterface::ITEM_READ])]
+    #[Groups([self::ITEM_READ, PlayerInterface::ITEM_READ, CategoryInterface::ITEM_READ])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', unique: true)]
@@ -69,11 +72,11 @@ class Statistic implements StatisticInterface
     private string $code;
 
     #[ORM\Column(type: 'string')]
-    #[Groups([self::ITEM_READ, self::WRITE, PlayerInterface::ITEM_READ])]
+    #[Groups([self::ITEM_READ, self::WRITE, PlayerInterface::ITEM_READ, CategoryInterface::ITEM_READ])]
     private string $name;
 
     #[ORM\Column(type: 'string')]
-    #[Groups([self::ITEM_READ, self::WRITE, PlayerInterface::ITEM_READ])]
+    #[Groups([self::ITEM_READ, self::WRITE, PlayerInterface::ITEM_READ, CategoryInterface::ITEM_READ])]
     private string $iconPath = 'determination_bar';
 
     #[ORM\ManyToOne(targetEntity: PlayerStatistics::class, inversedBy: 'statistics', fetch: 'LAZY')]
@@ -158,5 +161,18 @@ class Statistic implements StatisticInterface
     public function setIconPath(string $iconPath): void
     {
         $this->iconPath = $iconPath;
+    }
+
+    public function getPlayer(): Player
+    {
+        return $this->playerStatistics->getPlayer();
+    }
+
+    public static function getPlayerPropertyPathParts(): array
+    {
+        return [
+            'playerStatistics',
+            'player'
+        ];
     }
 }

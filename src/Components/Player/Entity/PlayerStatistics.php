@@ -57,7 +57,7 @@ use Symfony\Component\Validator\Constraints\Valid;
 )]
 #[ORM\Entity]
 #[ORM\Table(name: 'player_statistics')]
-class PlayerStatistics implements PlayerStatisticsInterface
+class PlayerStatistics implements PlayerStatisticsInterface, DirectPlayerResourceInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
