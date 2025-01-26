@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace App\Components\Player\Entity;
 
 use App\Components\Category\Entity\Category;
-use App\Components\Shop\Entity\Augment;
+use App\Components\Player\Enum\PlayerLevels;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Serializer\Attribute\Groups;
 
-interface PlayerInterface extends UserInterface, PasswordAuthenticatedUserInterface
+interface PlayerInterface extends UserInterface, PasswordAuthenticatedUserInterface, PlayerLevels
 {
     public const CREATE = 'player:create';
 

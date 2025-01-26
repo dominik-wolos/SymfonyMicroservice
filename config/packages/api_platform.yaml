@@ -1,5 +1,6 @@
 api_platform:
     title: Task Microservice
+    use_symfony_listeners: true
     defaults:
         stateless: true
         cache_headers:

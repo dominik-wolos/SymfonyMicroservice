@@ -59,6 +59,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
             ]],
             denormalizationContext: ['groups' => [
                 self::WRITE,
+                self::UPDATE,
             ]]
         ),
         new Delete()
@@ -222,6 +223,16 @@ class Player implements PlayerInterface
     public function setPlayerExperience(int $playerExperience): void
     {
         $this->playerExperience = $playerExperience;
+    }
+
+    public function addExperience(int $playerExperience): void
+    {
+        $this->playerExperience += $playerExperience;
+
+        if ($this->playerExperience >= self::LEVEL_TO_EXPERIENCE_MAP[$this->playerLevel]) {
+            $this->playerExperience -= self::LEVEL_TO_EXPERIENCE_MAP[$this->playerLevel];
+            $this->playerLevel++;
+        }
     }
 
     public function getUserPhotoPath(): ?string

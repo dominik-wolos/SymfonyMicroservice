@@ -52,9 +52,9 @@ interface TaskInterface extends TaskStates, TaskTypes, TaskDifficulties
 
     public function setCreatedAt(\DateTime $createdAt): void;
 
-    public function getCompletedAt(): \DateTime;
+    public function getCompletedAt(): ?\DateTimeImmutable;
 
-    public function setCompletedAt(\DateTime $completedAt): void;
+    public function setCompletedAt(\DateTimeImmutable $completedAt): void;
 
     public function getCode(): string;
 

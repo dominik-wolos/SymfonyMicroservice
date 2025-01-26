@@ -184,7 +184,6 @@ class Category implements CategoryInterface, DirectPlayerResourceInterface
         $this->statisticsIds = $statistics;
     }
 
-    #[Groups([self::ITEM_READ])]
     public function getCategoryStatisticByStatisticId(int $removeId): ?CategoryStatisticInterface
     {
         foreach ($this->categoryStatistics as $categoryStatistic) {

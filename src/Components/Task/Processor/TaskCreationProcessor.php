@@ -31,8 +31,6 @@ final class TaskCreationProcessor implements TaskCreationProcessorInterface
         $task->setPlayer($this->currentPlayerProvider->provide($operation, $uriVariables, $context));
         Assert::notNull($task->getPlayer());
 
-        $this->taskRewardCreator->create($task);
-
         switch ($task->getType()) {
             case TaskTypes::ONE_TIME:
             case TaskTypes::RECURRING:

@@ -123,6 +123,15 @@ class Statistic implements StatisticInterface, IndirectPlayerResourceInterface
         $this->experience = $experience;
     }
 
+    public function addExperience(int $experience): void
+    {
+        $this->experience += $experience;
+        if ($this->experience >= self::LEVEL_TO_EXP_REQUIRED_MAP[$this->level]) {
+            $this->experience -= self::LEVEL_TO_EXP_REQUIRED_MAP[$this->level];
+            $this->level++;
+        }
+    }
+
     public function getLevel(): int
     {
         return $this->level;

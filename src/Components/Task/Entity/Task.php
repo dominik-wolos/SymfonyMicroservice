@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use App\Api\Controller\TaskController;
 use App\Api\DataProvider\DirectPlayerResourceInterface;
 use App\Components\Category\Entity\Category;
 use App\Components\Player\Entity\Player;
@@ -41,13 +42,10 @@ use Symfony\Component\Serializer\Attribute\Groups;
             ]]
         ),
         new Patch(
-            normalizationContext: ['groups' => [
-                self::READ,
-                self::ITEM_READ
-            ]],
-            denormalizationContext: ['groups' => [
-                self::WRITE
-            ]]
+            uriTemplate: 'task/{id}/complete',
+            controller: TaskController::class,
+            normalizationContext: ['groups' => []],
+            denormalizationContext: ['groups' => []]
         ),
         new Delete()
     ],
@@ -119,9 +117,9 @@ class Task implements TaskInterface, DirectPlayerResourceInterface
     #[Groups([self::ITEM_READ, self::WRITE])]
     private \DateTimeInterface $endsAt;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     #[Groups([self::ITEM_READ])]
-    private \DateTime $completedAt;
+    private ?\DateTimeImmutable $completedAt = null;
 
     public function __construct()
     {
@@ -209,12 +207,12 @@ class Task implements TaskInterface, DirectPlayerResourceInterface
         $this->createdAt = $createdAt;
     }
 
-    public function getCompletedAt(): \DateTime
+    public function getCompletedAt(): ?\DateTimeImmutable
     {
         return $this->completedAt;
     }
 
-    public function setCompletedAt(\DateTime $completedAt): void
+    public function setCompletedAt(\DateTimeImmutable $completedAt): void
     {
         $this->completedAt = $completedAt;
     }

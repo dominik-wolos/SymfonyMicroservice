@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Components\Statistic\Entity;
 
 use App\Components\Player\Entity\PlayerStatistics;
+use App\Components\Statistic\Enum\StatisticLevels;
 
-interface StatisticInterface
+interface StatisticInterface extends StatisticLevels
 {
     public const CREATE = 'statistic:create';
 
@@ -27,6 +28,8 @@ interface StatisticInterface
     public function getExperience(): int;
 
     public function setExperience(int $value): void;
+
+    public function addExperience(int $experience): void;
 
     public function getLevel(): int;
 
