@@ -10,7 +10,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use App\Api\Controller\TaskController;
+use App\Api\Controller\CompleteTaskController;
 use App\Api\DataProvider\DirectPlayerResourceInterface;
 use App\Components\Category\Entity\Category;
 use App\Components\Player\Entity\Player;
@@ -44,7 +44,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Patch(
             uriTemplate: 'task/{id}/complete',
-            controller: TaskController::class,
+            controller: CompleteTaskController::class,
             normalizationContext: ['groups' => []],
             denormalizationContext: ['groups' => []]
         ),
@@ -88,7 +88,7 @@ class Task implements TaskInterface, DirectPlayerResourceInterface
     #[ORM\ManyToOne(targetEntity: Category::class)]
     #[Groups([self::ITEM_READ, self::WRITE])]
     #[ORM\JoinColumn(nullable: true)]
-    private Category $category;
+    private ?Category $category = null;
 
     #[ORM\Column(type: 'string')]
     #[Groups([self::READ, self::WRITE])]
@@ -169,7 +169,7 @@ class Task implements TaskInterface, DirectPlayerResourceInterface
         $this->player = $player;
     }
 
-    public function getCategory(): Category
+    public function getCategory(): ?Category
     {
         return $this->category;
     }

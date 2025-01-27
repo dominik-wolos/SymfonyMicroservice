@@ -27,4 +27,17 @@ final class TaskRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function findTodaysChallengeTaskByPlayer(PlayerInterface $player): ?TaskInterface
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.player = :player')
+            ->andWhere('s.startsAt LIKE :date')
+            ->andWhere('s.type = :type')
+            ->setParameter('date', (new \DateTime('today'))->format('Y-m-d') . '%')
+            ->setParameter('player', $player)
+            ->setParameter('type', TaskInterface::CHALLENGE)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

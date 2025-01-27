@@ -25,11 +25,13 @@ final class TaskFactory
         string $name,
         string $description,
         string $difficulty,
+        \DateTimeInterface $startsAt = null,
     ): TaskInterface {
-        $task = new Task();
+        $task = $this->create();
 
         $task->setPlayer($player);
         $task->setCreatedAt(new \DateTime('now'));
+        $task->setStartsAt($startsAt ?? new \DateTime('now'));
         $task->setDifficulty($difficulty);
         $task->setName($name);
         $task->setDescription($description);

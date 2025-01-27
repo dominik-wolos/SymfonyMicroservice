@@ -36,7 +36,7 @@ interface TaskInterface extends TaskStates, TaskTypes, TaskDifficulties
 
     public function setPlayer(Player $player): void;
 
-    public function getCategory(): Category;
+    public function getCategory(): ?Category;
 
     public function setCategory(Category $category): void;
 

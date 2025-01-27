@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Webmozart\Assert\Assert;
 
-final class TaskController extends AbstractController
+final class CompleteTaskController extends AbstractController
 {
     public function __construct(
         private readonly TaskRepository $taskRepository,

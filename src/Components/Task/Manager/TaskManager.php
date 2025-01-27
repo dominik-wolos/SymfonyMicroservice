@@ -12,18 +12,25 @@ use App\Components\Task\Entity\TaskRewardInterface;
 final class TaskManager implements TaskManagerInterface
 {
     public function __construct(
-        private readonly TaskRewardCreatorInterface $taskRewardCreator
+        private readonly TaskRewardCreatorInterface $taskRewardCreator,
     ) {
     }
 
     public function complete(TaskInterface $task): void
     {
+        if (null !== $task->getCompletedAt() || TaskInterface::COMPLETED === $task->getStatus()) {
+            throw new \Exception('Task already completed');
+            return;
+        }
+
         $task->setCompletedAt(new \DateTimeImmutable());
         $reward = $this->taskRewardCreator->create($task);
 
         $this->depositReward($task, $reward);
         $this->assignExperienceToStatistics($task, $reward);
         $this->assignExperienceToPlayer($task, $reward);
+
+        $task->setStatus(TaskInterface::COMPLETED);
     }
 
     public function depositReward(TaskInterface $task, TaskRewardInterface $reward): void
@@ -35,6 +42,12 @@ final class TaskManager implements TaskManagerInterface
     public function assignExperienceToStatistics(TaskInterface $task, TaskRewardInterface $reward): void
     {
         $category = $task->getCategory();
+        if (null === $category) {
+            if (TaskInterface::CHALLENGE === $task->getType()) {
+                return;
+            }
+            throw new \Exception('Task without category must be a challenge');
+        }
         $categoryStatistics = $category->getCategoryStatistics();
         $summedMultiplier = 0;
 

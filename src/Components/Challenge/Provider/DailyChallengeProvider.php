@@ -18,7 +18,7 @@ final class DailyChallengeProvider implements DailyChallengeProviderInterface
     }
 
     public function provide(
-        Operation $operation,
+        Operation $operation = null,
         array $uriVariables = [],
         array $context = []
     ): DailyChallengeInterface {
