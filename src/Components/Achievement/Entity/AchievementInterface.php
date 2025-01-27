@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Components\Achievements\Entity;
+namespace App\Components\Achievement\Entity;
 
-use App\Components\Achievements\Enum\AchievementLevels;
-use App\Components\Achievements\Enum\AchievementTypes;
+use App\Components\Achievement\Enum\AchievementLevels;
+use App\Components\Achievement\Enum\AchievementTypes;
 
 interface AchievementInterface extends AchievementLevels, AchievementTypes
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Components\Achievements\Entity;
+namespace App\Components\Achievement\Entity;
 
 use App\Components\Player\Entity\PlayerInterface;
 use App\Core\Interface\RewardInterface;

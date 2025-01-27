@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Components\Achievements\Enum;
+namespace App\Components\Achievement\Enum;
 
 interface AchievementStates
 {
