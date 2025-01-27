@@ -66,4 +66,8 @@ interface AugmentInterface
     public function setMultiplier(int $multiplier): void;
 
     public function getCategoryName(): string;
+
+    public function getEndsAt(): \DateTimeImmutable;
+
+    public function setEndsAt(\DateTimeImmutable $endsAt): void;
 }

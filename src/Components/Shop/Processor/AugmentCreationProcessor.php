@@ -7,8 +7,10 @@ namespace App\Components\Shop\Processor;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Api\Provider\CurrentPlayerProviderInterface;
+use App\Components\Player\Entity\PlayerInterface;
 use App\Components\Shop\Calculator\AugmentPriceCalculator;
 use App\Components\Shop\Entity\AugmentInterface;
+use App\Components\Shop\Repository\AugmentRepository;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Webmozart\Assert\Assert;
 
@@ -18,13 +20,26 @@ final class AugmentCreationProcessor implements ProcessorInterface
         private readonly ProcessorInterface $processor,
         private readonly CurrentPlayerProviderInterface $currentPlayerProvider,
         #[AutowireIterator(AugmentPriceCalculator::TAG)]
-        private readonly iterable $augmentPriceCalculators
+        private readonly iterable $augmentPriceCalculators,
+        private readonly AugmentRepository $augmentRepository
     ){
     }
 
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): mixed
     {
         Assert::isInstanceOf($data, AugmentInterface::class);
+        $player = $this->currentPlayerProvider->provide($operation, $uriVariables, $context);
+        Assert::isInstanceOf($player, PlayerInterface::class);
+
+        $augment = $this->augmentRepository->findAllActiveAugmentsByPlayerAndTypeAndCategory(
+            $player,
+            $data->getType(),
+            $data->getCategory()
+        );
+
+        if (null !== $augment) {
+            throw new \Exception('Player already has active augment of this type and category');
+        }
 
         foreach ($this->augmentPriceCalculators as $augmentPriceCalculator) {
             if ($augmentPriceCalculator->supports($data)) {
@@ -33,7 +48,8 @@ final class AugmentCreationProcessor implements ProcessorInterface
                 break;
             }
         }
-        $data->setPlayer($this->currentPlayerProvider->provide($operation, $uriVariables, $context));
+        $data->setPlayer($player);
+        $data->setEndsAt($data->getCreatedAt()->modify(sprintf('+%s day', $data->getValidForDays())));
         $wallet = $data->getPlayer()->getWallet();
 
         $wallet->purchase($data);

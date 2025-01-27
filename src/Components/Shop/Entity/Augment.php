@@ -72,6 +72,10 @@ class Augment implements AugmentInterface
     #[Groups([self::ITEM_READ, self::CREATE, PlayerInterface::ITEM_READ])]
     private int $validForDays;
 
+    #[ORM\Column(type: 'datetime_immutable')]
+    #[Groups([self::ITEM_READ, PlayerInterface::ITEM_READ])]
+    private \DateTimeImmutable $endsAt;
+
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[Groups([self::ITEM_READ, self::CREATE, PlayerInterface::ITEM_READ])]
     #[Assert\GreaterThanOrEqual(1)]
@@ -214,5 +218,15 @@ class Augment implements AugmentInterface
     public function getCategoryName(): string
     {
         return $this->category->getName();
+    }
+
+    public function getEndsAt(): \DateTimeImmutable
+    {
+        return $this->endsAt;
+    }
+
+    public function setEndsAt(\DateTimeImmutable $endsAt): void
+    {
+        $this->endsAt = $endsAt;
     }
 }

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Components\Task\Manager;
 
+use App\Components\Shop\Entity\AugmentInterface;
+use App\Components\Shop\Enum\AugmentTypes;
+use App\Components\Shop\Repository\AugmentRepository;
 use App\Components\Statistic\Entity\CategoryStatistic;
 use App\Components\Task\Creator\TaskRewardCreatorInterface;
 use App\Components\Task\Entity\TaskInterface;
@@ -13,6 +16,7 @@ final class TaskManager implements TaskManagerInterface
 {
     public function __construct(
         private readonly TaskRewardCreatorInterface $taskRewardCreator,
+        private readonly AugmentRepository $augmentRepository
     ) {
     }
 
@@ -48,9 +52,17 @@ final class TaskManager implements TaskManagerInterface
             }
             throw new \Exception('Task without category must be a challenge');
         }
+        $player = $task->getPlayer();
+
+        $augment = $this->augmentRepository->findAllActiveAugmentsByPlayerAndTypeAndCategory(
+            $player,
+            AugmentTypes::BOOSTER,
+            $category
+        );
+
         $categoryStatistics = $category->getCategoryStatistics();
         $summedMultiplier = 0;
-
+        $augmentMultiplier = $augment instanceof AugmentInterface ? $augment->getMultiplier() : 1;
         /**@var $categoryStatistic CategoryStatistic */
         foreach ($categoryStatistics as $categoryStatistic) {
             $summedMultiplier += $categoryStatistic->getMultiplier();
@@ -58,9 +70,9 @@ final class TaskManager implements TaskManagerInterface
 
         foreach ($categoryStatistics as $categoryStatistic) {
             $statistic = $categoryStatistic->getStatistic();
-            $statistic->addExperience(
-                $reward->getExperience() * ($categoryStatistic->getMultiplier() / $summedMultiplier)
-            );
+            $experience = $reward->getExperience() * ($categoryStatistic->getMultiplier() / $summedMultiplier);
+
+            $statistic->addExperience($experience * $augmentMultiplier);
         }
     }
 

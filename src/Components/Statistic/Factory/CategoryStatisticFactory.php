@@ -21,10 +21,10 @@ final class CategoryStatisticFactory implements CategoryStatisticFactoryInterfac
         StatisticInterface $statistic
     ): CategoryStatisticInterface {
         $categoryStatistic = $this->createNew();
+        $categoryStatistic->setMultiplier(4 - $category->getCategoryStatistics()->count());
 
         $categoryStatistic->setCategory($category);
         $categoryStatistic->setStatistic($statistic);
-        $categoryStatistic->setMultiplier(4 - $category->getCategoryStatistics()->count());
 
         return $categoryStatistic;
     }
