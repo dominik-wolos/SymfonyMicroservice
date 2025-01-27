@@ -77,7 +77,6 @@ class Category implements CategoryInterface, DirectPlayerResourceInterface
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', unique: true)]
-    #[Groups([self::ITEM_READ])]
     private string $code;
 
     #[ORM\Column(type: 'string')]
@@ -195,7 +194,10 @@ class Category implements CategoryInterface, DirectPlayerResourceInterface
         return null;
     }
 
-    #[Groups([self::ITEM_READ])]
+    #[Groups([
+        self::ITEM_READ,
+        PlayerInterface::ITEM_READ,
+    ])]
     public function getStatistics(): array
     {
         return array_map(function (CategoryStatisticInterface $categoryStatistic) {
