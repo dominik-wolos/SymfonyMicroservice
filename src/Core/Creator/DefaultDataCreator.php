@@ -74,8 +74,8 @@ final readonly class DefaultDataCreator implements DefaultDataCreatorInterface
                 false
             );
         }
+        $this->walletFactory->createForPlayer($player);
 
-        $wallet = $this->walletFactory->createForPlayer($player);
         $this->entityManager->flush();
     }
 }

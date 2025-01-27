@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace App\Components\Player\Entity;
 
 use App\Components\Shop\Entity\AugmentInterface;
-use App\Components\Shop\Entity\OrderItemInterface;
-use App\Components\Task\Entity\TaskRewardInterface;
+use App\Core\Interface\RewardInterface;
 
 interface WalletInterface
 {
@@ -18,7 +17,7 @@ interface WalletInterface
 
     public function getBalance(): int;
 
-    public function deposit(TaskRewardInterface $taskReward): void;
+    public function deposit(RewardInterface $taskReward): void;
 
     public function purchase(AugmentInterface $augment): void;
 }

@@ -58,7 +58,6 @@ use Symfony\Component\Validator\Constraints\NotNull;
                 self::ITEM_READ
             ]],
             denormalizationContext: ['groups' => [
-                self::WRITE,
                 self::UPDATE,
             ]]
         ),
@@ -107,6 +106,10 @@ class Player implements PlayerInterface
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     #[Groups([self::ITEM_READ])]
     private int $playerExperience = 0;
+
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[Groups([self::ITEM_READ])]
+    private int $completedTasks = 0;
 
     #[ORM\Column(type: 'string', nullable: true, options: ['default' => ''])]
     #[Groups([self::ITEM_READ, self:: UPDATE])]
@@ -295,5 +298,15 @@ class Player implements PlayerInterface
         }
 
         $this->categories->add($category);
+    }
+
+    public function getCompletedTasks(): int
+    {
+        return $this->completedTasks;
+    }
+
+    public function incrementCompletedTasks(): void
+    {
+        $this->completedTasks++;
     }
 }

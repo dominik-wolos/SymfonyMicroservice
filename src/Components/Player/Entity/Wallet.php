@@ -7,6 +7,7 @@ namespace App\Components\Player\Entity;
 use App\Api\DataProvider\DirectPlayerResourceInterface;
 use App\Components\Shop\Entity\AugmentInterface;
 use App\Components\Task\Entity\TaskRewardInterface;
+use App\Core\Interface\RewardInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -50,7 +51,7 @@ class Wallet implements WalletInterface, DirectPlayerResourceInterface
         return $this->balance;
     }
 
-    public function deposit(TaskRewardInterface $taskReward): void
+    public function deposit(RewardInterface $taskReward): void
     {
         if (!$taskReward->canBeCollected()) {
             throw new \Exception('Task is not completed');

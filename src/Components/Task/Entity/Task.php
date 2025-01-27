@@ -17,6 +17,7 @@ use App\Components\Player\Entity\Player;
 use App\Components\Task\Processor\TaskCreationProcessor;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     operations: [
@@ -68,6 +69,7 @@ class Task implements TaskInterface, DirectPlayerResourceInterface
 
     #[ORM\Column(type: 'string')]
     #[Groups([self::ITEM_READ, self::CREATE])]
+    #[Assert\Choice(choices: self::TYPES)]
     private string $type;
 
     #[ORM\Column(type: 'string', unique: false)]

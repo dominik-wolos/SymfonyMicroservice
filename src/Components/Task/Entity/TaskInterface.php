@@ -69,4 +69,8 @@ interface TaskInterface extends TaskStates, TaskTypes, TaskDifficulties
     public function getEndsAt(): \DateTimeInterface;
 
     public function setEndsAt(\DateTimeInterface $endsAt): void;
+
+    public function getType(): string;
+
+    public function setType(string $type): void;
 }
