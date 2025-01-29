@@ -27,7 +27,7 @@ final class TaskManager implements TaskManagerInterface
 
             return;
         }
-
+      
         $task->setCompletedAt(new \DateTimeImmutable());
         $reward = $this->taskRewardCreator->create($task);
 
@@ -47,6 +47,7 @@ final class TaskManager implements TaskManagerInterface
     public function assignExperienceToStatistics(TaskInterface $task, TaskRewardInterface $reward): void
     {
         $category = $task->getCategory();
+
         if (null === $category) {
             if (TaskInterface::CHALLENGE === $task->getType()) {
                 return;
@@ -65,7 +66,7 @@ final class TaskManager implements TaskManagerInterface
         $categoryStatistics = $category->getCategoryStatistics();
         $summedMultiplier = 0;
         $augmentMultiplier = $augment instanceof AugmentInterface ? $augment->getMultiplier() : 1;
-        /** @var $categoryStatistic CategoryStatistic */
+
         foreach ($categoryStatistics as $categoryStatistic) {
             $summedMultiplier += $categoryStatistic->getMultiplier();
         }
