@@ -51,7 +51,7 @@ final class AugmentRepository extends ServiceEntityRepository
     public function findAllActiveAugmentsByPlayerAndTypeAndCategory(
         PlayerInterface $player,
         string $type,
-        CategoryInterface $category
+        CategoryInterface $category,
     ): ?AugmentInterface {
         return $this->createAllActiveByPlayerQueryBuilder($player)
             ->innerJoin('s.category', 'c')

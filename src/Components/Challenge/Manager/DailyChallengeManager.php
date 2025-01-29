@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace App\Components\Challenge\Manager;
 
 use App\Api\Provider\CurrentPlayerProviderInterface;
-use App\Components\Challenge\Creator\DailyChallengeCreatorInterface;
 use App\Components\Challenge\Provider\DailyChallengeProviderInterface;
 use App\Components\Challenge\Repository\DailyChallengeRepository;
 use App\Components\Player\Entity\PlayerInterface;
 use App\Components\Task\Creator\TaskCreatorInterface;
 use App\Components\Task\Manager\TaskManagerInterface;
 use App\Components\Task\Repository\TaskRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Webmozart\Assert\Assert;
 
 final class DailyChallengeManager implements DailyChallengeManagerInterface
@@ -23,7 +21,7 @@ final class DailyChallengeManager implements DailyChallengeManagerInterface
         private readonly DailyChallengeProviderInterface $dailyChallengeProvider,
         private readonly DailyChallengeRepository $dailyChallengeRepository,
         private readonly TaskRepository $taskRepository,
-        private readonly TaskManagerInterface $taskManager
+        private readonly TaskManagerInterface $taskManager,
     ) {
     }
 
@@ -48,7 +46,7 @@ final class DailyChallengeManager implements DailyChallengeManagerInterface
         Assert::isInstanceOf($player, PlayerInterface::class);
 
         $task = $this->taskRepository->findTodaysChallengeTaskByPlayer($player);
-        if ($task === null) {
+        if (null === $task) {
             throw new \Exception('No task found for player');
         }
 

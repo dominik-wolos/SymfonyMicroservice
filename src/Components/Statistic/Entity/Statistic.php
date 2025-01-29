@@ -11,7 +11,6 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Api\DataProvider\IndirectPlayerResourceInterface;
-use App\Api\Filter\DirectPlayerResourceFilter;
 use App\Components\Category\Entity\CategoryInterface;
 use App\Components\Player\Entity\Player;
 use App\Components\Player\Entity\PlayerInterface;
@@ -25,37 +24,37 @@ use Symfony\Component\Serializer\Attribute\Groups;
         new GetCollection(
             normalizationContext: ['groups' => [
                 self::ITEM_READ,
-            ]]
+            ]],
         ),
         new Get(normalizationContext: ['groups' => [
             self::READ,
-            self::ITEM_READ
+            self::ITEM_READ,
         ]]),
         new Post(
             processor: StatisticCreationProcessor::class,
             normalizationContext: ['groups' => [
                 self::READ,
-                self::ITEM_READ
-            ]
+                self::ITEM_READ,
+            ],
             ],
             denormalizationContext: ['groups' => [
                 self::CREATE,
-                self::WRITE
-            ]]
+                self::WRITE,
+            ]],
         ),
         new Patch(
             normalizationContext: ['groups' => [
                 self::READ,
-                self::ITEM_READ
+                self::ITEM_READ,
             ]],
             denormalizationContext: ['groups' => [
-                self::WRITE
-            ]]
+                self::WRITE,
+            ]],
         ),
-        new Delete()
+        new Delete(),
     ],
     normalizationContext: ['groups' => [self::READ, self::ITEM_READ]],
-    denormalizationContext: ['groups' => [self::WRITE, self::CREATE]]
+    denormalizationContext: ['groups' => [self::WRITE, self::CREATE]],
 )]
 #[ORM\Entity(repositoryClass: 'App\Components\Statistic\Repository\StatisticRepository')]
 #[ORM\Table(name: 'statistic')]
@@ -128,7 +127,7 @@ class Statistic implements StatisticInterface, IndirectPlayerResourceInterface
         $this->experience += $experience;
         if ($this->experience >= self::LEVEL_TO_EXP_REQUIRED_MAP[$this->level]) {
             $this->experience -= self::LEVEL_TO_EXP_REQUIRED_MAP[$this->level];
-            $this->level++;
+            ++$this->level;
         }
     }
 
@@ -181,7 +180,7 @@ class Statistic implements StatisticInterface, IndirectPlayerResourceInterface
     {
         return [
             'playerStatistics',
-            'player'
+            'player',
         ];
     }
 }

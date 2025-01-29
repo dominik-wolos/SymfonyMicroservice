@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace App\Components\Category\Assigner;
 
 use App\Components\Category\Entity\CategoryInterface;
-use App\Components\Category\Selector\StatisticsSelectorInterface;
 use App\Components\Player\Entity\PlayerInterface;
 use App\Components\Statistic\Entity\CategoryStatisticInterface;
 use App\Components\Statistic\Factory\CategoryStatisticFactoryInterface;
-use App\Components\Statistic\Repository\CategoryStatisticRepository;
 use App\Components\Statistic\Repository\StatisticRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -18,14 +16,14 @@ final class StatisticsAssigner implements StatisticsAssignerInterface
     public function __construct(
         private readonly CategoryStatisticFactoryInterface $categoryStatisticFactory,
         private readonly StatisticRepository $statisticRepository,
-        private readonly EntityManagerInterface $entityManager
+        private readonly EntityManagerInterface $entityManager,
     ) {
     }
 
     public function assign(CategoryInterface $category, PlayerInterface $player): void
     {
         $existingStatisticsIds = $category->getCategoryStatistics()->map(
-            fn (CategoryStatisticInterface $categoryStatistic) => (string) $categoryStatistic->getStatisticId()
+            fn (CategoryStatisticInterface $categoryStatistic) => (string) $categoryStatistic->getStatisticId(),
         )->toArray();
 
         $statisticIds = $category->getStatisticsIds();
@@ -36,7 +34,7 @@ final class StatisticsAssigner implements StatisticsAssignerInterface
         foreach ($statisticsToAdd as $statistic) {
             $categoryStatistic = $this->categoryStatisticFactory->createForCategoryAndStatistic(
                 $category,
-                $statistic
+                $statistic,
             );
 
             $this->entityManager->persist($categoryStatistic);

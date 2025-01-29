@@ -18,7 +18,7 @@ final class StatisticFactory implements StatisticFactoryInterface
     public function createForPlayerAndCodeAndName(
         PlayerInterface $player,
         string $name,
-        string $code
+        string $code,
     ): StatisticInterface {
         $statistic = $this->createNew();
         $statistic->setName($name);

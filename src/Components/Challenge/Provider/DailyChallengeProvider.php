@@ -20,11 +20,11 @@ final class DailyChallengeProvider implements DailyChallengeProviderInterface
     public function provide(
         Operation $operation = null,
         array $uriVariables = [],
-        array $context = []
+        array $context = [],
     ): DailyChallengeInterface {
         $challenge = $this->dailyChallengeRepository->getTodaysChallenge();
 
-        if ($challenge !== null) {
+        if (null !== $challenge) {
             return $challenge;
         }
 

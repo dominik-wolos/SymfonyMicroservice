@@ -15,8 +15,8 @@ final class StatisticCreationProcessor implements ProcessorInterface
 {
     public function __construct(
         private readonly ProcessorInterface $processor,
-        private readonly CurrentPlayerProviderInterface $currentPlayerProvider
-    ){
+        private readonly CurrentPlayerProviderInterface $currentPlayerProvider,
+    ) {
     }
 
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = [])

@@ -10,7 +10,6 @@ use App\Components\Task\Entity\TaskInterface;
 use App\Components\Task\Entity\TaskRewardInterface;
 use App\Components\Task\Factory\TaskRewardFactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Webmozart\Assert\Assert;
 
 final class TaskRewardCreator implements TaskRewardCreatorInterface
 {
@@ -18,16 +17,16 @@ final class TaskRewardCreator implements TaskRewardCreatorInterface
         private readonly CoinsCalculatorInterface $coinsCalculator,
         private readonly ExperienceCalculatorInterface $experienceCalculator,
         private readonly TaskRewardFactoryInterface $taskRewardFactory,
-        private readonly EntityManagerInterface $entityManager
+        private readonly EntityManagerInterface $entityManager,
     ) {
     }
 
     public function create(TaskInterface $task): TaskRewardInterface
     {
-        $reward =  $this->taskRewardFactory->createFromData(
+        $reward = $this->taskRewardFactory->createFromData(
             $task,
             $this->coinsCalculator->calculate($task),
-            $this->experienceCalculator->calculate($task)
+            $this->experienceCalculator->calculate($task),
         );
 
         $this->entityManager->persist($reward);

@@ -13,7 +13,7 @@ final class CompleteChallengeController extends AbstractController
 {
     public function __construct(
         private readonly DailyChallengeManagerInterface $dailyChallengeManager,
-        private readonly EntityManagerInterface $entityManager
+        private readonly EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -22,6 +22,7 @@ final class CompleteChallengeController extends AbstractController
         $this->dailyChallengeManager->complete();
 
         $this->entityManager->flush();
+
         return $this->json([]);
     }
 }

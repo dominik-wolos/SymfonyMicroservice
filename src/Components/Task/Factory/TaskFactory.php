@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Components\Task\Factory;
 
-use App\Components\Challenge\Entity\ChallengeInterface;
 use App\Components\Challenge\Entity\DailyChallengeInterface;
 use App\Components\Player\Entity\PlayerInterface;
 use App\Components\Task\Dictionary\TaskDifficulties;
@@ -42,7 +41,7 @@ final class TaskFactory
 
     public function createChallengeForPlayer(
         PlayerInterface $player,
-        DailyChallengeInterface $dailyChallenge
+        DailyChallengeInterface $dailyChallenge,
     ): TaskInterface {
         $challenge = $dailyChallenge->getChallenge();
 

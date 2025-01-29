@@ -21,8 +21,8 @@ final class AugmentCreationProcessor implements ProcessorInterface
         private readonly CurrentPlayerProviderInterface $currentPlayerProvider,
         #[AutowireIterator(AugmentPriceCalculator::TAG)]
         private readonly iterable $augmentPriceCalculators,
-        private readonly AugmentRepository $augmentRepository
-    ){
+        private readonly AugmentRepository $augmentRepository,
+    ) {
     }
 
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): mixed
@@ -34,7 +34,7 @@ final class AugmentCreationProcessor implements ProcessorInterface
         $augment = $this->augmentRepository->findAllActiveAugmentsByPlayerAndTypeAndCategory(
             $player,
             $data->getType(),
-            $data->getCategory()
+            $data->getCategory(),
         );
 
         if (null !== $augment) {

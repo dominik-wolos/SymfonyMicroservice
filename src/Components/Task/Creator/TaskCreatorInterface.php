@@ -12,6 +12,6 @@ interface TaskCreatorInterface
 {
     public function createForPlayerAndChallenge(
         PlayerInterface $player,
-        DailyChallengeInterface $dailyChallenge
+        DailyChallengeInterface $dailyChallenge,
     ): TaskInterface;
 }

@@ -13,6 +13,6 @@ interface DailyChallengeProviderInterface extends ProviderInterface
     public function provide(
         Operation $operation,
         array $uriVariables = [],
-        array $context = []
+        array $context = [],
     ): DailyChallengeInterface;
 }

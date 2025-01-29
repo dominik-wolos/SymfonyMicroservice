@@ -6,7 +6,6 @@ namespace App\Components\Player\Entity;
 
 use App\Api\DataProvider\DirectPlayerResourceInterface;
 use App\Components\Shop\Entity\AugmentInterface;
-use App\Components\Task\Entity\TaskRewardInterface;
 use App\Core\Interface\RewardInterface;
 use Doctrine\ORM\Mapping as ORM;
 

@@ -20,7 +20,7 @@ final class TaskCreator implements TaskCreatorInterface
 
     public function createForPlayerAndChallenge(
         PlayerInterface $player,
-        DailyChallengeInterface $dailyChallenge
+        DailyChallengeInterface $dailyChallenge,
     ): TaskInterface {
         $task = $this->taskFactory->createChallengeForPlayer($player, $dailyChallenge);
 

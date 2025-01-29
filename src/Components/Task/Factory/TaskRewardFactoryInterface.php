@@ -14,6 +14,6 @@ interface TaskRewardFactoryInterface
     public function createFromData(
         TaskInterface $task,
         int $coins,
-        int $experience
+        int $experience,
     ): TaskRewardInterface;
 }

@@ -29,36 +29,36 @@ use Symfony\Component\Validator\Constraints\NotNull;
         new GetCollection(
             normalizationContext: ['groups' => [
                 self::ITEM_READ,
-            ]]
+            ]],
         ),
         new Get(normalizationContext: ['groups' => [
             self::READ,
-            self::ITEM_READ
+            self::ITEM_READ,
         ]]),
         new Post(
             normalizationContext: ['groups' => [
                 self::READ,
-                self::ITEM_READ
-                ]
+                self::ITEM_READ,
+                ],
             ],
             denormalizationContext: ['groups' => [
                 self::CREATE,
-                self::WRITE
+                self::WRITE,
             ]],
-            processor: CategoryProcessor::class
+            processor: CategoryProcessor::class,
         ),
         new Patch(
             normalizationContext: ['groups' => [
                 self::READ,
-                self::ITEM_READ
+                self::ITEM_READ,
             ]],
             denormalizationContext: ['groups' => [
                 self::WRITE,
-                self::UPDATE
+                self::UPDATE,
             ]],
-            processor: CategoryProcessor::class
+            processor: CategoryProcessor::class,
         ),
-        new Delete()
+        new Delete(),
     ],
     normalizationContext: ['groups' => [self::READ, self::ITEM_READ]],
     denormalizationContext: ['groups' => [self::WRITE, self::CREATE]],
@@ -72,7 +72,7 @@ class Category implements CategoryInterface, DirectPlayerResourceInterface
     #[Groups([
         self::ITEM_READ,
         PlayerInterface::ITEM_READ,
-        AugmentInterface::ITEM_READ
+        AugmentInterface::ITEM_READ,
     ])]
     private ?int $id = null;
 
@@ -83,10 +83,10 @@ class Category implements CategoryInterface, DirectPlayerResourceInterface
     #[ORM\Column(type: 'string')]
     #[NotNull]
     #[Groups([
-        self::ITEM_READ ,
+        self::ITEM_READ,
         self::WRITE,
         PlayerInterface::ITEM_READ,
-        AugmentInterface::ITEM_READ
+        AugmentInterface::ITEM_READ,
     ])]
     private string $name;
 

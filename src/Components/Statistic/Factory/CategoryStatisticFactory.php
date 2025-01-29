@@ -18,7 +18,7 @@ final class CategoryStatisticFactory implements CategoryStatisticFactoryInterfac
 
     public function createForCategoryAndStatistic(
         CategoryInterface $category,
-        StatisticInterface $statistic
+        StatisticInterface $statistic,
     ): CategoryStatisticInterface {
         $categoryStatistic = $this->createNew();
         $categoryStatistic->setMultiplier(4 - $category->getCategoryStatistics()->count());

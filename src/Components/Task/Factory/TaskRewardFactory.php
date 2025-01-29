@@ -18,7 +18,7 @@ final class TaskRewardFactory implements TaskRewardFactoryInterface
     public function createFromData(
         TaskInterface $task,
         int $coins,
-        int $experience
+        int $experience,
     ): TaskRewardInterface {
         $taskReward = $this->createNew();
         $taskReward->setCoins($coins);

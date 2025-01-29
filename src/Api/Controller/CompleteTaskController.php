@@ -20,7 +20,7 @@ final class CompleteTaskController extends AbstractController
         private readonly TaskRepository $taskRepository,
         private readonly TaskManagerInterface $taskManager,
         private readonly CurrentPlayerProviderInterface $currentPlayerProvider,
-        private readonly EntityManagerInterface $entityManager
+        private readonly EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -42,6 +42,7 @@ final class CompleteTaskController extends AbstractController
         }
 
         $this->entityManager->flush();
+
         return $this->json([]);
     }
 }

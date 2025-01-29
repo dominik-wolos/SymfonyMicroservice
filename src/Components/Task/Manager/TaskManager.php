@@ -16,7 +16,7 @@ final class TaskManager implements TaskManagerInterface
 {
     public function __construct(
         private readonly TaskRewardCreatorInterface $taskRewardCreator,
-        private readonly AugmentRepository $augmentRepository
+        private readonly AugmentRepository $augmentRepository,
     ) {
     }
 
@@ -24,6 +24,7 @@ final class TaskManager implements TaskManagerInterface
     {
         if (null !== $task->getCompletedAt() || TaskInterface::COMPLETED === $task->getStatus()) {
             throw new \Exception('Task already completed');
+
             return;
         }
 
@@ -50,6 +51,7 @@ final class TaskManager implements TaskManagerInterface
             if (TaskInterface::CHALLENGE === $task->getType()) {
                 return;
             }
+
             throw new \Exception('Task without category must be a challenge');
         }
         $player = $task->getPlayer();
@@ -57,13 +59,13 @@ final class TaskManager implements TaskManagerInterface
         $augment = $this->augmentRepository->findAllActiveAugmentsByPlayerAndTypeAndCategory(
             $player,
             AugmentTypes::BOOSTER,
-            $category
+            $category,
         );
 
         $categoryStatistics = $category->getCategoryStatistics();
         $summedMultiplier = 0;
         $augmentMultiplier = $augment instanceof AugmentInterface ? $augment->getMultiplier() : 1;
-        /**@var $categoryStatistic CategoryStatistic */
+        /** @var $categoryStatistic CategoryStatistic */
         foreach ($categoryStatistics as $categoryStatistic) {
             $summedMultiplier += $categoryStatistic->getMultiplier();
         }
