@@ -32,7 +32,7 @@ final class CurrentPlayerQueryExtension implements QueryCollectionExtensionInter
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         Operation $operation = null,
-        array $context = []
+        array $context = [],
     ): void {
         if (!$this->isMainRequest($context)) {
             return;
@@ -47,7 +47,7 @@ final class CurrentPlayerQueryExtension implements QueryCollectionExtensionInter
         string $resourceClass,
         array $identifiers,
         Operation $operation = null,
-        array $context = []
+        array $context = [],
     ): void {
         if (!$this->isMainRequest($context)) {
             return;
@@ -59,9 +59,9 @@ final class CurrentPlayerQueryExtension implements QueryCollectionExtensionInter
     private function addWhere(QueryBuilder $queryBuilder, string $resourceClass): void
     {
         if (
-            false === is_subclass_of($resourceClass, DirectPlayerResourceInterface::class)
-            || $this->security->isGranted('ROLE_ADMIN')
-            || null === $user = $this->security->getUser()
+            false === is_subclass_of($resourceClass, DirectPlayerResourceInterface::class) ||
+            $this->security->isGranted('ROLE_ADMIN') ||
+            null === $user = $this->security->getUser()
         ) {
             return;
         }
@@ -83,6 +83,7 @@ final class CurrentPlayerQueryExtension implements QueryCollectionExtensionInter
         foreach ($propertyPathParts as $propertyPathPart) {
             if ($propertyPathPart === end($propertyPathParts)) {
                 $queryBuilder->andWhere(sprintf('%s.player = :player', $previousAlias));
+
                 break;
             }
 
@@ -102,9 +103,9 @@ final class CurrentPlayerQueryExtension implements QueryCollectionExtensionInter
         Assert::isInstanceOf($rootOperation, Operation::class);
 
         if (
-            $rootOperation instanceof Post
-            || $rootOperation instanceof Patch
-            || $rootOperation instanceof Put
+            $rootOperation instanceof Post ||
+            $rootOperation instanceof Patch ||
+            $rootOperation instanceof Put
         ) {
             return true;
         }

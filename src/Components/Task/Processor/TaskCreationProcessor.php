@@ -18,7 +18,7 @@ final class TaskCreationProcessor implements TaskCreationProcessorInterface
     public function __construct(
         private readonly ProcessorInterface $processor,
         private readonly TaskRewardCreatorInterface $taskRewardCreator,
-        private readonly CurrentPlayerProvider $currentPlayerProvider
+        private readonly CurrentPlayerProvider $currentPlayerProvider,
     ) {
     }
 
@@ -35,9 +35,11 @@ final class TaskCreationProcessor implements TaskCreationProcessorInterface
             case TaskTypes::ONE_TIME:
             case TaskTypes::RECURRING:
                 $task->setStatus(TaskStates::ACCEPTED);
+
                 break;
             case TaskTypes::CHALLENGE:
                 $task->setStatus(TaskStates::ACCEPTED);
+
                 break;
             default:
                 throw new \InvalidArgumentException('Invalid task type');

@@ -17,16 +17,16 @@ final class CategoryProcessor implements ProcessorInterface
     public function __construct(
         private readonly ProcessorInterface $processor,
         private readonly CurrentPlayerProviderInterface $currentPlayerProvider,
-        private readonly StatisticsAssignerInterface $statisticsAssigner
+        private readonly StatisticsAssignerInterface $statisticsAssigner,
     ) {
     }
 
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = [])
     {
-         Assert::isInstanceOf($data, CategoryInterface::class);
+        Assert::isInstanceOf($data, CategoryInterface::class);
 
         $player = $this->currentPlayerProvider->provide($operation, $uriVariables, $context);
-         Assert::isInstanceOf($player, PlayerInterface::class);
+        Assert::isInstanceOf($player, PlayerInterface::class);
 
         $data->setPlayer($player);
         $data->setCode(uniqid(sprintf('%s-', $player->getId()), true));

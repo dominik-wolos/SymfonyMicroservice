@@ -6,9 +6,9 @@ namespace App\Components\Task\Entity;
 
 use App\Components\Category\Entity\Category;
 use App\Components\Player\Entity\Player;
+use App\Components\Task\Dictionary\TaskDifficulties;
 use App\Components\Task\Dictionary\TaskStates;
 use App\Components\Task\Dictionary\TaskTypes;
-use App\Components\Task\Dictionary\TaskDifficulties;
 
 interface TaskInterface extends TaskStates, TaskTypes, TaskDifficulties
 {
@@ -36,7 +36,7 @@ interface TaskInterface extends TaskStates, TaskTypes, TaskDifficulties
 
     public function setPlayer(Player $player): void;
 
-    public function getCategory(): Category;
+    public function getCategory(): ?Category;
 
     public function setCategory(Category $category): void;
 
@@ -69,4 +69,20 @@ interface TaskInterface extends TaskStates, TaskTypes, TaskDifficulties
     public function getEndsAt(): \DateTimeInterface;
 
     public function setEndsAt(\DateTimeInterface $endsAt): void;
+
+    public function getType(): string;
+
+    public function setType(string $type): void;
+
+    public function getMainTask(): ?Task;
+
+    public function setMainTask(?Task $mainTask): void;
+
+    public function getMeasureUnit(): string;
+
+    public function setMeasureUnit(string $measureUnit): void;
+
+    public function getInterval(): int;
+
+    public function setInterval(int $interval): void;
 }

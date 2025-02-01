@@ -14,6 +14,6 @@ interface CategoryStatisticFactoryInterface
 
     public function createForCategoryAndStatistic(
         CategoryInterface $category,
-        StatisticInterface $statistic
+        StatisticInterface $statistic,
     ): CategoryStatisticInterface;
 }

@@ -11,4 +11,10 @@ interface TaskTypes
     public const ONE_TIME = 'one_time';
 
     public const CHALLENGE = 'challenge';
+
+    public const TYPES = [
+        self::RECURRING,
+        self::ONE_TIME,
+        self::CHALLENGE,
+    ];
 }

@@ -10,7 +10,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 final readonly class CurrentPlayerProvider implements CurrentPlayerProviderInterface
 {
     public function __construct(
-        private readonly Security $security
+        private readonly Security $security,
     ) {
     }
 

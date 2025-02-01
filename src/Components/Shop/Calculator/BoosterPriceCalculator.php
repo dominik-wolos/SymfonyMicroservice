@@ -20,6 +20,6 @@ final class BoosterPriceCalculator extends AugmentPriceCalculator
 
     public function supports(AugmentInterface $augment): bool
     {
-        return $augment->getType() === AugmentTypes::BOOSTER;
+        return AugmentTypes::BOOSTER === $augment->getType();
     }
 }

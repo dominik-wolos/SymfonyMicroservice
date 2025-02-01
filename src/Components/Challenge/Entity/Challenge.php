@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
         new GetCollection(
             normalizationContext: ['groups' => [
                 self::ITEM_READ,
-            ]]
+            ]],
         ),
     ],
     normalizationContext: ['groups' => [self::READ, self::ITEM_READ]],

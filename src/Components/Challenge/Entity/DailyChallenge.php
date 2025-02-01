@@ -6,6 +6,9 @@ namespace App\Components\Challenge\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
+use App\Api\Controller\AcceptChallengeController;
+use App\Api\Controller\CompleteChallengeController;
 use App\Components\Challenge\Provider\DailyChallengeProvider;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -18,10 +21,34 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 normalizationContext: [
                     'groups' => [
                         self::READ,
-                        self::ITEM_READ
-                    ]
-                ]
+                        self::ITEM_READ,
+                    ],
+                ],
             ),
+            new Post(
+                uriTemplate: '/daily_challenge/accept',
+                controller: AcceptChallengeController::class,
+                read: false,
+                deserialize: false,
+                normalizationContext: [
+                    'groups' => [
+                        self::READ,
+                        self::ITEM_READ,
+                    ],
+                ],
+            ),
+        new Post(
+            uriTemplate: '/daily_challenge/complete',
+            controller: CompleteChallengeController::class,
+            read: false,
+            deserialize: false,
+            normalizationContext: [
+                'groups' => [
+                    self::READ,
+                    self::ITEM_READ,
+                ],
+            ],
+        ),
         ],
     normalizationContext: ['groups' => [self::READ, self::ITEM_READ]],
 )]

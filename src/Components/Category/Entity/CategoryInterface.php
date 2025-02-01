@@ -41,4 +41,8 @@ interface CategoryInterface
     public function setStatisticsIds(array $statistics): void;
 
     public function getCategoryStatisticByStatisticId(int $removeId): ?CategoryStatisticInterface;
+
+    public function getCode(): string;
+
+    public function setCode(string $code): void;
 }

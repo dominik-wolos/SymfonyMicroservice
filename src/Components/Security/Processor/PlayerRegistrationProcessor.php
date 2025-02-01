@@ -16,7 +16,7 @@ final readonly class PlayerRegistrationProcessor implements ProcessorInterface
     public function __construct(
         private ProcessorInterface $processor,
         private DefaultDataCreator $defaultDataCreator,
-        private UserPasswordHasherInterface $passwordHasher
+        private UserPasswordHasherInterface $passwordHasher,
     ) {
     }
 
@@ -30,7 +30,7 @@ final readonly class PlayerRegistrationProcessor implements ProcessorInterface
 
         $hashedPassword = $this->passwordHasher->hashPassword(
             $data,
-            $data->getPassword()
+            $data->getPassword(),
         );
 
         $this->defaultDataCreator->create($data);

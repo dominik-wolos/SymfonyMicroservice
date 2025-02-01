@@ -10,47 +10,48 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use App\Api\Controller\TaskController;
+use App\Api\Controller\CompleteTaskController;
 use App\Api\DataProvider\DirectPlayerResourceInterface;
 use App\Components\Category\Entity\Category;
 use App\Components\Player\Entity\Player;
 use App\Components\Task\Processor\TaskCreationProcessor;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     operations: [
         new GetCollection(
             normalizationContext: ['groups' => [
                 self::ITEM_READ,
-            ]]
+            ]],
         ),
         new Get(normalizationContext: ['groups' => [
             self::READ,
-            self::ITEM_READ
+            self::ITEM_READ,
         ]]),
         new Post(
             processor: TaskCreationProcessor::class,
             normalizationContext: ['groups' => [
                 self::READ,
-                self::ITEM_READ
-            ]
+                self::ITEM_READ,
+            ],
             ],
             denormalizationContext: ['groups' => [
                 self::CREATE,
-                self::WRITE
-            ]]
+                self::WRITE,
+            ]],
         ),
         new Patch(
             uriTemplate: 'task/{id}/complete',
-            controller: TaskController::class,
+            controller: CompleteTaskController::class,
             normalizationContext: ['groups' => []],
-            denormalizationContext: ['groups' => []]
+            denormalizationContext: ['groups' => []],
         ),
-        new Delete()
+        new Delete(),
     ],
     normalizationContext: ['groups' => [self::READ, self::ITEM_READ]],
-    denormalizationContext: ['groups' => [self::WRITE, self::CREATE]]
+    denormalizationContext: ['groups' => [self::WRITE, self::CREATE]],
 )]
 #[ORM\Entity]
 #[ORM\Table(name: 'task')]
@@ -63,11 +64,11 @@ class Task implements TaskInterface, DirectPlayerResourceInterface
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', unique: true)]
-    #[Groups([self::ITEM_READ])]
     private string $code;
 
     #[ORM\Column(type: 'string')]
     #[Groups([self::ITEM_READ, self::CREATE])]
+    #[Assert\Choice(choices: self::TYPES)]
     private string $type;
 
     #[ORM\Column(type: 'string', unique: false)]
@@ -80,16 +81,15 @@ class Task implements TaskInterface, DirectPlayerResourceInterface
 
     #[ORM\ManyToOne(targetEntity: Player::class)]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups([self::ITEM_READ])]
     private Player $player;
 
     #[ORM\ManyToOne(targetEntity: Category::class)]
     #[Groups([self::ITEM_READ, self::WRITE])]
     #[ORM\JoinColumn(nullable: true)]
-    private Category $category;
+    private ?Category $category = null;
 
     #[ORM\Column(type: 'string')]
-    #[Groups([self::READ, self::WRITE])]
+    #[Groups([self::ITEM_READ, self::WRITE])]
     private string $difficulty;
 
     #[ORM\Column(type: 'string')]
@@ -120,6 +120,17 @@ class Task implements TaskInterface, DirectPlayerResourceInterface
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     #[Groups([self::ITEM_READ])]
     private ?\DateTimeImmutable $completedAt = null;
+
+    #[ORM\ManyToOne(targetEntity: Task::class)]
+    private ?Task $mainTask = null;
+
+    #[ORM\Column(type: 'string')]
+    #[Groups([self::ITEM_READ, self::WRITE])]
+    private string $measureUnit;
+
+    #[ORM\Column(type: 'integer')]
+    #[Groups([self::ITEM_READ, self::WRITE])]
+    private int $interval;
 
     public function __construct()
     {
@@ -167,7 +178,7 @@ class Task implements TaskInterface, DirectPlayerResourceInterface
         $this->player = $player;
     }
 
-    public function getCategory(): Category
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
@@ -260,5 +271,35 @@ class Task implements TaskInterface, DirectPlayerResourceInterface
     public function setType(string $type): void
     {
         $this->type = $type;
+    }
+
+    public function getMainTask(): ?Task
+    {
+        return $this->mainTask;
+    }
+
+    public function setMainTask(?Task $mainTask): void
+    {
+        $this->mainTask = $mainTask;
+    }
+
+    public function getMeasureUnit(): string
+    {
+        return $this->measureUnit;
+    }
+
+    public function setMeasureUnit(string $measureUnit): void
+    {
+        $this->measureUnit = $measureUnit;
+    }
+
+    public function getInterval(): int
+    {
+        return $this->interval;
+    }
+
+    public function setInterval(int $interval): void
+    {
+        $this->interval = $interval;
     }
 }

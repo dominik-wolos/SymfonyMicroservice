@@ -21,36 +21,36 @@ use Symfony\Component\Serializer\Attribute\Groups;
         new GetCollection(
             normalizationContext: ['groups' => [
                 self::ITEM_READ,
-            ]]
+            ]],
         ),
         new Get(normalizationContext: ['groups' => [
             self::READ,
-            self::ITEM_READ
+            self::ITEM_READ,
         ]]),
         new Post(
             normalizationContext: ['groups' => [
                 self::READ,
-                self::ITEM_READ
-            ]
+                self::ITEM_READ,
+            ],
             ],
             denormalizationContext: ['groups' => [
                 self::CREATE,
-                self::WRITE
-            ]]
+                self::WRITE,
+            ]],
         ),
         new Patch(
             normalizationContext: ['groups' => [
                 self::READ,
-                self::ITEM_READ
+                self::ITEM_READ,
             ]],
             denormalizationContext: ['groups' => [
-                self::WRITE
-            ]]
+                self::WRITE,
+            ]],
         ),
-        new Delete()
+        new Delete(),
     ],
     normalizationContext: ['groups' => [self::READ, self::ITEM_READ]],
-    denormalizationContext: ['groups' => [self::WRITE, self::CREATE]]
+    denormalizationContext: ['groups' => [self::WRITE, self::CREATE]],
 )]
 class CategoryStatistic implements CategoryStatisticInterface
 {
@@ -60,13 +60,13 @@ class CategoryStatistic implements CategoryStatisticInterface
     #[Groups([self::ITEM_READ])]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'categoryStatistics',)]
-    #[ORM\JoinColumn(name: "category_id", referencedColumnName: "id", onDelete: "CASCADE")]
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'categoryStatistics', )]
+    #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[Groups([self::ITEM_READ, self::WRITE])]
     private Category $category;
 
     #[ORM\ManyToOne(targetEntity: Statistic::class)]
-    #[ORM\JoinColumn(name: "statistic_id", referencedColumnName: "id", onDelete: "CASCADE")]
+    #[ORM\JoinColumn(name: 'statistic_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[Groups([self::ITEM_READ, self::CREATE])]
     private Statistic $statistic;
 

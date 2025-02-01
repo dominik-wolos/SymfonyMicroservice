@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Components\Task\Factory;
 
-use App\Components\Challenge\Entity\ChallengeInterface;
 use App\Components\Challenge\Entity\DailyChallengeInterface;
 use App\Components\Player\Entity\PlayerInterface;
 use App\Components\Task\Dictionary\TaskDifficulties;
@@ -25,11 +24,13 @@ final class TaskFactory
         string $name,
         string $description,
         string $difficulty,
+        \DateTimeInterface $startsAt = null,
     ): TaskInterface {
-        $task = new Task();
+        $task = $this->create();
 
         $task->setPlayer($player);
         $task->setCreatedAt(new \DateTime('now'));
+        $task->setStartsAt($startsAt ?? new \DateTime('now'));
         $task->setDifficulty($difficulty);
         $task->setName($name);
         $task->setDescription($description);
@@ -40,7 +41,7 @@ final class TaskFactory
 
     public function createChallengeForPlayer(
         PlayerInterface $player,
-        DailyChallengeInterface $dailyChallenge
+        DailyChallengeInterface $dailyChallenge,
     ): TaskInterface {
         $challenge = $dailyChallenge->getChallenge();
 

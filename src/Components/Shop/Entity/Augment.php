@@ -25,27 +25,27 @@ use Symfony\Component\Validator\Constraints as Assert;
         new GetCollection(
             normalizationContext: ['groups' => [
                 self::ITEM_READ,
-            ]]
+            ]],
         ),
         new Get(normalizationContext: ['groups' => [
             self::READ,
-            self::ITEM_READ
+            self::ITEM_READ,
         ]]),
         new Post(
             processor: AugmentCreationProcessor::class,
             normalizationContext: ['groups' => [
                 self::READ,
-                self::ITEM_READ
-            ]
+                self::ITEM_READ,
+            ],
             ],
             denormalizationContext: ['groups' => [
                 self::CREATE,
-                self::WRITE
-            ]]
+                self::WRITE,
+            ]],
         ),
     ],
     normalizationContext: ['groups' => [self::READ, self::ITEM_READ]],
-    denormalizationContext: ['groups' => [self::CREATE]]
+    denormalizationContext: ['groups' => [self::CREATE]],
 )]
 class Augment implements AugmentInterface
 {
@@ -71,6 +71,10 @@ class Augment implements AugmentInterface
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[Groups([self::ITEM_READ, self::CREATE, PlayerInterface::ITEM_READ])]
     private int $validForDays;
+
+    #[ORM\Column(type: 'datetime_immutable')]
+    #[Groups([self::ITEM_READ, PlayerInterface::ITEM_READ])]
+    private \DateTimeImmutable $endsAt;
 
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[Groups([self::ITEM_READ, self::CREATE, PlayerInterface::ITEM_READ])]
@@ -214,5 +218,15 @@ class Augment implements AugmentInterface
     public function getCategoryName(): string
     {
         return $this->category->getName();
+    }
+
+    public function getEndsAt(): \DateTimeImmutable
+    {
+        return $this->endsAt;
+    }
+
+    public function setEndsAt(\DateTimeImmutable $endsAt): void
+    {
+        $this->endsAt = $endsAt;
     }
 }

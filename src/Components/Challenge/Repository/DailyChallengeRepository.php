@@ -20,8 +20,8 @@ final class DailyChallengeRepository extends ServiceEntityRepository
     public function getTodaysChallenge(): ?DailyChallengeInterface
     {
         return $this->createQueryBuilder('dc')
-            ->andWhere('dc.date = :date')
-            ->setParameter('date', new \DateTime('today'))
+            ->andWhere('dc.date LIKE :date')
+            ->setParameter('date', (new \DateTime('today'))->format('Y-m-d') . '%')
             ->getQuery()
             ->getOneOrNullResult()
         ;

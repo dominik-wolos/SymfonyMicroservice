@@ -14,6 +14,6 @@ interface StatisticRelatedResourcesCreatorInterface
         PlayerInterface $player,
         StatisticInterface $statistic,
         CategoryInterface $category = null,
-        bool $flush = true
+        bool $flush = true,
     ): void;
 }
