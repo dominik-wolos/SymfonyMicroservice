@@ -64,7 +64,6 @@ class Task implements TaskInterface, DirectPlayerResourceInterface
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', unique: true)]
-    #[Groups([self::ITEM_READ])]
     private string $code;
 
     #[ORM\Column(type: 'string')]
@@ -82,7 +81,6 @@ class Task implements TaskInterface, DirectPlayerResourceInterface
 
     #[ORM\ManyToOne(targetEntity: Player::class)]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups([self::ITEM_READ])]
     private Player $player;
 
     #[ORM\ManyToOne(targetEntity: Category::class)]
@@ -91,7 +89,7 @@ class Task implements TaskInterface, DirectPlayerResourceInterface
     private ?Category $category = null;
 
     #[ORM\Column(type: 'string')]
-    #[Groups([self::READ, self::WRITE])]
+    #[Groups([self::ITEM_READ, self::WRITE])]
     private string $difficulty;
 
     #[ORM\Column(type: 'string')]
@@ -122,6 +120,17 @@ class Task implements TaskInterface, DirectPlayerResourceInterface
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     #[Groups([self::ITEM_READ])]
     private ?\DateTimeImmutable $completedAt = null;
+
+    #[ORM\ManyToOne(targetEntity: Task::class)]
+    private ?Task $mainTask = null;
+
+    #[ORM\Column(type: 'string')]
+    #[Groups([self::ITEM_READ, self::WRITE])]
+    private string $measureUnit;
+
+    #[ORM\Column(type: 'integer')]
+    #[Groups([self::ITEM_READ, self::WRITE])]
+    private int $interval;
 
     public function __construct()
     {
@@ -262,5 +271,35 @@ class Task implements TaskInterface, DirectPlayerResourceInterface
     public function setType(string $type): void
     {
         $this->type = $type;
+    }
+
+    public function getMainTask(): ?Task
+    {
+        return $this->mainTask;
+    }
+
+    public function setMainTask(?Task $mainTask): void
+    {
+        $this->mainTask = $mainTask;
+    }
+
+    public function getMeasureUnit(): string
+    {
+        return $this->measureUnit;
+    }
+
+    public function setMeasureUnit(string $measureUnit): void
+    {
+        $this->measureUnit = $measureUnit;
+    }
+
+    public function getInterval(): int
+    {
+        return $this->interval;
+    }
+
+    public function setInterval(int $interval): void
+    {
+        $this->interval = $interval;
     }
 }

@@ -73,4 +73,16 @@ interface TaskInterface extends TaskStates, TaskTypes, TaskDifficulties
     public function getType(): string;
 
     public function setType(string $type): void;
+
+    public function getMainTask(): ?Task;
+
+    public function setMainTask(?Task $mainTask): void;
+
+    public function getMeasureUnit(): string;
+
+    public function setMeasureUnit(string $measureUnit): void;
+
+    public function getInterval(): int;
+
+    public function setInterval(int $interval): void;
 }
