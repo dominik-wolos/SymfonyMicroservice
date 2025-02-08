@@ -27,7 +27,7 @@ interface StatisticInterface extends StatisticLevels
 
     public function getExperience(): int;
 
-    public function setExperience(int $value): void;
+    public function setExperience(int $experience): void;
 
     public function addExperience(int $experience): void;
 

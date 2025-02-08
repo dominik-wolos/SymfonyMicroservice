@@ -16,6 +16,7 @@ api_platform:
             - '%kernel.project_dir%/src/Components/Task/Entity'
             - '%kernel.project_dir%/src/Components/Shop/Entity'
             - '%kernel.project_dir%/src/Components/Challenge/Entity'
+            - '%kernel.project_dir%/src/Components/Achievement/Entity'
     swagger:
         api_keys:
             - name: Authorization

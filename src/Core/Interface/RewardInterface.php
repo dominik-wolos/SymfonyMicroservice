@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Core\Interface;
 
+use App\Components\Player\Entity\PlayerInterface;
+
 interface RewardInterface
 {
     public function canBeCollected(): bool;
@@ -15,4 +17,6 @@ interface RewardInterface
     public function getExperience(): int;
 
     public function setExperience(int $experience): void;
+
+    public function getPlayer(): PlayerInterface;
 }

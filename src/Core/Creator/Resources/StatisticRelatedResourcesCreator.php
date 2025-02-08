@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Creator;
+namespace App\Core\Creator\Resources;
 
 use App\Components\Category\Entity\CategoryInterface;
 use App\Components\Player\Entity\PlayerInterface;
-use App\Components\Player\Factory\PlayerStatisticsFactoryInterface;
 use App\Components\Statistic\Entity\StatisticInterface;
 use App\Components\Statistic\Factory\CategoryStatisticFactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,7 +14,6 @@ final class StatisticRelatedResourcesCreator implements StatisticRelatedResource
 {
     public function __construct(
         private CategoryStatisticFactoryInterface $categoryStatisticFactory,
-        private PlayerStatisticsFactoryInterface $playerStatisticsFactory,
         private EntityManagerInterface $entityManager,
     ) {
     }

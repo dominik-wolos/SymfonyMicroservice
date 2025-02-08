@@ -4,22 +4,18 @@ declare(strict_types=1);
 
 namespace App\Components\Achievement\Entity;
 
-use App\Api\DataProvider\DirectPlayerResourceInterface;
-use App\Components\Player\Entity\Player;
 use App\Components\Player\Entity\PlayerInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-class AchievementReward implements AchievementRewardInterface, DirectPlayerResourceInterface
+class AchievementReward implements AchievementRewardInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     private int $id;
 
-    #[ORM\ManyToOne(targetEntity: Player::class)]
-    private PlayerInterface $player;
-
-    #[ORM\ManyToOne(targetEntity: Achievement::class)]
+    #[ORM\OneToOne(targetEntity: Achievement::class, inversedBy: 'reward')]
     private AchievementInterface $achievement;
 
     #[ORM\Column(type: 'integer')]
@@ -31,16 +27,6 @@ class AchievementReward implements AchievementRewardInterface, DirectPlayerResou
     public function getId(): int
     {
         return $this->id;
-    }
-
-    public function getPlayer(): PlayerInterface
-    {
-        return $this->player;
-    }
-
-    public function setPlayer(PlayerInterface $player): void
-    {
-        $this->player = $player;
     }
 
     public function getAchievement(): AchievementInterface
@@ -75,6 +61,11 @@ class AchievementReward implements AchievementRewardInterface, DirectPlayerResou
 
     public function canBeCollected(): bool
     {
-        return isset($this->id);
+        return !isset($this->id);
+    }
+
+    public function getPlayer(): PlayerInterface
+    {
+        return $this->achievement->getPlayer();
     }
 }

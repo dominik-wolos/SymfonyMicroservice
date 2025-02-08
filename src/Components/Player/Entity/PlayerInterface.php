@@ -75,4 +75,12 @@ interface PlayerInterface extends UserInterface, PasswordAuthenticatedUserInterf
     public function setWallet(WalletInterface $wallet): void;
 
     public function addCategory(Category $category): void;
+
+    public function getCompletedTasks(): int;
+
+    public function incrementCompletedTasks(): void;
+
+    public function getAchievements(): Collection;
+
+    public function setAchievements(Collection $achievements): void;
 }

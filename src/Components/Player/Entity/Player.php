@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Api\Provider\CurrentPlayerProvider;
+use App\Components\Achievement\Entity\Achievement;
 use App\Components\Category\Entity\Category;
 use App\Components\Security\Processor\PlayerRegistrationProcessor;
 use App\Components\Shop\Entity\Augment;
@@ -128,6 +129,10 @@ class Player implements PlayerInterface
 
     #[ORM\OneToOne(targetEntity: Wallet::class, cascade: ['persist', 'remove'])]
     private WalletInterface $wallet;
+
+    #[ORM\OneToMany(targetEntity: Achievement::class, mappedBy: 'player', fetch: 'LAZY')]
+    #[Groups([self::ITEM_READ])]
+    private Collection $achievements;
 
     public function getId(): ?int
     {
@@ -307,5 +312,26 @@ class Player implements PlayerInterface
     public function incrementCompletedTasks(): void
     {
         ++$this->completedTasks;
+    }
+
+    public function getAchievements(): Collection
+    {
+        return $this->achievements;
+    }
+
+    public function setAchievements(Collection $achievements): void
+    {
+        $this->achievements = $achievements;
+    }
+
+    public function getAchievementById(int $id): ?Achievement
+    {
+        foreach ($this->achievements as $achievement) {
+            if ($achievement->getId() === $id) {
+                return $achievement;
+            }
+        }
+
+        return null;
     }
 }
