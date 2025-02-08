@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 final class AchievementsCreator implements AchievementsCreatorInterface
 {
     public function __construct(
-        #[Autowire('%app.fixtures.achievements')]
+        #[Autowire('%app.fixtures.achievements%')]
         private readonly array $achievementsFixtures,
         private readonly AchievementFactoryInterface $achievementFactory,
         private readonly EntityManagerInterface $entityManager
@@ -28,6 +28,8 @@ final class AchievementsCreator implements AchievementsCreatorInterface
                 $player,
                 $level
             );
+            $achievement->setCoins($level);
+            $achievement->setExperience($level);
 
             $this->entityManager->persist($achievement);
         }

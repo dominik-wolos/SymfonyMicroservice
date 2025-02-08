@@ -4,12 +4,26 @@ declare(strict_types=1);
 
 namespace App\Components\Achievement\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Patch;
+use App\Api\Controller\CompleteAchievementController;
 use App\Components\Player\Entity\Player;
 use App\Components\Player\Entity\PlayerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity]
+#[ApiResource(operations: [
+    new Patch(
+        uriTemplate: 'achievements/{id}/complete',
+        controller: CompleteAchievementController::class,
+        read: false,
+        deserialize: false,
+        normalizationContext: ['groups' => []],
+        denormalizationContext: ['groups' => []],
+    ),
+]
+)]
 class Achievement implements AchievementInterface
 {
     #[ORM\Id]
@@ -38,13 +52,11 @@ class Achievement implements AchievementInterface
     #[ORM\Column(type: 'integer')]
     private int $experience;
 
-    #[ORM\Column(type: 'datetime')]
-    #[Groups([PlayerInterface::ITEM_READ])]
-    private \DateTimeInterface $completedAt;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeInterface $completedAt = null;
 
     #[ORM\OneToOne(targetEntity: AchievementReward::class, mappedBy: 'achievement')]
-    #[ORM\JoinColumn(nullable: false)]
-    private AchievementReward $achievementReward;
+    private ?AchievementReward $achievementReward = null;
 
     public function getId(): int
     {
@@ -106,7 +118,7 @@ class Achievement implements AchievementInterface
         $this->player = $player;
     }
 
-    public function getCompletedAt(): \DateTimeInterface
+    public function getCompletedAt(): ?\DateTimeInterface
     {
         return $this->completedAt;
     }
@@ -124,5 +136,11 @@ class Achievement implements AchievementInterface
     public function setAchievementReward(?AchievementReward $achievementReward): void
     {
         $this->achievementReward = $achievementReward;
+    }
+
+    #[Groups([PlayerInterface::ITEM_READ])]
+    public function isCompleted(): bool
+    {
+        return isset($this->completedAt);
     }
 }

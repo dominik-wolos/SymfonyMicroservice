@@ -25,12 +25,7 @@ final readonly class AchievementManager implements AchievementManagerInterface
         if (false === $this->achievementChecker->check($achievement)) {
             throw new \RuntimeException('Achievement can not be completed yet.');
         }
-
-        $reward = $achievement->getAchievementReward();
-
-        if (null === $reward) {
-            $reward = $this->achievementRewardCreator->createForAchievement($achievement, false);
-        }
+        $reward = $this->achievementRewardCreator->createForAchievement($achievement, false);
 
         $this->achievementRewardCollector->collect($reward);
         $achievement->setCompletedAt(new \DateTimeImmutable());

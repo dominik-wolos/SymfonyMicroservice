@@ -131,6 +131,7 @@ class Player implements PlayerInterface
     private WalletInterface $wallet;
 
     #[ORM\OneToMany(targetEntity: Achievement::class, mappedBy: 'player', fetch: 'LAZY')]
+    #[Groups([self::ITEM_READ])]
     private Collection $achievements;
 
     public function getId(): ?int

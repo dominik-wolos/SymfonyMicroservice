@@ -36,11 +36,12 @@ final readonly class DefaultDataCreator implements DefaultDataCreatorInterface
         $player->setPlayerExperience(0);
         $player->setPlayerStatistics($this->playerStatisticsFactory->createForPlayer($player));
         foreach ($this->defaultCategories as $category) {
+            $categoryCode = $category['code'];
             $category = $this->categoryCreator->createFromArray($category, $player);
 
             $this->entityManager->persist($category);
 
-            $categories[$category['code']] = $category;
+            $categories[$categoryCode] = $category;
         }
 
         foreach ($this->defaultStatistics as $statistic) {

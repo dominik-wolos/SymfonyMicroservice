@@ -45,6 +45,8 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Patch(
             uriTemplate: 'task/{id}/complete',
             controller: CompleteTaskController::class,
+            read: false,
+            deserialize: false,
             normalizationContext: ['groups' => []],
             denormalizationContext: ['groups' => []],
         ),

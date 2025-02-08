@@ -12,6 +12,7 @@ class AchievementReward implements AchievementRewardInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     private int $id;
 
     #[ORM\OneToOne(targetEntity: Achievement::class, inversedBy: 'reward')]
@@ -60,7 +61,7 @@ class AchievementReward implements AchievementRewardInterface
 
     public function canBeCollected(): bool
     {
-        return isset($this->id);
+        return !isset($this->id);
     }
 
     public function getPlayer(): PlayerInterface

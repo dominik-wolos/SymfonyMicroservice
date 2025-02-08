@@ -34,11 +34,13 @@ interface AchievementInterface extends AchievementLevels, AchievementTypes
 
     public function setPlayer(Player $player): void;
 
-    public function getCompletedAt(): \DateTimeInterface;
+    public function getCompletedAt(): ?\DateTimeInterface;
 
     public function setCompletedAt(\DateTimeInterface $completedAt): void;
 
     public function getAchievementReward(): ?AchievementReward;
 
     public function setAchievementReward(?AchievementReward $achievementReward): void;
+
+    public function isCompleted(): bool;
 }
