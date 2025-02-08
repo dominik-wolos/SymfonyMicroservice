@@ -121,7 +121,7 @@ class Task implements TaskInterface, DirectPlayerResourceInterface
     #[Groups([self::ITEM_READ])]
     private ?\DateTimeImmutable $completedAt = null;
 
-    #[ORM\ManyToOne(targetEntity: Task::class)]
+    #[ORM\ManyToOne(targetEntity: self::class)]
     private ?Task $mainTask = null;
 
     #[ORM\Column(type: 'string')]
@@ -273,12 +273,12 @@ class Task implements TaskInterface, DirectPlayerResourceInterface
         $this->type = $type;
     }
 
-    public function getMainTask(): ?Task
+    public function getMainTask(): ?self
     {
         return $this->mainTask;
     }
 
-    public function setMainTask(?Task $mainTask): void
+    public function setMainTask(?self $mainTask): void
     {
         $this->mainTask = $mainTask;
     }

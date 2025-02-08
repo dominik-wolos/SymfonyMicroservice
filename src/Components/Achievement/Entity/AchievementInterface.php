@@ -6,6 +6,7 @@ namespace App\Components\Achievement\Entity;
 
 use App\Components\Achievement\Enum\AchievementLevels;
 use App\Components\Achievement\Enum\AchievementTypes;
+use App\Components\Player\Entity\Player;
 
 interface AchievementInterface extends AchievementLevels, AchievementTypes
 {
@@ -29,7 +30,15 @@ interface AchievementInterface extends AchievementLevels, AchievementTypes
 
     public function setExperience(int $experience): void;
 
-    public function getState(): string;
+    public function getPlayer(): Player;
 
-    public function setState(string $state): void;
+    public function setPlayer(Player $player): void;
+
+    public function getCompletedAt(): \DateTimeInterface;
+
+    public function setCompletedAt(\DateTimeInterface $completedAt): void;
+
+    public function getAchievementReward(): ?AchievementReward;
+
+    public function setAchievementReward(?AchievementReward $achievementReward): void;
 }

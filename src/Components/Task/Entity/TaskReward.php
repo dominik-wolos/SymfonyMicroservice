@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use App\Components\Player\Entity\PlayerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -61,7 +62,7 @@ class TaskReward implements TaskRewardInterface
     private int $id;
 
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
-    #[Groups([self::ITEM_READ, self::WRITE])]
+    #[Groups([self::ITEM_READ, self::WRITE, TaskInterface::ITEM_READ])]
     #[Assert\Positive]
     private int $experience;
 
@@ -70,7 +71,7 @@ class TaskReward implements TaskRewardInterface
     private TaskInterface $task;
 
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
-    #[Groups([self::ITEM_READ])]
+    #[Groups([self::ITEM_READ, TaskInterface::ITEM_READ])]
     private int $coins = 0;
 
     private bool $rewardCollected = false;
@@ -120,5 +121,10 @@ class TaskReward implements TaskRewardInterface
     public function setCoins(int $coins): void
     {
         $this->coins = $coins;
+    }
+
+    public function getPlayer(): PlayerInterface
+    {
+        return $this->task->getPlayer();
     }
 }

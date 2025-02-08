@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Components\Achievement\Entity;
 
+use App\Components\Player\Entity\Player;
+use App\Components\Player\Entity\PlayerInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity]
 class Achievement implements AchievementInterface
@@ -12,22 +15,36 @@ class Achievement implements AchievementInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[Groups([PlayerInterface::ITEM_READ])]
     private int $id;
 
+    #[Groups([PlayerInterface::ITEM_READ])]
     #[ORM\Column(type: 'string')]
     private string $type;
 
-    #[ORM\Column(type: 'string')]
-    private string $state;
-
+    #[Groups([PlayerInterface::ITEM_READ])]
     #[ORM\Column(type: 'float')]
     private float $requiredValue;
 
+    #[Groups([PlayerInterface::ITEM_READ])]
     #[ORM\Column(type: 'integer')]
     private int $coins;
 
+    #[ORM\ManyToOne(targetEntity: Player::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Player $player;
+
+    #[Groups([PlayerInterface::ITEM_READ])]
     #[ORM\Column(type: 'integer')]
     private int $experience;
+
+    #[ORM\Column(type: 'datetime')]
+    #[Groups([PlayerInterface::ITEM_READ])]
+    private \DateTimeInterface $completedAt;
+
+    #[ORM\OneToOne(targetEntity: AchievementReward::class, mappedBy: 'achievement')]
+    #[ORM\JoinColumn(nullable: false)]
+    private AchievementReward $achievementReward;
 
     public function getId(): int
     {
@@ -79,13 +96,33 @@ class Achievement implements AchievementInterface
         $this->experience = $experience;
     }
 
-    public function getState(): string
+    public function getPlayer(): Player
     {
-        return $this->state;
+        return $this->player;
     }
 
-    public function setState(string $state): void
+    public function setPlayer(Player $player): void
     {
-        $this->state = $state;
+        $this->player = $player;
+    }
+
+    public function getCompletedAt(): \DateTimeInterface
+    {
+        return $this->completedAt;
+    }
+
+    public function setCompletedAt(\DateTimeInterface $completedAt): void
+    {
+        $this->completedAt = $completedAt;
+    }
+
+    public function getAchievementReward(): ?AchievementReward
+    {
+        return $this->achievementReward;
+    }
+
+    public function setAchievementReward(?AchievementReward $achievementReward): void
+    {
+        $this->achievementReward = $achievementReward;
     }
 }

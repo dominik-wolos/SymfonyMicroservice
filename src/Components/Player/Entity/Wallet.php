@@ -53,7 +53,7 @@ class Wallet implements WalletInterface, DirectPlayerResourceInterface
     public function deposit(RewardInterface $taskReward): void
     {
         if (!$taskReward->canBeCollected()) {
-            throw new \Exception('Task is not completed');
+            throw new \Exception('Reward cannot be collected');
         }
         $this->balance += $taskReward->getCoins();
     }
