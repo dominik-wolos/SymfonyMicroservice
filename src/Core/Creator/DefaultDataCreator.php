@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace App\Core\Creator;
 
-use App\Components\Category\Factory\CategoryFactoryInterface;
 use App\Components\Player\Entity\PlayerInterface;
 use App\Components\Player\Factory\PlayerStatisticsFactoryInterface;
 use App\Components\Player\Factory\WalletFactoryInterface;
-use App\Components\Statistic\Factory\StatisticFactoryInterface;
+use App\Core\Creator\Resources\AchievementsCreatorInterface;
+use App\Core\Creator\Resources\CategoryCreatorInterface;
+use App\Core\Creator\Resources\StatisticCreatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 final readonly class DefaultDataCreator implements DefaultDataCreatorInterface
 {
     public function __construct(
-        private CategoryFactoryInterface $categoryFactory,
-        private StatisticFactoryInterface $statisticFactory,
-        private StatisticRelatedResourcesCreatorInterface $statisticRelatedResourcesCreator,
+        private CategoryCreatorInterface $categoryCreator,
+        private StatisticCreatorInterface $statisticCreator,
+        private AchievementsCreatorInterface $achievementsCreator,
         private PlayerStatisticsFactoryInterface $playerStatisticsFactory,
         private WalletFactoryInterface $walletFactory,
         private EntityManagerInterface $entityManager,
@@ -35,46 +36,21 @@ final readonly class DefaultDataCreator implements DefaultDataCreatorInterface
         $player->setPlayerExperience(0);
         $player->setPlayerStatistics($this->playerStatisticsFactory->createForPlayer($player));
         foreach ($this->defaultCategories as $category) {
-            $categoryName = $category['name'];
-            $categoryCode = $category['code'];
-
-            $category = $this->categoryFactory->createForPlayerAndCodeAndName(
-                $player,
-                $categoryCode,
-                $categoryName,
-            );
+            $category = $this->categoryCreator->createFromArray($category, $player);
 
             $this->entityManager->persist($category);
 
-            $categories[$categoryCode] = $category;
+            $categories[$category['code']] = $category;
         }
 
         foreach ($this->defaultStatistics as $statistic) {
-            $statisticName = $statistic['name'];
-            $statisticCode = $statistic['code'];
             $categoryCode = $statistic['category'];
-            $iconPath = $statistic['icon_path'];
-
-            $statistic = $this->statisticFactory->createForPlayerAndCodeAndName(
-                $player,
-                $statisticName,
-                $statisticCode,
-            );
-            $statistic->setIconPath($iconPath);
-
-            $statistic->setIconPath($iconPath);
-            $this->entityManager->persist($statistic);
-
             $category = $categories[$categoryCode] ?? null;
 
-            $this->statisticRelatedResourcesCreator->create(
-                $player,
-                $statistic,
-                $category,
-                false,
-            );
+            $this->statisticCreator->createFromArray($statistic, $player, $category);
         }
         $this->walletFactory->createForPlayer($player);
+        $this->achievementsCreator->create($player);
 
         $this->entityManager->flush();
     }

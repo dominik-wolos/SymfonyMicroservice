@@ -16,6 +16,7 @@ use App\Components\Player\Entity\Player;
 use App\Components\Player\Entity\PlayerInterface;
 use App\Components\Player\Entity\PlayerStatistics;
 use App\Components\Statistic\Processor\StatisticCreationProcessor;
+use App\Components\Statistic\Repository\StatisticRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
@@ -31,7 +32,6 @@ use Symfony\Component\Serializer\Attribute\Groups;
             self::ITEM_READ,
         ]]),
         new Post(
-            processor: StatisticCreationProcessor::class,
             normalizationContext: ['groups' => [
                 self::READ,
                 self::ITEM_READ,
@@ -41,6 +41,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 self::CREATE,
                 self::WRITE,
             ]],
+            processor: StatisticCreationProcessor::class,
         ),
         new Patch(
             normalizationContext: ['groups' => [
@@ -56,7 +57,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
     normalizationContext: ['groups' => [self::READ, self::ITEM_READ]],
     denormalizationContext: ['groups' => [self::WRITE, self::CREATE]],
 )]
-#[ORM\Entity(repositoryClass: 'App\Components\Statistic\Repository\StatisticRepository')]
+#[ORM\Entity(repositoryClass: StatisticRepository::class)]
 #[ORM\Table(name: 'statistic')]
 class Statistic implements StatisticInterface, IndirectPlayerResourceInterface
 {
@@ -78,7 +79,7 @@ class Statistic implements StatisticInterface, IndirectPlayerResourceInterface
     #[Groups([self::ITEM_READ, self::WRITE, PlayerInterface::ITEM_READ, CategoryInterface::ITEM_READ])]
     private string $iconPath = 'determination_bar';
 
-    #[ORM\ManyToOne(targetEntity: PlayerStatistics::class, inversedBy: 'statistics', fetch: 'LAZY')]
+    #[ORM\ManyToOne(targetEntity: PlayerStatistics::class, fetch: 'LAZY', inversedBy: 'statistics')]
     private PlayerStatistics $playerStatistics;
 
     #[ORM\Column(type: 'integer')]

@@ -11,6 +11,12 @@ interface StatisticFactoryInterface
 {
     public function createNew(): StatisticInterface;
 
+    /**
+     * @param PlayerInterface $player
+     * @param string $name
+     * @param string $code
+     * @return StatisticInterface
+     */
     public function createForPlayerAndCodeAndName(
         PlayerInterface $player,
         string $name,
