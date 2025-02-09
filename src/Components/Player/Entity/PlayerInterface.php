@@ -99,4 +99,8 @@ interface PlayerInterface extends UserInterface, PasswordAuthenticatedUserInterf
     public function getResetPasswordTokenValidUntil(): ?\DateTime;
 
     public function setResetPasswordTokenValidUntil(?\DateTime $resetPasswordTokenValidUntil): void;
+
+    public function isVacations(): bool;
+
+    public function setVacations(bool $vacations): void;
 }

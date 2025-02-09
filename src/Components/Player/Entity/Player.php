@@ -131,8 +131,12 @@ class Player implements PlayerInterface
     private string $password;
 
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
-    #[Groups([self::ITEM_READ, self::WRITE])]
+    #[Groups([self::ITEM_READ])]
     private bool $enabled = true;
+
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
+    #[Groups([self::ITEM_READ, self::WRITE])]
+    private bool $vacations = true;
 
     #[ORM\Column(type: 'json')]
     #[Groups([self::ITEM_READ])]
@@ -410,5 +414,15 @@ class Player implements PlayerInterface
     public function setResetPasswordTokenValidUntil(?\DateTime $resetPasswordTokenValidUntil): void
     {
         $this->resetPasswordTokenValidUntil = $resetPasswordTokenValidUntil;
+    }
+
+    public function isVacations(): bool
+    {
+        return $this->vacations;
+    }
+
+    public function setVacations(bool $vacations): void
+    {
+        $this->vacations = $vacations;
     }
 }
