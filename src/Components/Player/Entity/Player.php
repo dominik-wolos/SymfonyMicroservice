@@ -9,6 +9,9 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use App\Api\Controller\ResetPassword\ChangePasswordAction;
+use App\Api\Controller\ResetPassword\InitializeResetPasswordAction;
+use App\Api\Controller\ResetPassword\VerificationCodeAction;
 use App\Api\Provider\CurrentPlayerProvider;
 use App\Components\Achievement\Entity\Achievement;
 use App\Components\Category\Entity\Category;
@@ -20,6 +23,41 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints\NotNull;
 
+#[ApiResource(operations: [
+        new Post(
+            uriTemplate: '/initialize-reset-password',
+            controller: InitializeResetPasswordAction::class,
+            read: false,
+            serialize: false,
+            deserialize: false,
+            openapiContext: [
+                'summary' => 'Initialize the password reset process',
+                'description' => 'Sends an email with a verification code to the user',
+            ],
+        ),
+    new Post(
+        uriTemplate: '/reset-password/{verificationCode}',
+        controller: VerificationCodeAction::class,
+        read: false,
+        serialize: false,
+        deserialize: false,
+        openapiContext: [
+            'summary' => 'Validates code sent by user',
+        ],
+    ),
+        new Post(
+            uriTemplate: '/change-password/{token}',
+            controller: ChangePasswordAction::class,
+            read: false,
+            serialize: false,
+            deserialize: false,
+            openapiContext: [
+                'summary' => 'Change the user’s password',
+                'description' => 'Changes the user’s password',
+            ],
+        ),
+    ]
+)]
 #[ApiResource(
     operations: [
         new Get(
@@ -133,6 +171,15 @@ class Player implements PlayerInterface
     #[ORM\OneToMany(targetEntity: Achievement::class, mappedBy: 'player', fetch: 'LAZY')]
     #[Groups([self::ITEM_READ])]
     private Collection $achievements;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $verificationCode = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $resetPasswordToken = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $resetPasswordTokenValidUntil = null;
 
     public function getId(): ?int
     {
@@ -333,5 +380,35 @@ class Player implements PlayerInterface
         }
 
         return null;
+    }
+
+    public function getVerificationCode(): ?int
+    {
+        return $this->verificationCode;
+    }
+
+    public function setVerificationCode(?int $verificationCode): void
+    {
+        $this->verificationCode = $verificationCode;
+    }
+
+    public function getResetPasswordToken(): ?string
+    {
+        return $this->resetPasswordToken;
+    }
+
+    public function setResetPasswordToken(?string $resetPasswordToken): void
+    {
+        $this->resetPasswordToken = $resetPasswordToken;
+    }
+
+    public function getResetPasswordTokenValidUntil(): ?\DateTime
+    {
+        return $this->resetPasswordTokenValidUntil;
+    }
+
+    public function setResetPasswordTokenValidUntil(?\DateTime $resetPasswordTokenValidUntil): void
+    {
+        $this->resetPasswordTokenValidUntil = $resetPasswordTokenValidUntil;
     }
 }

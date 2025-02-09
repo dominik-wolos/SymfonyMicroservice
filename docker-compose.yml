@@ -9,6 +9,7 @@ services:
     depends_on:
       - mysql
     environment:
+      - MAILER_DSN=smtp://mailhog:1025
       - APP_ENV=dev
       - APP_DEBUG=1
       - APP_SECRET=EDITME
@@ -55,6 +56,13 @@ services:
       - public-media:/srv/app/public/media:ro,nocopy
     ports:
       - "${HTTP_PORT:-80}:80"
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mailhog
+    ports:
+      - "1025:1025"   # SMTP Server
+      - "8025:8025"   # Web UI for MailHog
 
 volumes:
   mysql-data:

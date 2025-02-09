@@ -24,4 +24,24 @@ final class PlayerRepository extends ServiceEntityRepository implements PlayerRe
             ->getOneOrNullResult()
         ;
     }
+
+    public function findOneByVerificationCode(string $verificationCode): ?Player
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.verificationCode = :verificationCode')
+            ->setParameter('verificationCode', $verificationCode)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    public function findOneByToken(string $token): ?Player
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.resetPasswordToken = :token')
+            ->setParameter('token', $token)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
 }

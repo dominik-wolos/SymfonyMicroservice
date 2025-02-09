@@ -9,4 +9,8 @@ use App\Components\Player\Entity\Player;
 interface PlayerRepositoryInterface
 {
     public function findOneByEmail(string $email): ?Player;
+
+    public function findOneByVerificationCode(string $verificationCode): ?Player;
+
+    public function findOneByToken(string $token): ?Player;
 }

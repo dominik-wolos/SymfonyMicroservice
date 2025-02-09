@@ -24,6 +24,10 @@ interface PlayerInterface extends UserInterface, PasswordAuthenticatedUserInterf
 
     public const REGISTER = 'player:register';
 
+    public const VERIFICATION_CODE = 'player:verification_code';
+
+    public const CHANGE_PASSWORD = 'player:change_password';
+
     public function getId(): ?int;
 
     public function setId(int $id): void;
@@ -83,4 +87,16 @@ interface PlayerInterface extends UserInterface, PasswordAuthenticatedUserInterf
     public function getAchievements(): Collection;
 
     public function setAchievements(Collection $achievements): void;
+
+    public function getVerificationCode(): ?int;
+
+    public function setVerificationCode(?int $verificationCode): void;
+
+    public function getResetPasswordToken(): ?string;
+
+    public function setResetPasswordToken(?string $resetPasswordToken): void;
+
+    public function getResetPasswordTokenValidUntil(): ?\DateTime;
+
+    public function setResetPasswordTokenValidUntil(?\DateTime $resetPasswordTokenValidUntil): void;
 }
