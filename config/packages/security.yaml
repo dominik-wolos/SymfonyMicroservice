@@ -16,10 +16,6 @@ security:
                 class: App\Components\Player\Entity\Player
                 property: email
     firewalls:
-        register:
-            pattern: "%api_registration_route%"
-            stateless: true
-            security: false
         api:
             pattern: "%api_endpoints_regex%"
             provider: app_player_provider
@@ -33,11 +29,15 @@ security:
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
             custom_authenticators:
                 - app.authenticator
+#        register:
+#            pattern: "%api_registration_route%"
+#            stateless: true
+#            security: false
 
-        main:
-            pattern: "%api_route%|%api_anonymous_available_regex%|^/api/docs.json"
-            stateless: true
-            security: false
+#        main:
+#            pattern: "%api_route%|%api_anonymous_available_regex%|^/api/docs.json"
+#            stateless: true
+#            security: false
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall

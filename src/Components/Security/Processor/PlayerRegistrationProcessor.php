@@ -35,13 +35,10 @@ final readonly class PlayerRegistrationProcessor implements ProcessorInterface
 
         $this->defaultDataCreator->create($data);
 
-        do {
-            $photoNumber = random_int(1, 8);
-        } while (4 !== $photoNumber);
-
+        $photoNumber = random_int(1, 8);
         $data->setUserPhotoPath(sprintf('user_photo_%s', $photoNumber));
-        $data->setPassword($hashedPassword);
         $data->eraseCredentials();
+        $data->setPassword($hashedPassword);
 
         return $this->processor->process($data, $operation, $uriVariables, $context);
     }
