@@ -39,11 +39,13 @@ final class ChangePasswordAction extends AbstractController
             ], Response::HTTP_BAD_REQUEST);
         }
 
+
         $hashedPassword = $this->passwordHasher->hashPassword(
             $player,
             $password,
         );
 
+        $player->setResetPasswordToken(null);
         $player->eraseCredentials();
         $player->setPassword($hashedPassword);
 

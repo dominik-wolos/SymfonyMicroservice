@@ -115,7 +115,7 @@ class Task implements TaskInterface, DirectPlayerResourceInterface
     #[Groups([self::ITEM_READ, self::WRITE])]
     private \DateTimeInterface $startsAt;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     #[Groups([self::ITEM_READ, self::WRITE])]
     private \DateTimeInterface $endsAt;
 
@@ -123,16 +123,17 @@ class Task implements TaskInterface, DirectPlayerResourceInterface
     #[Groups([self::ITEM_READ])]
     private ?\DateTimeImmutable $completedAt = null;
 
-    #[ORM\ManyToOne(targetEntity: self::class)]
+    #[ORM\OneToOne(targetEntity: self::class)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Task $mainTask = null;
 
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(type: 'string', nullable: true)]
     #[Groups([self::ITEM_READ, self::WRITE])]
     private string $measureUnit;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer', nullable: true)]
     #[Groups([self::ITEM_READ, self::WRITE])]
-    private int $interval;
+    private int $period;
 
     public function __construct()
     {
@@ -294,14 +295,15 @@ class Task implements TaskInterface, DirectPlayerResourceInterface
     {
         $this->measureUnit = $measureUnit;
     }
-
+    #[Groups([self::ITEM_READ])]
     public function getInterval(): int
     {
-        return $this->interval;
+        return $this->period;
     }
 
-    public function setInterval(int $interval): void
+    #[Groups([self::WRITE])]
+    public function setInterval(int $period): void
     {
-        $this->interval = $interval;
+        $this->period = $period;
     }
 }

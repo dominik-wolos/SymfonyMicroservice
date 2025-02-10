@@ -37,7 +37,6 @@ final class CurrentPlayerQueryExtension implements QueryCollectionExtensionInter
         if (!$this->isMainRequest($context)) {
             return;
         }
-
         $this->addWhere($queryBuilder, $resourceClass);
     }
 
