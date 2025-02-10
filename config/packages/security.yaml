@@ -1,6 +1,6 @@
 parameters:
     api_route: "/api"
-    api_anonymous_available_regex: "^%api_route%/(register|auth|docs|player-from-token*)$"
+    api_anonymous_available_regex: "^%api_route%/(register|auth|docs*)$"
     api_reset_password_routes: "^%api_route%/(initialize-reset-password|reset-password.*|change-password.*)$"
     api_registration_route: "^%api_route%/register"
     #exclude registration route from api endpoints
