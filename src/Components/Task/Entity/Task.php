@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Components\Task\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
@@ -113,6 +116,8 @@ class Task implements TaskInterface, DirectPlayerResourceInterface
 
     #[ORM\Column(type: 'datetime')]
     #[Groups([self::ITEM_READ, self::WRITE])]
+    #[ApiFilter(DateFilter::class, strategy: DateFilter::EXCLUDE_NULL)]
+    #[ApiFilter(OrderFilter::class, properties: ['startsAt' => 'DESC'], arguments: ['orderParameterName' => 'order'])]
     private \DateTimeInterface $startsAt;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
