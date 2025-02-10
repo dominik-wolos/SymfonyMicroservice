@@ -17,6 +17,7 @@ use App\Components\Player\Entity\PlayerInterface;
 use App\Components\Shop\Entity\AugmentInterface;
 use App\Components\Statistic\Entity\CategoryStatistic;
 use App\Components\Statistic\Entity\CategoryStatisticInterface;
+use App\Components\Task\Entity\TaskInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -72,6 +73,7 @@ class Category implements CategoryInterface, DirectPlayerResourceInterface
     #[Groups([
         self::ITEM_READ,
         PlayerInterface::ITEM_READ,
+        TaskInterface::ITEM_READ,
         AugmentInterface::ITEM_READ,
     ])]
     private ?int $id = null;
@@ -85,6 +87,7 @@ class Category implements CategoryInterface, DirectPlayerResourceInterface
         self::ITEM_READ,
         self::WRITE,
         PlayerInterface::ITEM_READ,
+        TaskInterface::ITEM_READ,
         AugmentInterface::ITEM_READ,
     ])]
     private string $name;

@@ -1,6 +1,7 @@
 parameters:
     api_route: "/api"
-    api_anonymous_available_regex: "^%api_route%/(register|auth|docs*)$"
+    api_anonymous_available_regex: "^%api_route%/(register|auth|docs|player-from-token*)$"
+    api_reset_password_routes: "^%api_route%/(initialize-reset-password|reset-password.*|change-password.*)$"
     api_registration_route: "^%api_route%/register"
     #exclude registration route from api endpoints
     api_endpoints_regex: "^%api_route%/(?!register).*$"
@@ -16,6 +17,14 @@ security:
                 class: App\Components\Player\Entity\Player
                 property: email
     firewalls:
+        register:
+            pattern: "%api_registration_route%"
+            stateless: true
+            security: false
+        reset-password:
+            pattern: "%api_reset_password_routes%"
+            stateless: true
+            security: false
         api:
             pattern: "%api_endpoints_regex%"
             provider: app_player_provider
@@ -29,16 +38,10 @@ security:
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
             custom_authenticators:
                 - app.authenticator
-#        register:
-#            pattern: "%api_registration_route%"
-#            stateless: true
-#            security: false
-
-#        main:
-#            pattern: "%api_route%|%api_anonymous_available_regex%|^/api/docs.json"
-#            stateless: true
-#            security: false
-
+        main:
+            pattern: "%api_route%|%api_anonymous_available_regex%|^/api/docs.json"
+            stateless: true
+            security: false
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 
@@ -51,8 +54,9 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-#        - { path: "%api_anonymous_available_regex%", roles: IS_AUTHENTICATED_ANONYMOUSLY }
-#        - { path: "%api_endpoints_regex%", roles: ROLE_USER }
+        - { path: "%api_anonymous_available_regex%", roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: "%api_reset_password_routes%", roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: "%api_endpoints_regex%", roles: ROLE_USER }
 #lexik_jwt_authentication.security.jwt_authenticator
 when@test:
     security:

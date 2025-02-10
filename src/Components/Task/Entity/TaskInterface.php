@@ -84,5 +84,5 @@ interface TaskInterface extends TaskStates, TaskTypes, TaskDifficulties
 
     public function getInterval(): int;
 
-    public function setInterval(int $interval): void;
+    public function setInterval(int $period): void;
 }
