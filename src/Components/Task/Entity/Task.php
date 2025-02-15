@@ -354,4 +354,10 @@ class Task implements TaskInterface, DirectPlayerResourceInterface
     {
         $this->recurringEndsAt = $recurringEndsAt;
     }
+
+    #[Groups([self::WRITE])]
+    public function setInterval(int $period): void
+    {
+        $this->period = $period;
+    }
 }
