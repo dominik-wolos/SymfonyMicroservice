@@ -13,7 +13,7 @@ final class VerificationCodeAction extends AbstractController
 {
     public function __construct(
         private readonly PlayerRepositoryInterface $playerRepository,
-        private readonly EntityManagerInterface $entityManager
+        private readonly EntityManagerInterface $entityManager,
     ) {
     }
 

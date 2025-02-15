@@ -14,8 +14,8 @@ final class AchievementChecker implements AchievementCheckerInterface
         $player = $achievement->getPlayer();
         $reward = $achievement->getAchievementReward();
 
-        if (null !== $achievement->getCompletedAt()
-            || (null !== $reward && $reward->canBeCollected())
+        if (null !== $achievement->getCompletedAt() ||
+            (null !== $reward && $reward->canBeCollected())
         ) {
             throw new \RuntimeException('Achievement has already been completed.');
         }

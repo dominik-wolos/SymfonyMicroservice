@@ -24,7 +24,6 @@ final class CyclicalTaskCreator implements CyclicalTaskCreatorInterface
         $futureLimit = (new \DateTimeImmutable())->modify(sprintf('+ %s months', self::X_MONTHS));
         $lastRecursionStartsAt = $task->getLastRecursionStartsAt() ?? $task->getStartsAt();
 
-
         while ($lastRecursionStartsAt < $futureLimit) {
             $lastRecursionStartsAt = $this->calculateNextDate($lastRecursionStartsAt, $intervalValue, $measureUnit);
             $endsAt = $this->calculateNextDate($endsAt, $intervalValue, $measureUnit);

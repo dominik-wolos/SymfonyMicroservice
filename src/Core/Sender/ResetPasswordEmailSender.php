@@ -13,7 +13,7 @@ final class ResetPasswordEmailSender
 {
     public function __construct(
         private readonly MailerInterface $mailer,
-        private readonly Environment $twig
+        private readonly Environment $twig,
     ) {
     }
 
@@ -26,7 +26,7 @@ final class ResetPasswordEmailSender
         $email = (new Email())
             ->from('support@questa.pl')
             ->to($player->getEmail())
-            ->subject("Questa - Reset Password")
+            ->subject('Questa - Reset Password')
             ->html($htmlContent)
         ;
 

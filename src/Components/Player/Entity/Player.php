@@ -23,7 +23,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints\NotNull;
 
-#[ApiResource(operations: [
+#[ApiResource(
+    operations: [
         new Post(
             uriTemplate: '/initialize-reset-password',
             controller: InitializeResetPasswordAction::class,
@@ -56,7 +57,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
                 'description' => 'Changes the user’s password',
             ],
         ),
-    ]
+    ],
 )]
 #[ApiResource(
     operations: [

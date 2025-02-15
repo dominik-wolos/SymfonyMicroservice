@@ -34,12 +34,12 @@ final class CreateNextCyclicalTasks extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-
         $output->writeln('Creating next cyclical tasks...');
         $tasks = $this->taskRepository->findAllMainCyclical();
 
-        if ($tasks === null || [] === $tasks) {
+        if (null === $tasks || [] === $tasks) {
             $output->writeln('No tasks found');
+
             return Command::SUCCESS;
         }
 

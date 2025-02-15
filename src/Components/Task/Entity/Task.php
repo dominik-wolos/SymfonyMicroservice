@@ -317,16 +317,11 @@ class Task implements TaskInterface, DirectPlayerResourceInterface
     {
         $this->measureUnit = $measureUnit;
     }
+
     #[Groups([self::ITEM_READ])]
     public function getInterval(): int
     {
         return $this->period;
-    }
-
-    #[Groups([self::WRITE])]
-    public function setInterval(int $period): void
-    {
-        $this->period = $period;
     }
 
     public function getLastRecursionStartsAt(): ?\DateTimeInterface
