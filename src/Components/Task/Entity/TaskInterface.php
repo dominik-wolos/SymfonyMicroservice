@@ -85,4 +85,8 @@ interface TaskInterface extends TaskStates, TaskTypes, TaskDifficulties
     public function getInterval(): int;
 
     public function setInterval(int $period): void;
+
+    public function getRecurringEndsAt(): \DateTimeInterface;
+
+    public function setRecurringEndsAt(\DateTimeInterface $recurringEndsAt): void;
 }

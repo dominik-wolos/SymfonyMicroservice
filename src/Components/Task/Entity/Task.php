@@ -46,6 +46,16 @@ use Symfony\Component\Validator\Constraints as Assert;
             ]],
         ),
         new Patch(
+            normalizationContext: ['groups' => [
+                self::READ,
+                self::ITEM_READ,
+            ],
+            ],
+            denormalizationContext: ['groups' => [
+                self::WRITE,
+            ]],
+        ),
+        new Patch(
             uriTemplate: 'task/{id}/complete',
             controller: CompleteTaskController::class,
             read: false,
@@ -81,7 +91,7 @@ class Task implements TaskInterface, DirectPlayerResourceInterface
     private string $name;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    #[Groups([self::READ, self::WRITE])]
+    #[Groups([self::ITEM_READ, self::WRITE])]
     private string $description;
 
     #[ORM\ManyToOne(targetEntity: Player::class)]
@@ -124,12 +134,16 @@ class Task implements TaskInterface, DirectPlayerResourceInterface
     #[Groups([self::ITEM_READ, self::WRITE])]
     private \DateTimeInterface $endsAt;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[Groups([self::ITEM_READ, self::WRITE])]
+    private \DateTimeInterface $recurringEndsAt;
+
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     #[Groups([self::ITEM_READ])]
     private ?\DateTimeImmutable $completedAt = null;
 
-    #[ORM\OneToOne(targetEntity: self::class)]
-    #[ORM\JoinColumn(nullable: true)]
+    #[ORM\ManyToOne(targetEntity: self::class)]
+    #[ORM\JoinColumn(nullable: true, unique: false)]
     private ?Task $mainTask = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
@@ -139,6 +153,9 @@ class Task implements TaskInterface, DirectPlayerResourceInterface
     #[ORM\Column(type: 'integer', nullable: true)]
     #[Groups([self::ITEM_READ, self::WRITE])]
     private int $period;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $lastRecursionStartsAt = null;
 
     public function __construct()
     {
@@ -310,5 +327,31 @@ class Task implements TaskInterface, DirectPlayerResourceInterface
     public function setInterval(int $period): void
     {
         $this->period = $period;
+    }
+
+    public function getLastRecursionStartsAt(): ?\DateTimeInterface
+    {
+        return $this->lastRecursionStartsAt;
+    }
+
+    public function setLastRecursionStartsAt(\DateTimeInterface $lastRecursionStartsAt): void
+    {
+        $this->lastRecursionStartsAt = $lastRecursionStartsAt;
+    }
+
+    public function __clone(): void
+    {
+        $this->code = uniqid('task_', true);
+        $this->completedAt = null;
+    }
+
+    public function getRecurringEndsAt(): \DateTimeInterface
+    {
+        return $this->recurringEndsAt;
+    }
+
+    public function setRecurringEndsAt(\DateTimeInterface $recurringEndsAt): void
+    {
+        $this->recurringEndsAt = $recurringEndsAt;
     }
 }
