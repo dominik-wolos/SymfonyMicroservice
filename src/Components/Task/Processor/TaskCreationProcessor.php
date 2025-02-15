@@ -9,7 +9,6 @@ use ApiPlatform\State\ProcessorInterface;
 use App\Api\Provider\CurrentPlayerProvider;
 use App\Components\Task\Creator\CyclicalTaskCreatorInterface;
 use App\Components\Task\Creator\TaskRewardCreatorInterface;
-use App\Components\Task\Dictionary\TaskStates;
 use App\Components\Task\Dictionary\TaskTypes;
 use App\Components\Task\Entity\TaskInterface;
 use Webmozart\Assert\Assert;
@@ -33,7 +32,7 @@ final class TaskCreationProcessor implements TaskCreationProcessorInterface
         $task->setPlayer($this->currentPlayerProvider->provide($operation, $uriVariables, $context));
         Assert::notNull($task->getPlayer());
 
-        if ($task->getType() === TaskTypes::RECURRING) {
+        if (TaskTypes::RECURRING === $task->getType()) {
             $this->cyclicalTaskCreator->createMissingTasks($task, false);
         }
 

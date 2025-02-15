@@ -15,7 +15,7 @@ final class AchievementsCreator implements AchievementsCreatorInterface
         #[Autowire('%app.fixtures.achievements%')]
         private readonly array $achievementsFixtures,
         private readonly AchievementFactoryInterface $achievementFactory,
-        private readonly EntityManagerInterface $entityManager
+        private readonly EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -26,7 +26,7 @@ final class AchievementsCreator implements AchievementsCreatorInterface
         foreach ($completedTasksAchievements['levels'] as $level) {
             $achievement = $this->achievementFactory->createForPlayerAndTypeAndValue(
                 $player,
-                $level
+                $level,
             );
             $achievement->setCoins($level);
             $achievement->setExperience($level);

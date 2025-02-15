@@ -42,6 +42,6 @@ final class PlayerRepository extends ServiceEntityRepository implements PlayerRe
             ->setParameter('token', $token)
             ->getQuery()
             ->getOneOrNullResult()
-            ;
+        ;
     }
 }

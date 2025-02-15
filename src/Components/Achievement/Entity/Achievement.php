@@ -13,7 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity]
-#[ApiResource(operations: [
+#[ApiResource(
+    operations: [
     new Patch(
         uriTemplate: 'achievements/{id}/complete',
         controller: CompleteAchievementController::class,
@@ -22,7 +23,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
         normalizationContext: ['groups' => []],
         denormalizationContext: ['groups' => []],
     ),
-]
+],
 )]
 class Achievement implements AchievementInterface
 {

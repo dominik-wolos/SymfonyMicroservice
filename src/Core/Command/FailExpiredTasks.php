@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Core\Command;
 
-use App\Components\Task\Creator\CyclicalTaskCreatorInterface;
 use App\Components\Task\Manager\TaskManagerInterface;
 use App\Components\Task\Repository\TaskRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -37,12 +36,12 @@ final class FailExpiredTasks extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-
         $output->writeln('Failing tasks...');
         $tasks = $this->taskRepository->findAllExpiredTasks();
 
-        if ($tasks === null || [] === $tasks) {
+        if (null === $tasks || [] === $tasks) {
             $output->writeln('No tasks found');
+
             return Command::SUCCESS;
         }
 
@@ -55,6 +54,7 @@ final class FailExpiredTasks extends Command
                 $output->writeln(sprintf('Error while failing tasks for task with id %d: %s', $task->getId(), $e->getMessage()));
             }
         }
+
         try {
             $this->entityManager->flush();
         } catch (\Throwable $e) {

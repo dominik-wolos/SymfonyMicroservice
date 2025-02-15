@@ -13,6 +13,6 @@ interface StatisticCreatorInterface
     public function createFromArray(
         array $row,
         PlayerInterface $player,
-        ?CategoryInterface $category
+        ?CategoryInterface $category,
     ): StatisticInterface;
 }

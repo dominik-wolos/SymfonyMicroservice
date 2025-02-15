@@ -15,6 +15,6 @@ interface AchievementFactoryInterface
     public function createForPlayerAndTypeAndValue(
         PlayerInterface $player,
         int $value,
-        string $type = AchievementTypes::TASKS_COMPLETED_TYPE
+        string $type = AchievementTypes::TASKS_COMPLETED_TYPE,
     ): AchievementInterface;
 }
