@@ -7,6 +7,7 @@ namespace App\Components\Task\Processor;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Api\Provider\CurrentPlayerProvider;
+use App\Components\Task\Creator\CyclicalTaskCreatorInterface;
 use App\Components\Task\Creator\TaskRewardCreatorInterface;
 use App\Components\Task\Dictionary\TaskStates;
 use App\Components\Task\Dictionary\TaskTypes;
@@ -19,6 +20,7 @@ final class TaskCreationProcessor implements TaskCreationProcessorInterface
         private readonly ProcessorInterface $processor,
         private readonly TaskRewardCreatorInterface $taskRewardCreator,
         private readonly CurrentPlayerProvider $currentPlayerProvider,
+        private readonly CyclicalTaskCreatorInterface $cyclicalTaskCreator,
     ) {
     }
 
@@ -31,18 +33,8 @@ final class TaskCreationProcessor implements TaskCreationProcessorInterface
         $task->setPlayer($this->currentPlayerProvider->provide($operation, $uriVariables, $context));
         Assert::notNull($task->getPlayer());
 
-        switch ($task->getType()) {
-            case TaskTypes::ONE_TIME:
-            case TaskTypes::RECURRING:
-                $task->setStatus(TaskStates::ACCEPTED);
-
-                break;
-            case TaskTypes::CHALLENGE:
-                $task->setStatus(TaskStates::ACCEPTED);
-
-                break;
-            default:
-                throw new \InvalidArgumentException('Invalid task type');
+        if ($task->getType() === TaskTypes::RECURRING) {
+            $this->cyclicalTaskCreator->createMissingTasks($task, false);
         }
 
         return $this->processor->process($task, $operation, $uriVariables, $context);

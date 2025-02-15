@@ -40,4 +40,29 @@ final class TaskRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function findAllMainCyclical(): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.type = :type')
+            ->andWhere('s.mainTask IS NULL')
+            ->andWhere('s.recurringEndsAt > :date')
+            ->setParameter('type', TaskInterface::RECURRING)
+            ->setParameter('date', new \DateTimeImmutable())
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findAllExpiredTasks(): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.status = :status')
+            ->andWhere('s.endsAt < :date')
+            ->setParameter('status', TaskInterface::ACCEPTED)
+            ->setParameter('date', new \DateTimeImmutable())
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
