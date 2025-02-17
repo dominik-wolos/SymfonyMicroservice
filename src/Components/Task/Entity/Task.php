@@ -18,6 +18,8 @@ use App\Api\DataProvider\DirectPlayerResourceInterface;
 use App\Components\Category\Entity\Category;
 use App\Components\Player\Entity\Player;
 use App\Components\Task\Processor\TaskCreationProcessor;
+use App\Components\Task\Provider\DailyChallengeTaskProvider;
+use App\Components\Task\Provider\DailyChallengeTaskProviderInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -33,6 +35,14 @@ use Symfony\Component\Validator\Constraints as Assert;
             self::READ,
             self::ITEM_READ,
         ]]),
+        new Get(
+            uriTemplate: '/daily-challenge-task',
+            normalizationContext: ['groups' => [
+                self::READ,
+                self::ITEM_READ,
+            ]],
+            provider: DailyChallengeTaskProvider::class
+        ),
         new Post(
             processor: TaskCreationProcessor::class,
             normalizationContext: ['groups' => [
