@@ -29,6 +29,10 @@ final class CompleteTaskController extends AbstractController
         $player = $this->currentPlayerProvider->provideFromSecurity();
         Assert::isInstanceOf($player, PlayerInterface::class);
 
+        if ($player->isVacations()) {
+            return $this->json(['error' => 'Player is on vacations'], Response::HTTP_BAD_REQUEST);
+        }
+
         $task = $this->taskRepository->findOneByIdAndPlayer($id, $player);
 
         if (null === $task) {

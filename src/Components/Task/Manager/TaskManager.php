@@ -18,6 +18,11 @@ final class TaskManager implements TaskManagerInterface
 
     public function fail(TaskInterface $task): void
     {
+        $player = $task->getPlayer();
+        if ($player->isVacations()) {
+            throw new \Exception('Player is on vacations');
+        }
+
         if (null !== $task->getCompletedAt() || TaskInterface::COMPLETED === $task->getStatus()) {
             throw new \Exception('Task already completed');
         }
