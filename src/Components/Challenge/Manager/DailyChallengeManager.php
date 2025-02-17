@@ -19,7 +19,6 @@ final class DailyChallengeManager implements DailyChallengeManagerInterface
         private readonly TaskCreatorInterface $taskCreator,
         private readonly CurrentPlayerProviderInterface $currentPlayerProvider,
         private readonly DailyChallengeProviderInterface $dailyChallengeProvider,
-        private readonly DailyChallengeRepository $dailyChallengeRepository,
         private readonly TaskRepository $taskRepository,
         private readonly TaskManagerInterface $taskManager,
     ) {
@@ -31,9 +30,9 @@ final class DailyChallengeManager implements DailyChallengeManagerInterface
         Assert::isInstanceOf($player, PlayerInterface::class);
 
         $dailyChallenge = $this->dailyChallengeProvider->provide();
-        $todaysChallenge = $this->dailyChallengeRepository->getTodaysChallenge();
+        $task = $this->taskRepository->findTodaysChallengeTaskByPlayer($player);
 
-        if ($dailyChallenge === $todaysChallenge) {
+        if (null !== $task) {
             throw new \Exception('Challenge already accepted player');
         }
 

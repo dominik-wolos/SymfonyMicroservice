@@ -118,7 +118,7 @@ class Task implements TaskInterface, DirectPlayerResourceInterface
         orphanRemoval: true,
     )]
     #[Groups([self::ITEM_READ])]
-    private TaskRewardInterface $reward;
+    private ?TaskRewardInterface $reward = null;
 
     #[ORM\Column(type: 'datetime')]
     #[Groups([self::ITEM_READ])]
@@ -258,7 +258,7 @@ class Task implements TaskInterface, DirectPlayerResourceInterface
         return $this->code;
     }
 
-    public function getReward(): TaskRewardInterface
+    public function getReward(): ?TaskRewardInterface
     {
         return $this->reward;
     }

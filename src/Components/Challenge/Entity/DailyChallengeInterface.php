@@ -25,4 +25,20 @@ interface DailyChallengeInterface
     public function getDate(): \DateTime;
 
     public function setDate(\DateTime $date): void;
+
+    public function getName(): string;
+
+    public function setName(string $name): void;
+
+    public function getDescription(): string;
+
+    public function setDescription(string $description): void;
+
+    public function getPoints(): int;
+
+    public function setPoints(int $points): void;
+
+    public function getCoins(): int;
+
+    public function setCoins(int $coins): void;
 }
