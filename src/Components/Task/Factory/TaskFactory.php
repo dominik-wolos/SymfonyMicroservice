@@ -53,7 +53,7 @@ final class TaskFactory
         );
 
         $task->setType(TaskTypes::CHALLENGE);
-        $task->setEndsAt(new \DateTime('tomorrow'));
+        $task->setEndsAt((new \DateTime('tomorrow'))->modify('-1 second'));
         $task->setStatus(TaskStates::ACCEPTED);
 
         return $task;

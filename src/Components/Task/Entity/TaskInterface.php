@@ -58,7 +58,7 @@ interface TaskInterface extends TaskStates, TaskTypes, TaskDifficulties
 
     public function getCode(): string;
 
-    public function getReward(): TaskRewardInterface;
+    public function getReward(): ?TaskRewardInterface;
 
     public function setReward(TaskRewardInterface $reward): void;
 
