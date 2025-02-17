@@ -6,7 +6,6 @@ namespace App\Components\Challenge\Manager;
 
 use App\Api\Provider\CurrentPlayerProviderInterface;
 use App\Components\Challenge\Provider\DailyChallengeProviderInterface;
-use App\Components\Challenge\Repository\DailyChallengeRepository;
 use App\Components\Player\Entity\PlayerInterface;
 use App\Components\Task\Creator\TaskCreatorInterface;
 use App\Components\Task\Manager\TaskManagerInterface;
@@ -29,6 +28,10 @@ final class DailyChallengeManager implements DailyChallengeManagerInterface
         $player = $this->currentPlayerProvider->provideFromSecurity();
         Assert::isInstanceOf($player, PlayerInterface::class);
 
+        if ($player->isVacations()) {
+            throw new \Exception('Player is on vacations');
+        }
+
         $dailyChallenge = $this->dailyChallengeProvider->provide();
         $task = $this->taskRepository->findTodaysChallengeTaskByPlayer($player);
 
@@ -43,6 +46,10 @@ final class DailyChallengeManager implements DailyChallengeManagerInterface
     {
         $player = $this->currentPlayerProvider->provideFromSecurity();
         Assert::isInstanceOf($player, PlayerInterface::class);
+
+        if ($player->isVacations()) {
+            throw new \Exception('Player is on vacations');
+        }
 
         $task = $this->taskRepository->findTodaysChallengeTaskByPlayer($player);
         if (null === $task) {
