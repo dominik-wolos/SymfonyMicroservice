@@ -33,4 +33,17 @@ final class TaskRewardCreator implements TaskRewardCreatorInterface
 
         return $reward;
     }
+
+    public function createNegative(TaskInterface $task): TaskRewardInterface
+    {
+        $reward = $this->taskRewardFactory->createFromData(
+            $task,
+            -$this->coinsCalculator->calculate($task),
+            -$this->experienceCalculator->calculate($task),
+        );
+
+        $this->entityManager->persist($reward);
+
+        return $reward;
+    }
 }

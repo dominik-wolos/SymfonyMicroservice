@@ -31,7 +31,7 @@ final class AugmentCreationProcessor implements ProcessorInterface
         $player = $this->currentPlayerProvider->provide($operation, $uriVariables, $context);
         Assert::isInstanceOf($player, PlayerInterface::class);
 
-        $augment = $this->augmentRepository->findAllActiveAugmentsByPlayerAndTypeAndCategory(
+        $augment = $this->augmentRepository->findActiveAugmentByPlayerAndTypeAndCategory(
             $player,
             $data->getType(),
             $data->getCategory(),

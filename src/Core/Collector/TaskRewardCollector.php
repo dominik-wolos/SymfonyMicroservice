@@ -21,12 +21,30 @@ final class TaskRewardCollector extends RewardCollector implements TaskRewardCol
 
     public function collect(RewardInterface $reward): void
     {
-        $this->collectCoins($reward);
+        $player = $reward->getPlayer();
 
         if (!$reward instanceof TaskRewardInterface) {
             throw new \Exception('Invalid reward type');
         }
 
+        $task = $reward->getTask();
+        $category = $task->getCategory();
+        if (null !== $category) {
+            $shield = $this->augmentRepository->findActiveAugmentByPlayerAndTypeAndCategory(
+                $player,
+                AugmentTypes::SHIELD,
+                $category,
+            );
+
+            if (
+                TaskInterface::EXPIRED === $task->getStatus()
+                && null !== $shield
+            ) {
+                return;
+            }
+        }
+
+        $this->collectCoins($reward);
         $this->assignExperienceToStatistics($reward);
         $this->assignExperienceToPlayer($reward);
     }
@@ -45,7 +63,7 @@ final class TaskRewardCollector extends RewardCollector implements TaskRewardCol
         }
         $player = $task->getPlayer();
 
-        $augment = $this->augmentRepository->findAllActiveAugmentsByPlayerAndTypeAndCategory(
+        $augment = $this->augmentRepository->findActiveAugmentByPlayerAndTypeAndCategory(
             $player,
             AugmentTypes::BOOSTER,
             $category,
