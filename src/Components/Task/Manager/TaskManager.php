@@ -29,6 +29,9 @@ final class TaskManager implements TaskManagerInterface
         }
 
         $task->setStatus(TaskInterface::EXPIRED);
+        $reward = $this->taskRewardCreator->createNegative($task);
+
+        $this->taskRewardCollector->collect($reward);
     }
 
     public function complete(TaskInterface $task): void

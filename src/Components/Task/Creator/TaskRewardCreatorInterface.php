@@ -10,4 +10,6 @@ use App\Components\Task\Entity\TaskRewardInterface;
 interface TaskRewardCreatorInterface
 {
     public function create(TaskInterface $task): TaskRewardInterface;
+
+    public function createNegative(TaskInterface $task): TaskRewardInterface;
 }

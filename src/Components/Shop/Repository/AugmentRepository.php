@@ -30,25 +30,7 @@ final class AugmentRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findAllActiveBoostersByPlayer(PlayerInterface $player): array
-    {
-        return $this->createAllActiveByPlayerQueryBuilder($player)
-            ->andWhere('s.type = :type')
-            ->setParameter('type', AugmentTypes::BOOSTER)
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function findAllActiveShieldsByPlayer(PlayerInterface $player): array
-    {
-        return $this->createAllActiveByPlayerQueryBuilder($player)
-            ->andWhere('s.type = :type')
-            ->setParameter('type', AugmentTypes::SHIELD)
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function findAllActiveAugmentsByPlayerAndTypeAndCategory(
+    public function findActiveAugmentByPlayerAndTypeAndCategory(
         PlayerInterface $player,
         string $type,
         CategoryInterface $category,
