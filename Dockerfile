@@ -10,7 +10,6 @@ FROM mlocati/php-extension-installer:${PHP_EXTENSION_INSTALLER_VERSION} AS php_e
 
 FROM php:${PHP_VERSION}-fpm-alpine${ALPINE_VERSION} AS base
 
-# persistent / runtime deps
 RUN apk add --no-cache \
         acl \
         file \
@@ -20,9 +19,6 @@ RUN apk add --no-cache \
 
 COPY --from=php_extension_installer /usr/bin/install-php-extensions /usr/local/bin/
 
-# default PHP image extensions
-# ctype curl date dom fileinfo filter ftp hash iconv json libxml mbstring mysqlnd openssl pcre PDO pdo_sqlite Phar
-# posix readline Reflection session SimpleXML sodium SPL sqlite3 standard tokenizer xml xmlreader xmlwriter zlib
 RUN install-php-extensions apcu exif gd intl pdo_mysql opcache zip sockets && docker-php-ext-enable pdo_mysql
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
@@ -39,16 +35,13 @@ ENV PATH="${PATH}:/root/.composer/vendor/bin"
 
 WORKDIR /srv/app
 
-# build for production
 ENV APP_ENV=prod
 
-# prevent the reinstallation of vendors at every changes in the source code
 COPY composer.* ./
 RUN set -eux; \
     composer install --prefer-dist --no-autoloader --no-interaction --no-scripts --no-progress --no-dev; \
     composer clear-cache
 
-# copy only specifically what we need
 COPY .env .env.prod .env.local ./
 COPY bin bin/
 COPY config config/
