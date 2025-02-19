@@ -18,15 +18,11 @@ services:
       - SENTRY_DSN=https://76fa7942e6a970ea854a4300bd0b0066@o927425.ingest.us.sentry.io/4508624291889152
     volumes:
       - .:/srv/app:rw,cached
-      # if you develop on Linux, you may use a bind-mounted host directory instead
       - ./var:/srv/app/var:rw
-      #      - ./public:/srv/open_marketplace/public:rw,delegated
-      # if you develop on Linux, you may use a bind-mounted host directory instead
-      # - ./public/media:/srv/open_marketplace/public/media:rw
       - public-media:/srv/app/public/media:rw
 
   mysql:
-    image: mysql:8.0 # Sylius is fully working on mysql 8.0 version
+    image: mysql:8.0
     platform: linux/amd64
     environment:
       - MYSQL_DATABASE=task
@@ -35,12 +31,10 @@ services:
       - MYSQL_PASSWORD=password
     volumes:
       - mysql-data:/var/lib/mysql:rw
-      # you may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/mysql/data:/var/lib/mysql:rw,delegated
     ports:
       - "3306:3306"
     cap_add:
-      - SYS_NICE # prevent "mbind: Operation not permitted" errors
+      - SYS_NICE
 
   nginx:
     container_name: symfony_nginx
@@ -51,8 +45,6 @@ services:
       - php
     volumes:
       - ./public:/srv/app/public:ro
-      # if you develop on Linux, you may use a bind-mounted host directory instead
-      # - ./public/media:/srv/open_marketplace/public/media:ro
       - public-media:/srv/app/public/media:ro,nocopy
     ports:
       - "${HTTP_PORT:-80}:80"
@@ -61,13 +53,10 @@ services:
     image: mailhog/mailhog
     container_name: mailhog
     ports:
-      - "1025:1025"   # SMTP Server
-      - "8025:8025"   # Web UI for MailHog
+      - "1025:1025"
+      - "8025:8025"
 
 volumes:
   mysql-data:
   public-media:
-
-###> doctrine/doctrine-bundle ###
   database_data:
-###< doctrine/doctrine-bundle ###
