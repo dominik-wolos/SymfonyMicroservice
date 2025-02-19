@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Components\Player\Entity;
 
+use App\Components\Achievement\Entity\Achievement;
 use App\Components\Category\Entity\Category;
 use App\Components\Player\Enum\PlayerLevels;
 use Doctrine\Common\Collections\Collection;
@@ -60,6 +61,8 @@ interface PlayerInterface extends UserInterface, PasswordAuthenticatedUserInterf
 
     public function setPlayerExperience(int $playerExperience): void;
 
+    public function addExperience(int $playerExperience): void;
+
     public function getUserPhotoPath(): ?string;
 
     public function setUserPhotoPath(?string $userPhotoPath): void;
@@ -87,6 +90,8 @@ interface PlayerInterface extends UserInterface, PasswordAuthenticatedUserInterf
     public function getAchievements(): Collection;
 
     public function setAchievements(Collection $achievements): void;
+
+    public function getAchievementById(int $id): ?Achievement;
 
     public function getVerificationCode(): ?int;
 

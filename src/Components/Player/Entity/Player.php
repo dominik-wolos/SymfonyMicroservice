@@ -28,34 +28,34 @@ use Symfony\Component\Validator\Constraints\NotNull;
         new Post(
             uriTemplate: '/initialize-reset-password',
             controller: InitializeResetPasswordAction::class,
-            read: false,
-            serialize: false,
-            deserialize: false,
             openapiContext: [
                 'summary' => 'Initialize the password reset process',
                 'description' => 'Sends an email with a verification code to the user',
             ],
+            read: false,
+            deserialize: false,
+            serialize: false,
         ),
-    new Post(
-        uriTemplate: '/reset-password/{verificationCode}',
-        controller: VerificationCodeAction::class,
-        read: false,
-        serialize: false,
-        deserialize: false,
-        openapiContext: [
-            'summary' => 'Validates code sent by user',
-        ],
-    ),
+        new Post(
+            uriTemplate: '/reset-password/{verificationCode}',
+            controller: VerificationCodeAction::class,
+            openapiContext: [
+                'summary' => 'Validates code sent by user',
+            ],
+            read: false,
+            deserialize: false,
+            serialize: false,
+        ),
         new Post(
             uriTemplate: '/change-password/{token}',
             controller: ChangePasswordAction::class,
-            read: false,
-            serialize: false,
-            deserialize: false,
             openapiContext: [
                 'summary' => 'Change the user’s password',
                 'description' => 'Changes the user’s password',
             ],
+            read: false,
+            deserialize: false,
+            serialize: false,
         ),
     ],
 )]
@@ -63,12 +63,12 @@ use Symfony\Component\Validator\Constraints\NotNull;
     operations: [
         new Get(
             uriTemplate: '/player-from-token',
-            provider: CurrentPlayerProvider::class,
             openapiContext: [
                 'summary' => 'Retrieve the authenticated user’s information',
                 'description' => 'Returns information about the authenticated user',
             ],
             normalizationContext: ['groups' => [self::READ, self::ITEM_READ]],
+            provider: CurrentPlayerProvider::class,
         ),
     ],
 )]
@@ -76,7 +76,6 @@ use Symfony\Component\Validator\Constraints\NotNull;
     uriTemplate: '/register',
     operations: [
         new Post(
-            processor: PlayerRegistrationProcessor::class,
             normalizationContext: ['groups' => [
                 self::REGISTER,
             ],
@@ -85,6 +84,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
                 self::CREATE,
                 self::WRITE,
             ]],
+            processor: PlayerRegistrationProcessor::class,
         ),
     ],
     normalizationContext: ['groups' => [self::REGISTER]],
@@ -156,7 +156,7 @@ class Player implements PlayerInterface
     private int $completedTasks = 0;
 
     #[ORM\Column(type: 'string', nullable: true, options: ['default' => ''])]
-    #[Groups([self::ITEM_READ, self:: UPDATE])]
+    #[Groups([self::ITEM_READ, self::UPDATE])]
     private ?string $userPhotoPath;
 
     #[ORM\OneToOne(targetEntity: PlayerStatistics::class, cascade: ['persist', 'remove'])]
