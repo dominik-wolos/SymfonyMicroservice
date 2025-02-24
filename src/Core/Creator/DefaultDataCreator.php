@@ -22,10 +22,8 @@ final readonly class DefaultDataCreator implements DefaultDataCreatorInterface
         private PlayerStatisticsFactoryInterface $playerStatisticsFactory,
         private WalletFactoryInterface $walletFactory,
         private EntityManagerInterface $entityManager,
-        #[Autowire('%app.fixtures.default_categories%')]
-        private array $defaultCategories,
-        #[Autowire('%app.fixtures.default_statistics%')]
-        private array $defaultStatistics,
+        #[Autowire('%app.fixtures.default_categories%')] private array $defaultCategories,
+        #[Autowire('%app.fixtures.default_statistics%')] private array $defaultStatistics,
     ) {
     }
 

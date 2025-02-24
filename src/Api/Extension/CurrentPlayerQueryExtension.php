@@ -57,18 +57,11 @@ final class CurrentPlayerQueryExtension implements QueryCollectionExtensionInter
 
     private function addWhere(QueryBuilder $queryBuilder, string $resourceClass): void
     {
-        if (
-            false === is_subclass_of($resourceClass, DirectPlayerResourceInterface::class) ||
-            $this->security->isGranted('ROLE_ADMIN') ||
-            null === $user = $this->security->getUser()
-        ) {
+        if (false === $this->isActionRestrictedForUser($resourceClass)) {
             return;
         }
 
-        if (
-            false === is_subclass_of($resourceClass, IndirectPlayerResourceInterface::class) &&
-            false === method_exists($resourceClass, 'getPlayerPropertyPathParts')
-        ) {
+        if (false === $this->isIndirectRelation($resourceClass)) {
             $rootAlias = $queryBuilder->getRootAliases()[0];
             $queryBuilder->andWhere(sprintf('%s.player = :player', $rootAlias));
             $queryBuilder->setParameter('player', $user->getId());
@@ -114,5 +107,18 @@ final class CurrentPlayerQueryExtension implements QueryCollectionExtensionInter
         }
 
         return true;
+    }
+
+    public function isActionRestrictedForUser(string $resourceClass): bool
+    {
+        return false === is_subclass_of($resourceClass, DirectPlayerResourceInterface::class) ||
+            $this->security->isGranted('ROLE_ADMIN') ||
+            null === $user = $this->security->getUser();
+    }
+
+    public function isIndirectRelation(string $resourceClass): bool
+    {
+        return false === is_subclass_of($resourceClass, IndirectPlayerResourceInterface::class) &&
+            false === method_exists($resourceClass, 'getPlayerPropertyPathParts');
     }
 }

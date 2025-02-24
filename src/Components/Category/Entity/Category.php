@@ -40,7 +40,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
             normalizationContext: ['groups' => [
                 self::READ,
                 self::ITEM_READ,
-                ],
+            ],
             ],
             denormalizationContext: ['groups' => [
                 self::CREATE,
