@@ -66,7 +66,7 @@ final class TaskManager implements TaskManagerInterface
 
         if ($taskEndsAt < $today) {
             if ($exception) {
-                throw new \Exception("The task's end date is in the past. Task scheduling is not allowed.");
+                throw new \Exception("The task's end date is in the past.");
             }
 
             return false;
@@ -74,7 +74,7 @@ final class TaskManager implements TaskManagerInterface
 
         if ($taskEndsAt > $today) {
             if ($exception) {
-                throw new \Exception("The task's end date is in the future. Task scheduling is not allowed.");
+                throw new \Exception("The task's end date is in the past.");
             }
 
             return false;
