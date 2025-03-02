@@ -47,7 +47,13 @@ final class CreateNextCyclicalTasks extends Command
                 $output->writeln(sprintf('Creating next cyclical tasks for task with id %d', $task->getId()));
                 $this->missingTasksCreator->createTasks($task);
             } catch (\Throwable $e) {
-                $output->writeln(sprintf('Error while creating tasks for task with id %d: %s', $task->getId(), $e->getMessage()));
+                $output->writeln(
+                    sprintf(
+                        'Error while creating tasks for task with id %d: %s',
+                        $task->getId(),
+                        $e->getMessage()
+                    )
+                );
             }
         }
         $output->writeln(sprintf('Creating completed'));
