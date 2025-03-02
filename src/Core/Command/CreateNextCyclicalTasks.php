@@ -12,7 +12,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
-    name: 'app:create-next-cyclical-tasks', description: 'Create next cyclical tasks',
+    name: 'app:create-next-cyclical-tasks',
+    description: 'Create next cyclical tasks',
 )]
 final class CreateNextCyclicalTasks extends Command
 {
