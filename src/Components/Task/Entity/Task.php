@@ -43,18 +43,6 @@ use Symfony\Component\Validator\Constraints as Assert;
             ]],
             provider: DailyChallengeTaskProvider::class
         ),
-        new Post(
-            processor: TaskCreationProcessor::class,
-            normalizationContext: ['groups' => [
-                self::READ,
-                self::ITEM_READ,
-            ],
-            ],
-            denormalizationContext: ['groups' => [
-                self::CREATE,
-                self::WRITE,
-            ]],
-        ),
         new Patch(
             normalizationContext: ['groups' => [
                 self::READ,
@@ -74,6 +62,18 @@ use Symfony\Component\Validator\Constraints as Assert;
             denormalizationContext: ['groups' => []],
         ),
         new Delete(),
+        new Post(
+            normalizationContext: ['groups' => [
+                self::READ,
+                self::ITEM_READ,
+            ],
+            ],
+            denormalizationContext: ['groups' => [
+                self::CREATE,
+                self::WRITE,
+            ]],
+            processor: TaskCreationProcessor::class,
+        ),
     ],
     normalizationContext: ['groups' => [self::READ, self::ITEM_READ]],
     denormalizationContext: ['groups' => [self::WRITE, self::CREATE]],
