@@ -8,5 +8,5 @@ use App\Components\Task\Entity\TaskInterface;
 
 interface CyclicalTaskCreatorInterface
 {
-    public function createMissingTasks(TaskInterface $task, bool $flush = true): void;
+    public function createTasks(TaskInterface $task, bool $flush = true): void;
 }

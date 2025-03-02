@@ -46,7 +46,7 @@ final class CreateNextCyclicalTasks extends Command
         foreach ($tasks as $task) {
             try {
                 $output->writeln(sprintf('Creating next cyclical tasks for task with id %d', $task->getId()));
-                $this->missingTasksCreator->createMissingTasks($task);
+                $this->missingTasksCreator->createTasks($task);
             } catch (\Throwable $e) {
                 $output->writeln(sprintf('Error while creating tasks for task with id %d: %s', $task->getId(), $e->getMessage()));
             }

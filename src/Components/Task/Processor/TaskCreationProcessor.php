@@ -33,7 +33,7 @@ final class TaskCreationProcessor implements TaskCreationProcessorInterface
         Assert::notNull($task->getPlayer());
 
         if (TaskTypes::RECURRING === $task->getType()) {
-            $this->cyclicalTaskCreator->createMissingTasks($task, false);
+            $this->cyclicalTaskCreator->createTasks($task, false);
         }
 
         return $this->processor->process($task, $operation, $uriVariables, $context);

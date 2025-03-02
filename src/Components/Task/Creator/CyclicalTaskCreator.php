@@ -16,7 +16,7 @@ final class CyclicalTaskCreator implements CyclicalTaskCreatorInterface
 
     private const X_MONTHS = 1;
 
-    public function createMissingTasks(TaskInterface $task, bool $flush = true): void
+    public function createTasks(TaskInterface $task, bool $flush = true): void
     {
         $intervalValue = $task->getInterval();
         $measureUnit = $task->getMeasureUnit();
